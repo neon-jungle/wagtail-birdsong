@@ -1,0 +1,12 @@
+{% load mjml %}
+
+{% mjml %}
+    <mjml>
+    <mj-body>
+    <mj-container>
+        {% block email_body %}
+        {% endblock email_body %}
+    </mj-container>
+    </mj-body>
+    </mjml>
+{% endmjml %}

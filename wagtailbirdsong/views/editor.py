@@ -1,10 +1,6 @@
 from django.shortcuts import render
 
-from ..models import EmailCampaign
-
-def view_draft(request, emailcampaign_pk):
-    campaign = EmailCampaign.objects.get(pk=emailcampaign_pk)
-
-    context = campaign.get_context()
+def view_draft(request, model, emailcampaign_pk):
+    campaign = model.objects.get(pk=emailcampaign_pk)
     
-    return render(request, 'wagtailbirdsong/emails/basic-email.html', context)
+    return render(request, campaign.get_template(request), {'self': campaign, 'request': request})
