@@ -24,6 +24,8 @@ class BaseEmail(models.Model):
         abstract = True
 
 
+# TODO: Flesh out what else our Contacts need to store
+# TODO: Make Contact overrideable by consuming application (ala get_backend maybe?)
 class Contact(models.Model):
     first_name = models.TextField() 
     email = models.EmailField()
