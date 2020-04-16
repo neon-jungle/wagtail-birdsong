@@ -1,6 +1,15 @@
 from django.shortcuts import render
 
-def view_draft(request, model, emailcampaign_pk):
-    campaign = model.objects.get(pk=emailcampaign_pk)
-    
+def view_draft(request, campaign):
     return render(request, campaign.get_template(request), {'self': campaign, 'request': request})
+
+
+def confirm_send(request, campaign, send_url, index_url):
+    context = {
+        'self': campaign, 
+        'request': request,
+        'send_url': send_url,
+        'index_url': index_url
+    }
+
+    return render(request, "wagtailbirdsong/editor/send_confirm.html", context)
