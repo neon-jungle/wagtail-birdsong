@@ -8,14 +8,24 @@ from wagtail.contrib.modeladmin.helpers.url import AdminURLHelper
 from ..models import Contact
 
 
-def send(request, campaign):
+def send_helper(request, campaign, subject, contacts):
     html = render_to_string(campaign.get_template(request), {'self': campaign, 'request': request})
-
     contacts = [c.email for c in Contact.objects.all()]
-
     mail_backend = campaign.get_backend()
+    from_email = campaign.get_from_email()
 
-    success = mail_backend.send_email(campaign.subject, 'from_email@example.com', contacts, html)
+    return mail_backend.send_email(subject, from_email, contacts, html)
+
+
+def redirect_helper(campaign):
+    url_helper = AdminURLHelper(type(campaign))
+    campaign_list_url = url_helper.get_action_url('index')
+
+    return redirect(campaign_list_url)
+
+
+def send_campaign(request, campaign):
+    success = send_helper(request, campaign, campaign.subject, [c.email for c in Contact.objects.all()])
 
     if success:
         campaign.sent_date = timezone.now()
@@ -25,7 +35,18 @@ def send(request, campaign):
         # TODO: Store sent count in BaseEmailBackend.send_email, return and use here if not all succesfully sent
         messages.add_message(request, messages.ERROR, f"Campaign with ID {campaign.id} failed to send")
 
-    url_helper = AdminURLHelper(type(campaign))
-    campaign_list_url = url_helper.get_action_url('index')
+    return redirect_helper(campaign)
 
-    return redirect(campaign_list_url)
+
+def send_test(request, campaign):
+    test_email = request.POST.get('test_email', False)
+    success = send_helper(request, campaign, f"[TEST] {campaign.subject}.", [test_email])
+
+    if success:
+        messages.add_message(request, messages.INFO, f"Test email sent, please check your inbox")
+    else:
+        messages.add_message(request, messages.ERROR, f"Test email failed to send")
+    
+    return redirect_helper(campaign)
+
+    
