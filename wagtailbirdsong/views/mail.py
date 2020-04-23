@@ -7,11 +7,9 @@ from wagtail.contrib.modeladmin.helpers.url import AdminURLHelper
 
 
 def send_helper(request, campaign, subject, contacts):
-    html = render_to_string(campaign.get_template(request), {'self': campaign, 'request': request})
     mail_backend = campaign.get_backend()
-    from_email = campaign.get_from_email()
 
-    return mail_backend.send_email(subject, from_email, contacts, html)
+    return mail_backend.send_email(request, campaign, subject, contacts)
 
 
 def redirect_helper(campaign):
