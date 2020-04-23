@@ -8,7 +8,7 @@ from .blocks import DefaultBlocks
 from .backends import BaseEmailBackend
 
 
-class BaseEmail(models.Model):
+class Campaign(models.Model):
     subject = models.TextField()
     sent_date = models.DateTimeField(blank=True, null=True)
 
@@ -29,9 +29,6 @@ class BaseEmail(models.Model):
         if hasattr(settings, 'WAGTAILBIRDSONG_FROM_EMAIL'):
             return settings.WAGTAILBIRDSONG_FROM_EMAIL
         return settings.DEFAULT_FROM_EMAIL
-
-    class Meta:
-        abstract = True
 
 
 class BaseContact(models.Model):

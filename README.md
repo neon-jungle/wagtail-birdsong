@@ -17,17 +17,17 @@ from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 from wagtail.core.fields import StreamField
 
 from wagtailbirdsong.blocks import DefaultBlocks
-from wagtailbirdsong.models import BaseContact, BaseEmail
+from wagtailbirdsong.models import BaseContact, Campaign
 
 
 class Contact(BaseContact):
     first_name = models.CharField(max_length=255)
 
 
-class SaleEmail(BaseEmail):
+class SaleEmail(Campaign):
     body = StreamField(DefaultBlocks())
 
-    panels = BaseEmail.panels + [
+    panels = Campaign.panels + [
         StreamFieldPanel('body'),
     ]
 
@@ -79,7 +79,7 @@ Create your email template in `{app_folder}/templates/{app_name}/mail/{model_nam
 
 # Custom backend
 
-Do mostly as you would in the above example, but override the `get_backend` method of the `BaseEmail` class. Your custom backend should follow what you see in `wagtailbirdsong.backends.BaseEmailBackend`.
+Do mostly as you would in the above example, but override the `get_backend` method of the `Campaign` class. Your custom backend should follow what you see in `wagtailbirdsong.backends.BaseEmailBackend`.
 
 For example:
 
@@ -90,15 +90,15 @@ from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 from wagtail.core.fields import StreamField
 
 from wagtailbirdsong.blocks import DefaultBlocks
-from wagtailbirdsong.models import BaseEmail
+from wagtailbirdsong.models import Campaign
 
 from .backends import CustomBackend
 
 
-class SaleEmail(BaseEmail):
+class SaleEmail(Campaign):
     body = StreamField(DefaultBlocks())
 
-    panels = BaseEmail.panels + [
+    panels = Campaign.panels + [
         StreamFieldPanel('body'),
     ]
 
