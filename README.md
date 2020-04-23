@@ -17,7 +17,11 @@ from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 from wagtail.core.fields import StreamField
 
 from wagtailbirdsong.blocks import DefaultBlocks
-from wagtailbirdsong.models import BaseEmail
+from wagtailbirdsong.models import BaseContact, BaseEmail
+
+
+class Contact(BaseContact):
+    first_name = models.CharField(max_length=255)
 
 
 class SaleEmail(BaseEmail):
@@ -26,15 +30,18 @@ class SaleEmail(BaseEmail):
     panels = BaseEmail.panels + [
         StreamFieldPanel('body'),
     ]
+
+    def get_contact_model(self):
+        return Contact
 ```
 
 In your `wagtail_hooks.py` add something like:
 
 ```
-from wagtail.contrib.modeladmin.options import modeladmin_register
+from wagtail.contrib.modeladmin.options import ModelAdmin, modeladmin_register
 from wagtailbirdsong.options import EmailAdmin
 
-from .models import SaleEmail
+from .models import Contact, SaleEmail
 
 
 @modeladmin_register
@@ -43,6 +50,14 @@ class SaleEmailAdmin(EmailAdmin):
     menu_label = 'SaleEmail'
     menu_icon = 'pilcrow'
     menu_order = 200
+
+@modeladmin_register
+class ContactAdmin(ModelAdmin):
+    model = Contact
+    menu_label = 'Contacts'
+    menu_icon = 'pilcrow'
+    menu_order = 200
+
 ```
 
 Create your email template in `{app_folder}/templates/{app_name}/mail/{model_name}.html` eg `email/templates/email/mail/sale_email.html`:

@@ -22,19 +22,20 @@ class BaseEmail(models.Model):
     def get_backend(self):
         return BaseEmailBackend
     
+    def get_contact_model(self):
+        return BaseContact
+    
     def get_from_email(self):
         if hasattr(settings, 'WAGTAILBIRDSONG_FROM_EMAIL'):
-            return settings.WAGTAILBIRDSONG_FROM_EMAIL;
-        if hasattr(settings, 'DEFAULT_FROM_EMAIL'):
-            return settings.DEFAULT_FROM_EMAIL;
-        return 'webmaster@localhost'
+            return settings.WAGTAILBIRDSONG_FROM_EMAIL
+        return settings.DEFAULT_FROM_EMAIL
 
     class Meta:
         abstract = True
 
 
-# TODO: Flesh out what else our Contacts need to store
-# TODO: Make Contact overrideable by consuming application (ala get_backend maybe?)
-class Contact(models.Model):
-    first_name = models.TextField() 
+class BaseContact(models.Model):
     email = models.EmailField()
+
+    class Meta:
+        abstract = True
