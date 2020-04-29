@@ -14,8 +14,9 @@ class EmailCampaignButtonHelper(ButtonHelper):
         url_helper = AdminURLHelper(self.model)
 
         campaign = self.model.objects.get(pk=obj.id)
+        campaign_receipts = campaign.receipts.all()
 
-        if not campaign.sent_date:
+        if not len(campaign_receipts):
             buttons.append({
                 'url': url_helper.get_action_url('edit', instance_pk=obj.id),
                 'label': 'Edit',
@@ -71,9 +72,11 @@ class EmailCampaignButtonHelper(ButtonHelper):
 
 
 class EmailAdmin(ModelAdmin):
-    list_display = ('subject', 'sent_date')
+    list_display = ('subject',)
     button_helper_class = EmailCampaignButtonHelper
     inspect_view_enabled = True
+    inspect_view_class = editor.InspectCampaign
+    inspect_template_name = 'wagtailbirdsong/editor/inspect_campaign.html'
 
     def get_admin_urls_for_registration(self):
         urls = super().get_admin_urls_for_registration()
@@ -90,7 +93,8 @@ class EmailAdmin(ModelAdmin):
 
     def view_draft(self, request, instance_pk):
         campaign = self.model.objects.get(pk=instance_pk)
-        return editor.view_draft(request, campaign)
+        contact = campaign.get_contact_model().objects.first()
+        return editor.view_draft(request, campaign, contact)
 
     def confirm_send(self, request, instance_pk):
         campaign = self.model.objects.get(pk=instance_pk)

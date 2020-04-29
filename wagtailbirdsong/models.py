@@ -10,7 +10,6 @@ from .backends import BaseEmailBackend
 
 class Campaign(models.Model):
     subject = models.TextField()
-    sent_date = models.DateTimeField(blank=True, null=True)
 
     panels = [
         FieldPanel('subject'),
@@ -31,8 +30,20 @@ class Campaign(models.Model):
         return settings.DEFAULT_FROM_EMAIL
 
 
-class BaseContact(models.Model):
+class Contact(models.Model):
     email = models.EmailField()
 
-    class Meta:
-        abstract = True
+
+class Receipt(models.Model):
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, related_name='receipts')
+    recipient_fk = models.ForeignKey(Contact, on_delete=models.CASCADE, related_name='recipient_fk')
+    sent_date = models.DateTimeField(blank=True)
+
+    @property
+    def recipient(self):
+        # Can't use a OneToOneField because receipts can be made for the same contact across multiple campaigns
+        return self.recipient_fk.objects.first()
+
+    @property
+    def success(self):
+        return self.sent_date

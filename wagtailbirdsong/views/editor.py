@@ -1,7 +1,10 @@
 from django.shortcuts import render
+from wagtail.contrib.modeladmin.views import IndexView, InspectView
 
-def view_draft(request, campaign):
-    return render(request, campaign.get_template(request), {'self': campaign, 'request': request})
+from ..models import Receipt
+
+def view_draft(request, campaign, test_contact):
+    return render(request, campaign.get_template(request), {'self': campaign, 'request': request, 'contact': test_contact})
 
 
 def confirm_send(request, campaign, send_url, index_url):
@@ -24,3 +27,12 @@ def confirm_test(request, campaign, send_url, index_url):
     }
 
     return render(request, "wagtailbirdsong/editor/test_confirm.html", context)
+
+
+class InspectCampaign(InspectView):
+    def get_context_data(self, **kwargs):
+        context = {
+            'receipts': self.instance.receipts.all()
+        }
+        context.update(kwargs)
+        return super().get_context_data(**context)

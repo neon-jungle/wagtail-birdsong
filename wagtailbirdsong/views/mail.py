@@ -1,9 +1,10 @@
 from django.shortcuts import redirect
-from django.template.loader import render_to_string
 from django.contrib import messages
 from django.utils import timezone
 
 from wagtail.contrib.modeladmin.helpers.url import AdminURLHelper
+
+from ..models import Receipt, Contact
 
 
 def send_helper(request, campaign, subject, contacts):
@@ -20,12 +21,12 @@ def redirect_helper(campaign):
 
 
 def send_campaign(request, campaign):
-    contacts = campaign.get_contact_model().objects.values_list('email', flat=True)
+    contacts = campaign.get_contact_model().objects.all()
     success = send_helper(request, campaign, campaign.subject, contacts)
 
     if success:
-        campaign.sent_date = timezone.now()
-        campaign.save()
+        for contact in contacts:
+            Receipt.objects.create(campaign=campaign, recipient_fk=contact, sent_date=timezone.now())
         messages.add_message(request, messages.INFO, f"Campaign with ID {campaign.id} sent")
     else:
         messages.add_message(request, messages.ERROR, f"Campaign with ID {campaign.id} failed to send")
@@ -35,7 +36,8 @@ def send_campaign(request, campaign):
 
 def send_test(request, campaign):
     test_email = request.POST.get('test_email', False)
-    success = send_helper(request, campaign, f"[TEST] {campaign.subject}.", [test_email])
+    test_contact = Contact.objects.create(email=test_email) # no .save() so don't create a dead contact in the db
+    success = send_helper(request, campaign, f"[TEST] {campaign.subject}.", [test_contact])
 
     if success:
         messages.add_message(request, messages.INFO, f"Test email sent, please check your inbox")

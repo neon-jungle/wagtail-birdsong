@@ -17,10 +17,10 @@ from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 from wagtail.core.fields import StreamField
 
 from wagtailbirdsong.blocks import DefaultBlocks
-from wagtailbirdsong.models import BaseContact, Campaign
+from wagtailbirdsong.models import Contact, Campaign
 
 
-class Contact(BaseContact):
+class ExtendedContact(Contact):
     first_name = models.CharField(max_length=255)
 
 
@@ -38,10 +38,10 @@ class SaleEmail(Campaign):
 In your `wagtail_hooks.py` add something like:
 
 ```
-from wagtail.contrib.modeladmin.options import ModelAdmin, modeladmin_register
+from wagtail.contrib.modeladmin. nb  options import ModelAdmin, modeladmin_register
 from wagtailbirdsong.options import EmailAdmin
 
-from .models import Contact, SaleEmail
+from .models import ExtendedContact, SaleEmail
 
 
 @modeladmin_register
@@ -53,7 +53,7 @@ class SaleEmailAdmin(EmailAdmin):
 
 @modeladmin_register
 class ContactAdmin(ModelAdmin):
-    model = Contact
+    model = ExtendedContact
     menu_label = 'Contacts'
     menu_icon = 'pilcrow'
     menu_order = 200
