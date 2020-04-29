@@ -26,7 +26,7 @@ def send_campaign(request, campaign):
 
     if success:
         for contact in contacts:
-            Receipt.objects.create(campaign=campaign, recipient_fk=contact, sent_date=timezone.now())
+            Receipt.objects.create(campaign=campaign, contact=contact, sent_date=timezone.now())
         messages.add_message(request, messages.INFO, f"Campaign with ID {campaign.id} sent")
     else:
         messages.add_message(request, messages.ERROR, f"Campaign with ID {campaign.id} failed to send")

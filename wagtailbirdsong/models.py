@@ -8,8 +8,12 @@ from .blocks import DefaultBlocks
 from .backends import BaseEmailBackend
 
 
+class Contact(models.Model):
+    email = models.EmailField()
+
 class Campaign(models.Model):
     subject = models.TextField()
+    receipts = models.ManyToManyField(Contact, through='Receipt')
 
     panels = [
         FieldPanel('subject'),
@@ -30,19 +34,10 @@ class Campaign(models.Model):
         return settings.DEFAULT_FROM_EMAIL
 
 
-class Contact(models.Model):
-    email = models.EmailField()
-
-
 class Receipt(models.Model):
-    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, related_name='receipts')
-    recipient_fk = models.ForeignKey(Contact, on_delete=models.CASCADE, related_name='recipient_fk')
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
+    contact = models.ForeignKey(Contact, on_delete=models.CASCADE)
     sent_date = models.DateTimeField(blank=True)
-
-    @property
-    def recipient(self):
-        # Can't use a OneToOneField because receipts can be made for the same contact across multiple campaigns
-        return self.recipient_fk.objects.first()
 
     @property
     def success(self):

@@ -36,7 +36,7 @@
                         </thead>
                         {% for receipt in receipts %}
                             <tr>
-                                <td>{{ receipt.recipient.email }}</td>
+                                <td>{{ receipt.contact.email }}</td>
                                 <td>{{ receipt.sent_date }}</td>
                             </tr>
                         {% endfor %}
