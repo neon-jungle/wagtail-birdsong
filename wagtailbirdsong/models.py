@@ -11,6 +11,7 @@ from .backends import BaseEmailBackend
 class Contact(models.Model):
     email = models.EmailField()
 
+
 class Campaign(models.Model):
     subject = models.TextField()
     receipts = models.ManyToManyField(Contact, through='Receipt')
@@ -21,13 +22,13 @@ class Campaign(models.Model):
 
     def get_template(self, request):
         return "%s/mail/%s.html" % (self._meta.app_label, camelcase_to_underscore(self.__class__.__name__))
-    
+
     def get_backend(self):
         return BaseEmailBackend
-    
+
     def get_contact_model(self):
-        return BaseContact
-    
+        return Contact
+
     def get_from_email(self):
         if hasattr(settings, 'WAGTAILBIRDSONG_FROM_EMAIL'):
             return settings.WAGTAILBIRDSONG_FROM_EMAIL

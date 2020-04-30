@@ -19,7 +19,7 @@ setup(
     author='Jonny Scholes',
     author_email='jonny@neonjungle.studio',
 
-    install_requires=['wagtail>=2.2', 'django-mjml', 'sendgrid'],
+    install_requires=['wagtail>=2.2', 'django-mjml'],
     zip_safe=False,
     license='BSD License',
 
