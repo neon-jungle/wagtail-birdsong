@@ -4,7 +4,7 @@ Add the following to your installed apps:
 
 ```
 'mjml',
-'wagtailbirdsong',
+'wagtail-birdsong',
 'wagtail.contrib.modeladmin',
 ```
 
@@ -16,8 +16,8 @@ from django.db import models
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 from wagtail.core.fields import StreamField
 
-from wagtailbirdsong.blocks import DefaultBlocks
-from wagtailbirdsong.models import Contact, Campaign
+from birdsong.blocks import DefaultBlocks
+from birdsong.models import Contact, Campaign
 
 
 class ExtendedContact(Contact):
@@ -39,7 +39,7 @@ In your `wagtail_hooks.py` add something like:
 
 ```
 from wagtail.contrib.modeladmin.options import ModelAdmin, modeladmin_register
-from wagtailbirdsong.options import EmailAdmin
+from birdsong.options import EmailAdmin
 
 from .models import ExtendedContact, SaleEmail
 
@@ -63,7 +63,7 @@ class ContactAdmin(ModelAdmin):
 Create your email template in `{app_folder}/templates/{app_name}/mail/{model_name}.html` eg `email/templates/email/mail/sale_email.html`:
 
 ```
-{% extends "wagtailbirdsong/mail/base_email.html" %}
+{% extends "birdsong/mail/base_email.html" %}
 
 {% block email_body %}
 <mj-section>
@@ -79,7 +79,7 @@ Create your email template in `{app_folder}/templates/{app_name}/mail/{model_nam
 
 # Custom backend
 
-Do mostly as you would in the above example, but override the `get_backend` method of the `Campaign` class. Your custom backend should follow what you see in `wagtailbirdsong.backends.BaseEmailBackend`.
+Do mostly as you would in the above example, but override the `get_backend` method of the `Campaign` class. Your custom backend should follow what you see in `birdsong.backends.BaseEmailBackend`.
 
 For example:
 
@@ -89,8 +89,8 @@ from django.db import models
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 from wagtail.core.fields import StreamField
 
-from wagtailbirdsong.blocks import DefaultBlocks
-from wagtailbirdsong.models import Campaign
+from birdsong.blocks import DefaultBlocks
+from birdsong.models import Campaign
 
 from .backends import CustomBackend
 
