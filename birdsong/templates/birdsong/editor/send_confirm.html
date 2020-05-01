@@ -11,7 +11,10 @@
 
     {% block content_main %}
         <div class="nice-padding">
-            <p>Are you sure you want to send this sale email? TODO: Finish message</p>
+            <p>Are you sure you want to send this sale email?</p>
+                {{ form }}
+            {% if form %}
+            {% endif %}
             <a href="{{ send_url }}" class="button serious">Yes, send email</a>
             <a href="{{ index_url }}" class="button button-secondary">No, don't send</a>
         </div>

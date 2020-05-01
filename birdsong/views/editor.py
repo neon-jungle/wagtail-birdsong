@@ -7,9 +7,10 @@ def view_draft(request, campaign, test_contact):
     return render(request, campaign.get_template(request), campaign.get_context(request, test_contact))
 
 
-def confirm_send(request, campaign, send_url, index_url):
+def confirm_send(request, campaign, form, send_url, index_url):
     context = {
         'self': campaign, 
+        'form': form,
         'request': request,
         'send_url': send_url,
         'index_url': index_url

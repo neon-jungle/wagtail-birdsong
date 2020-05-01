@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from django.urls import reverse
+from wagtail.admin.edit_handlers import ObjectList, TabbedInterface
 from wagtail.contrib.modeladmin.helpers import AdminURLHelper, ButtonHelper
 from wagtail.contrib.modeladmin.options import ModelAdmin
 
@@ -7,7 +8,7 @@ from birdsong.backends.smtp import SMTPEmailBackend
 
 from .models import Contact
 from .views import editor, mail
-
+from .filters import ContactFilter
 
 class EmailCampaignButtonHelper(ButtonHelper):
     def get_buttons_for_obj(self, campaign, **kwargs):
@@ -16,44 +17,42 @@ class EmailCampaignButtonHelper(ButtonHelper):
 
         if not sent:
             buttons = [{
-                'url': url_helper.get_action_url('edit', instance_pk=obj.id),
+                'url': url_helper.get_action_url('edit', instance_pk=campaign.id),
                 'label': 'Edit',
                 'classname': 'button button-small bicolor icon icon-cog',
                 'title': 'Edit',
             }, {
-                'url': url_helper.get_action_url('confirm_send', instance_pk=obj.id),
+                'url': url_helper.get_action_url('confirm_send', instance_pk=campaign.id),
                 'label': 'Send',
                 'classname': 'button button-small button-secondary',
                 'title': 'Send',
             }, {
-                'url': url_helper.get_action_url('send_test', instance_pk=obj.id),
+                'url': url_helper.get_action_url('send_test', instance_pk=campaign.id),
                 'label': 'Send test',
                 'classname': 'button button-small button-secondary',
                 'title': 'Send test',
             }, {
-                'url': url_helper.get_action_url('view_draft', instance_pk=obj.id),
+                'url': url_helper.get_action_url('view_draft', instance_pk=campaign.id),
                 'label': 'View draft',
                 'classname': 'button button-small button-secondary',
-                'title': 'View draft',
-            }, {
-                'url': url_helper.get_action_url('delete', instance_pk=obj.id),
+                'url': url_helper.get_action_url('delete', instance_pk=campaign.id),
                 'label': 'Delete',
                 'classname': 'button no button-small button-secondary',
                 'title': 'Delete',
             }]
         else:
             buttons = [{
-                'url': url_helper.get_action_url('inspect', instance_pk=obj.id),
+                'url': url_helper.get_action_url('inspect', instance_pk=campaign.id),
                 'label': 'Inspect',
                 'classname': 'button button-small',
                 'title': 'Inspect',
             }, {
-                'url': url_helper.get_action_url('view_draft', instance_pk=obj.id),
+                'url': url_helper.get_action_url('view_draft', instance_pk=campaign.id),
                 'label': 'View sent email',
                 'classname': 'button button-small button-secondary',
                 'title': 'View sent email',
             }, {
-                'url': url_helper.get_action_url('delete', instance_pk=obj.id),
+                'url': url_helper.get_action_url('delete', instance_pk=campaign.id),
                 'label': 'Delete',
                 'classname': 'button no button-small button-secondary',
                 'title': 'Delete',
@@ -61,8 +60,9 @@ class EmailCampaignButtonHelper(ButtonHelper):
 
         return buttons
 
-
-class EmailAdmin(ModelAdmin):
+from django.forms import CheckboxSelectMultiple
+class CampaignAdmin(ModelAdmin):
+    campaign = None
     list_display = ('subject',)
     button_helper_class = EmailCampaignButtonHelper
     inspect_view_enabled = True
@@ -70,9 +70,12 @@ class EmailAdmin(ModelAdmin):
     inspect_template_name = 'birdsong/editor/inspect_campaign.html'
     backend_class = SMTPEmailBackend
     contact_class = Contact
+    contact_filters = {'email': ['exact', 'contains']}
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
+        if not self.model and self.campaign:
+            self.model = self.campaign
         self.backend = self.backend_class()
 
     def get_admin_urls_for_registration(self):
@@ -100,12 +103,23 @@ class EmailAdmin(ModelAdmin):
 
     def confirm_send(self, request, instance_pk):
         campaign = self.model.objects.get(pk=instance_pk)
+        form = self.build_sending_form()
         return editor.confirm_send(
             request,
             campaign,
+            form,
             self.url_helper.get_action_url('send_campaign', instance_pk=instance_pk),
             self.url_helper.get_action_url('index')
         )
+
+    def build_sending_form(self):
+        if not self.contact_filters:
+            return None
+        contact_filter = ContactFilter(
+            self.contact_class, self.contact_filters,
+            queryset=self.contact_class.objects.all())
+        return contact_filter.form
+
 
     def send_campaign(self, request, instance_pk):
         campaign = self.model.objects.get(pk=instance_pk)
@@ -127,3 +141,16 @@ class EmailAdmin(ModelAdmin):
         if request.method == 'GET':
             return self.confirm_test(request, instance_pk)
         return mail.send_test(self.backend, request, campaign)
+
+
+    # def get_edit_handler(self, instance, request):
+    #     email_edit_handler = super().get_edit_handler(instance, request)
+    #     if self.contact_filters:
+    #         contact_model = self.contact_class
+
+    #         edit_handler = TabbedInterface([
+    #             ObjectList(email_edit_handler.children, heading='Email template'),
+    #             ObjectList([], heading='Sending options'),
+    #         ])
+    #         return edit_handler
+    #     return email_edit_handler
