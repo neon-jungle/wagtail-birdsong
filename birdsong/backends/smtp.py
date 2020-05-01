@@ -3,7 +3,8 @@ from smtplib import SMTPException
 from django.core.mail import send_mass_mail
 from django.template.loader import render_to_string
 
-from wagtailbirdsong.utils import send_mass_html_mail
+from birdsong.utils import send_mass_html_mail
+
 from . import BaseEmailBackend
 
 

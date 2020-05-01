@@ -1,11 +1,13 @@
-from django.urls import reverse
 from django.conf.urls import url
-
+from django.urls import reverse
 from wagtail.contrib.modeladmin.helpers import AdminURLHelper, ButtonHelper
 from wagtail.contrib.modeladmin.options import ModelAdmin
-from wagtailbirdsong.backends.smtp import SMTPEmailBackend
-from .views import editor, mail
+
+from birdsong.backends.smtp import SMTPEmailBackend
+
 from .models import Contact
+from .views import editor, mail
+
 
 class EmailCampaignButtonHelper(ButtonHelper):
     def get_buttons_for_obj(self, campaign, **kwargs):
@@ -65,7 +67,7 @@ class EmailAdmin(ModelAdmin):
     button_helper_class = EmailCampaignButtonHelper
     inspect_view_enabled = True
     inspect_view_class = editor.InspectCampaign
-    inspect_template_name = 'wagtailbirdsong/editor/inspect_campaign.html'
+    inspect_template_name = 'birdsong/editor/inspect_campaign.html'
     backend_class = SMTPEmailBackend
     contact_class = Contact
 

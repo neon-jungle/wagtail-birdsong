@@ -6,6 +6,6 @@ class BaseEmailBackend:
 
     @property
     def from_email(self):
-        if hasattr(settings, 'WAGTAILBIRDSONG_FROM_EMAIL'):
-            return settings.WAGTAILBIRDSONG_FROM_EMAIL
+        if hasattr(settings, 'BIRDSONG_FROM_EMAIL'):
+            return settings.BIRDSONG_FROM_EMAIL
         return settings.DEFAULT_FROM_EMAIL
