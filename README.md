@@ -4,7 +4,7 @@ Add the following to your installed apps:
 
 ```
 'mjml',
-'wagtail-birdsong',
+'birdsong',
 'wagtail.contrib.modeladmin',
 ```
 
