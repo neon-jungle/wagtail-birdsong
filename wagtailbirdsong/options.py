@@ -8,64 +8,54 @@ from .views import editor, mail
 from .models import Contact
 
 class EmailCampaignButtonHelper(ButtonHelper):
-    def get_buttons_for_obj(self, obj, **kwargs):
-        buttons = []
-
+    def get_buttons_for_obj(self, campaign, **kwargs):
         url_helper = AdminURLHelper(self.model)
+        sent = bool(campaign.sent_date)
 
-        campaign = self.model.objects.get(pk=obj.id)
-        campaign_receipts = campaign.receipts.all()
-
-        if not len(campaign_receipts):
-            buttons.append({
+        if not sent:
+            buttons = [{
                 'url': url_helper.get_action_url('edit', instance_pk=obj.id),
                 'label': 'Edit',
                 'classname': 'button button-small bicolor icon icon-cog',
                 'title': 'Edit',
-            })
-            buttons.append({
+            }, {
                 'url': url_helper.get_action_url('confirm_send', instance_pk=obj.id),
                 'label': 'Send',
                 'classname': 'button button-small button-secondary',
                 'title': 'Send',
-            })
-            buttons.append({
+            }, {
                 'url': url_helper.get_action_url('send_test', instance_pk=obj.id),
                 'label': 'Send test',
                 'classname': 'button button-small button-secondary',
                 'title': 'Send test',
-            })
-            buttons.append({
+            }, {
                 'url': url_helper.get_action_url('view_draft', instance_pk=obj.id),
                 'label': 'View draft',
                 'classname': 'button button-small button-secondary',
                 'title': 'View draft',
-            })
-            buttons.append({
+            }, {
                 'url': url_helper.get_action_url('delete', instance_pk=obj.id),
                 'label': 'Delete',
                 'classname': 'button no button-small button-secondary',
                 'title': 'Delete',
-            })
+            }]
         else:
-            buttons.append({
+            buttons = [{
                 'url': url_helper.get_action_url('inspect', instance_pk=obj.id),
                 'label': 'Inspect',
                 'classname': 'button button-small',
                 'title': 'Inspect',
-            })
-            buttons.append({
+            }, {
                 'url': url_helper.get_action_url('view_draft', instance_pk=obj.id),
                 'label': 'View sent email',
                 'classname': 'button button-small button-secondary',
                 'title': 'View sent email',
-            })
-            buttons.append({
+            }, {
                 'url': url_helper.get_action_url('delete', instance_pk=obj.id),
                 'label': 'Delete',
                 'classname': 'button no button-small button-secondary',
                 'title': 'Delete',
-            })
+            }]
 
         return buttons
 

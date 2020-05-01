@@ -18,12 +18,12 @@ def send_campaign(backend, request, campaign, contacts):
     success = backend.send_campaign(
         request, campaign, campaign.subject, contacts)
 
-    Receipt.objects.bulk_create([
-        Receipt(campaign=campaign, contact=c, success=success) for c in contacts
-    ])
     if success:
-        for contact in contacts:
-            Receipt.objects.create(campaign=campaign, contact=contact, sent_date=timezone.now())
+        Receipt.objects.bulk_create([
+            Receipt(campaign=campaign, contact=c, success=success) for c in contacts
+        ])
+        campaign.sent_date = timezone.now()
+        campaign.save()
         messages.add_message(
             request, messages.SUCCESS, f"Campaign '{campaign.name}' sent to {len(contacts)} contacts")
     else:

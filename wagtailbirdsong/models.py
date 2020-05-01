@@ -19,6 +19,7 @@ class Campaign(models.Model):
     name = models.CharField(
         max_length=255, help_text='The name of the campaign')
     subject = models.TextField()
+    sent_date = models.DateTimeField(blank=True, null=True)
     receipts = models.ManyToManyField(Contact, through='Receipt')
 
     panels = [
