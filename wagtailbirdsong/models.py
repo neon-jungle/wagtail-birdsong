@@ -11,34 +11,37 @@ from .backends import BaseEmailBackend
 class Contact(models.Model):
     email = models.EmailField()
 
+    def __str__(self):
+        return self.email
+
+
 class Campaign(models.Model):
+    name = models.CharField(
+        max_length=255, help_text='The name of the campaign')
     subject = models.TextField()
+    sent_date = models.DateTimeField(blank=True, null=True)
     receipts = models.ManyToManyField(Contact, through='Receipt')
 
     panels = [
+        FieldPanel('name'),
         FieldPanel('subject'),
     ]
 
+    def __str__(self):
+        return self.name
+
     def get_template(self, request):
         return "%s/mail/%s.html" % (self._meta.app_label, camelcase_to_underscore(self.__class__.__name__))
-    
-    def get_backend(self):
-        return BaseEmailBackend
-    
-    def get_contact_model(self):
-        return BaseContact
-    
-    def get_from_email(self):
-        if hasattr(settings, 'WAGTAILBIRDSONG_FROM_EMAIL'):
-            return settings.WAGTAILBIRDSONG_FROM_EMAIL
-        return settings.DEFAULT_FROM_EMAIL
+
+    def get_context(self, request, contact):
+        return {
+            'self': self,
+            'contact': contact
+        }
 
 
 class Receipt(models.Model):
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     contact = models.ForeignKey(Contact, on_delete=models.CASCADE)
-    sent_date = models.DateTimeField(blank=True)
-
-    @property
-    def success(self):
-        return self.sent_date
+    sent_date = models.DateTimeField(auto_now=True)
+    success = models.BooleanField(default=False)

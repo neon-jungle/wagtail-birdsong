@@ -4,7 +4,7 @@ from wagtail.contrib.modeladmin.views import IndexView, InspectView
 from ..models import Receipt
 
 def view_draft(request, campaign, test_contact):
-    return render(request, campaign.get_template(request), {'self': campaign, 'request': request, 'contact': test_contact})
+    return render(request, campaign.get_template(request), campaign.get_context(request, test_contact))
 
 
 def confirm_send(request, campaign, send_url, index_url):

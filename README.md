@@ -38,7 +38,7 @@ class SaleEmail(Campaign):
 In your `wagtail_hooks.py` add something like:
 
 ```
-from wagtail.contrib.modeladmin. nb  options import ModelAdmin, modeladmin_register
+from wagtail.contrib.modeladmin.options import ModelAdmin, modeladmin_register
 from wagtailbirdsong.options import EmailAdmin
 
 from .models import ExtendedContact, SaleEmail

@@ -3,15 +3,11 @@ venv/
 *.egg-info/
 node_modules/
 dist/
-jinja2/svgs/
-birdsongtestbed/jinja2/svgs
 birdsongtestbed/static
-
 *.pyc
 *.local
 .tmp
-.sass-cache
 .idea
 .DS_Store
+.vscode
 
-npm-debug.log
