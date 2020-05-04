@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.forms import modelform_factory
 from django.urls import reverse
 from wagtail.admin.edit_handlers import ObjectList, TabbedInterface
 from wagtail.contrib.modeladmin.helpers import AdminURLHelper, ButtonHelper
@@ -7,7 +8,8 @@ from wagtail.contrib.modeladmin.options import ModelAdmin
 from birdsong.backends.smtp import SMTPEmailBackend
 
 from .models import Contact
-from .views import editor, mail
+from .views import editor as editor_views
+from .views import actions
 
 
 class EmailCampaignButtonHelper(ButtonHelper):
@@ -66,7 +68,7 @@ class CampaignAdmin(ModelAdmin):
     list_display = ('subject',)
     button_helper_class = EmailCampaignButtonHelper
     inspect_view_enabled = True
-    inspect_view_class = editor.InspectCampaign
+    inspect_view_class = editor_views.InspectCampaign
     inspect_template_name = 'birdsong/editor/inspect_campaign.html'
     backend_class = SMTPEmailBackend
     contact_class = Contact
@@ -99,12 +101,12 @@ class CampaignAdmin(ModelAdmin):
     def view_draft(self, request, instance_pk):
         campaign = self.model.objects.get(pk=instance_pk)
         contact = self.contact_class.objects.first()
-        return editor.view_draft(request, campaign, contact)
+        return editor_views.view_draft(request, campaign, contact)
 
     def confirm_send(self, request, instance_pk):
         campaign = self.model.objects.get(pk=instance_pk)
         form = self.build_sending_form()
-        return editor.confirm_send(
+        return editor_views.confirm_send(
             request,
             campaign,
             form,
@@ -128,20 +130,31 @@ class CampaignAdmin(ModelAdmin):
     def send_campaign(self, request, instance_pk):
         campaign = self.model.objects.get(pk=instance_pk)
         contacts = self.get_contacts_send_to(request)
-        w.tf
-        return mail.send_campaign(self.backend, request, campaign, contacts)
+        return actions.send_campaign(self.backend, request, campaign, contacts)
 
-    def confirm_test(self, request, instance_pk):
-        campaign = self.model.objects.get(pk=instance_pk)
-        return editor.confirm_test(
+    def create_contact_form(self, data=None):
+        ContactForm = modelform_factory(self.contact_class, exclude=['id']) 
+        if data:
+            return ContactForm(data)
+        return ContactForm()
+
+    def confirm_test(self, request, campaign, form):
+        return editor_views.confirm_test(
             request,
             campaign,
-            self.url_helper.get_action_url('send_test', instance_pk),
+            form,
+            self.url_helper.get_action_url('send_test', campaign.id),
             self.url_helper.get_action_url('index')
         )
 
     def send_test(self, request, instance_pk):
         campaign = self.model.objects.get(pk=instance_pk)
         if request.method == 'GET':
-            return self.confirm_test(request, instance_pk)
-        return mail.send_test(self.backend, request, campaign)
+            form = self.create_contact_form()
+            return self.confirm_test(request, campaign, form)
+        form = self.create_contact_form(request.POST)
+        if not form.is_valid():
+            return self.confirm_test(request, campaign, form)
+        # Create fake contact, send test email
+        contact = form.save(commit=False)
+        return actions.send_test(self.backend, request, campaign, contact)

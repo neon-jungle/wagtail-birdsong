@@ -1,7 +1,7 @@
 {% extends "wagtailadmin/base.html" %}
 {% load i18n modeladmin_tags %}
 
-{% block titletag %}{{ view.get_meta_title }}{% endblock %}
+{% block titletag %}Send test campaign email{% endblock %}
 
 {% block content %}
 
@@ -14,18 +14,11 @@
             <form action="{{ send_url }}" method="POST">
                 {% csrf_token %}
                 <ul class="fields">
-                    <li class="required">
-                        <div class="field char_field text_input">
-                            <label for="test_email">Test email:</label>
-                            <div class="field-content">
-                                <div class="input">
-                                    <input name="test_email" id="test_email" type="email" required="">
-                                    <span></span>
-                                </div>
-                                <p class="help">The test email will be sent to the email above</p>
-                            </div>
-                        </div>
+                    {% for field in form %}
+                    <li>
+                        {% include 'wagtailadmin/shared/field.html' with field=field %}
                     </li>
+                    {% endfor %}
                     <li>
                         <input type="submit" value="Send test email" class="button"/>
                         <a href="{{ index_url }}" class="button button-secondary">Cancel</a>
