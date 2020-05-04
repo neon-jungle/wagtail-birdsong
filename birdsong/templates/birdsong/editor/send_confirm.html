@@ -1,0 +1,35 @@
+{% extends "wagtailadmin/base.html" %}
+{% load i18n modeladmin_tags %}
+
+{% block titletag %}Send Campaign{% endblock %}
+
+{% block content %}
+
+    {% block header %}
+        {% include "wagtailadmin/shared/header.html" with title="Send" subtitle=self icon=view.header_icon %}
+    {% endblock %}
+
+    {% block content_main %}
+        <div class="nice-padding">
+            <div class="nice-padding">
+                <form action="{{ send_url }}" method="POST">
+                    {% csrf_token %}
+                    <ul class="fields">
+                        {% if form %}
+                            <li>Send to a subset of contacts?</li>
+                            {% for field in form %}
+                            <li{% if field.required %} class='required'{% endif %}>
+                                {% include 'wagtailadmin/shared/field.html' with field=field %}
+                            </li>
+                            {% endfor %}
+                        {% endif %}
+                        <li>
+                            <input type="submit" class="button" value="Yes, send campaign" class="button"/>
+                            <a href="{{ index_url }}" class="button serious">No, don't send</a>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    {% endblock %}
+{% endblock %}

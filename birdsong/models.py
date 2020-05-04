@@ -15,6 +15,7 @@ class Contact(models.Model):
         return self.email
 
 
+
 class Campaign(models.Model):
     name = models.CharField(
         max_length=255, help_text='The name of the campaign')

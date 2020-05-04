@@ -19,7 +19,10 @@ setup(
     author='Jonny Scholes',
     author_email='jonny@neonjungle.studio',
 
-    install_requires=['wagtail>=2.7', 'django-mjml'],
+    install_requires=[
+        'wagtail>=2.7',
+        'django-mjml',
+    ],
     zip_safe=False,
     license='BSD License',
 

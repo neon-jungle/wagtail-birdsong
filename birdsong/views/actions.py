@@ -1,11 +1,9 @@
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.utils import timezone
-
 from wagtail.contrib.modeladmin.helpers.url import AdminURLHelper
 
-from ..models import Receipt, Contact
-
+from birdsong.models import Receipt, Contact
 
 def redirect_helper(campaign):
     url_helper = AdminURLHelper(type(campaign))
@@ -33,11 +31,7 @@ def send_campaign(backend, request, campaign, contacts):
     return redirect_helper(campaign)
 
 
-def send_test(backend, request, campaign):
-    test_email = request.POST.get('test_email', False)
-
-    # FIXME this won't work with a custom contact model
-    test_contact = Contact(email=test_email)
+def send_test(backend, request, campaign, test_contact):
     success = backend.send_campaign(
         request, campaign, f"[TEST] {campaign.subject}.", [test_contact])
 
