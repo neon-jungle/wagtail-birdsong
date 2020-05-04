@@ -22,7 +22,6 @@ setup(
     install_requires=[
         'wagtail>=2.7',
         'django-mjml',
-        'django-filters~=0.2.0',
     ],
     zip_safe=False,
     license='BSD License',

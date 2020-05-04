@@ -8,7 +8,7 @@ from birdsong.backends.smtp import SMTPEmailBackend
 
 from .models import Contact
 from .views import editor, mail
-from .filters import ContactFilter
+
 
 class EmailCampaignButtonHelper(ButtonHelper):
     def get_buttons_for_obj(self, campaign, **kwargs):
@@ -60,7 +60,7 @@ class EmailCampaignButtonHelper(ButtonHelper):
 
         return buttons
 
-from django.forms import CheckboxSelectMultiple
+
 class CampaignAdmin(ModelAdmin):
     campaign = None
     list_display = ('subject',)
@@ -70,7 +70,7 @@ class CampaignAdmin(ModelAdmin):
     inspect_template_name = 'birdsong/editor/inspect_campaign.html'
     backend_class = SMTPEmailBackend
     contact_class = Contact
-    contact_filters = {'email': ['exact', 'contains']}
+    contact_filter_class = None
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -113,18 +113,22 @@ class CampaignAdmin(ModelAdmin):
         )
 
     def build_sending_form(self):
-        if not self.contact_filters:
+        if not self.contact_filter_class:
             return None
-        contact_filter = ContactFilter(
-            self.contact_class, self.contact_filters,
-            queryset=self.contact_class.objects.all())
+        contact_filter = self.contact_filter_class()
         return contact_filter.form
 
+    def get_contacts_send_to(self, request):
+        if self.contact_filter_class:
+            Filter = self.contact_filter_class
+            contact_filter = Filter(request.POST)
+            return contact_filter.qs
+        return self.contact_class.objects.all()
 
     def send_campaign(self, request, instance_pk):
         campaign = self.model.objects.get(pk=instance_pk)
-        # TODO Filtering will be done here
-        contacts = self.contact_class.objects.all()
+        contacts = self.get_contacts_send_to(request)
+        w.tf
         return mail.send_campaign(self.backend, request, campaign, contacts)
 
     def confirm_test(self, request, instance_pk):
@@ -141,16 +145,3 @@ class CampaignAdmin(ModelAdmin):
         if request.method == 'GET':
             return self.confirm_test(request, instance_pk)
         return mail.send_test(self.backend, request, campaign)
-
-
-    # def get_edit_handler(self, instance, request):
-    #     email_edit_handler = super().get_edit_handler(instance, request)
-    #     if self.contact_filters:
-    #         contact_model = self.contact_class
-
-    #         edit_handler = TabbedInterface([
-    #             ObjectList(email_edit_handler.children, heading='Email template'),
-    #             ObjectList([], heading='Sending options'),
-    #         ])
-    #         return edit_handler
-    #     return email_edit_handler

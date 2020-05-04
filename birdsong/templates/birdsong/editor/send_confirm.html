@@ -1,7 +1,7 @@
 {% extends "wagtailadmin/base.html" %}
 {% load i18n modeladmin_tags %}
 
-{% block titletag %}{{ view.get_meta_title }}{% endblock %}
+{% block titletag %}Send Campaign{% endblock %}
 
 {% block content %}
 
@@ -11,12 +11,25 @@
 
     {% block content_main %}
         <div class="nice-padding">
-            <p>Are you sure you want to send this sale email?</p>
-                {{ form }}
-            {% if form %}
-            {% endif %}
-            <a href="{{ send_url }}" class="button serious">Yes, send email</a>
-            <a href="{{ index_url }}" class="button button-secondary">No, don't send</a>
+            <div class="nice-padding">
+                <form action="{{ send_url }}" method="POST">
+                    {% csrf_token %}
+                    <ul class="fields">
+                        {% if form %}
+                            <li>Send to a subset of contacts?</li>
+                            {% for field in form %}
+                            <li{% if field.required %} class='required'{% endif %}>
+                                {% include 'wagtailadmin/shared/field.html' with field=field %}
+                            </li>
+                            {% endfor %}
+                        {% endif %}
+                        <li>
+                            <input type="submit" class="button" value="Yes, send campaign" class="button"/>
+                            <a href="{{ index_url }}" class="button serious">No, don't send</a>
+                        </li>
+                    </ul>
+                </form>
+            </div>
         </div>
     {% endblock %}
 {% endblock %}
