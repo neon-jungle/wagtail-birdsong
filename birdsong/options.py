@@ -21,22 +21,24 @@ class EmailCampaignButtonHelper(ButtonHelper):
             buttons = [{
                 'url': url_helper.get_action_url('edit', instance_pk=campaign.id),
                 'label': 'Edit',
-                'classname': 'button button-small bicolor icon icon-cog',
+                'classname': 'button button-small bicolor icon icon-edit',
                 'title': 'Edit',
             }, {
                 'url': url_helper.get_action_url('confirm_send', instance_pk=campaign.id),
                 'label': 'Send',
-                'classname': 'button button-small button-secondary',
+                'classname': 'button button-small bicolor icon icon-mail',
                 'title': 'Send',
             }, {
                 'url': url_helper.get_action_url('send_test', instance_pk=campaign.id),
                 'label': 'Send test',
-                'classname': 'button button-small button-secondary',
+                'classname': 'button button-small button-secondary icon icon-cog',
                 'title': 'Send test',
             }, {
                 'url': url_helper.get_action_url('view_draft', instance_pk=campaign.id),
                 'label': 'View draft',
-                'classname': 'button button-small button-secondary',
+                'classname': 'button button-small button-secondary icon icon-view',
+                'title': 'View draft',
+            }, {
                 'url': url_helper.get_action_url('delete', instance_pk=campaign.id),
                 'label': 'Delete',
                 'classname': 'button no button-small button-secondary',
@@ -75,9 +77,9 @@ class CampaignAdmin(ModelAdmin):
     contact_filter_class = None
 
     def __init__(self, parent=None):
-        super().__init__(parent=parent)
         if not self.model and self.campaign:
             self.model = self.campaign
+        super().__init__(parent=parent)
         self.backend = self.backend_class()
 
     def get_admin_urls_for_registration(self):
