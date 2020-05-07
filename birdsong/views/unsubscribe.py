@@ -7,7 +7,7 @@ from birdsong.models import Contact
 
 def unsubscribe_user(request, user_id):
     contact = get_object_or_404(Contact, id=user_id)
-    # contact.delete()
+    contact.delete()
 
     site = Site.find_for_request(request)
 
