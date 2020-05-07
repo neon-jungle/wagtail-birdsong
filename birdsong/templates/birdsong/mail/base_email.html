@@ -2,6 +2,10 @@
 
 {% mjml %}
     <mjml>
+    <mj-head>
+        {% block email_head %}
+        {% endblock email_head %}
+    </mj-head>
     <mj-body>
     <mj-container>
         {% block email_body %}
