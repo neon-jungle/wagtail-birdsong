@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from wagtail.contrib.modeladmin.views import IndexView, InspectView
+from wagtail.contrib.modeladmin.views import IndexView, InspectView, EditView
 
 from birdsong.models import Receipt
 
@@ -38,3 +38,10 @@ class InspectCampaign(InspectView):
         }
         context.update(kwargs)
         return super().get_context_data(**context)
+
+
+class EditCampaignView(EditView):
+    # https://github.com/wagtail/wagtail/blob/master/wagtail/admin/static_src/wagtailadmin/js/page-editor.js#L318
+    def post(self, request, *args, **kwargs):
+        print('WE POSTIG')
+        return super.post(request, *args, **kwargs)
