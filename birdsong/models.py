@@ -1,3 +1,5 @@
+import uuid
+
 from django.conf import settings
 from django.db import models
 from wagtail.admin.edit_handlers import FieldPanel
@@ -7,9 +9,10 @@ from wagtail.contrib.settings.models import BaseSetting, register_setting
 from .blocks import DefaultBlocks
 from .backends import BaseEmailBackend
 
-
 class Contact(models.Model):
-    email = models.EmailField()
+    id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False)
+    email = models.EmailField(unique=True)
 
     def __str__(self):
         return self.email
