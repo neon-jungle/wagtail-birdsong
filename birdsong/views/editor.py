@@ -4,7 +4,7 @@ from wagtail.contrib.modeladmin.views import IndexView, InspectView
 from birdsong.models import Receipt
 
 
-def view_draft(request, campaign, test_contact):
+def preview(request, campaign, test_contact):
     return render(request, campaign.get_template(request), campaign.get_context(request, test_contact))
 
 

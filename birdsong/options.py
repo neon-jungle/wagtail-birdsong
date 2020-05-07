@@ -34,10 +34,10 @@ class EmailCampaignButtonHelper(ButtonHelper):
                 'classname': 'button button-small button-secondary icon icon-cog',
                 'title': 'Send test',
             }, {
-                'url': url_helper.get_action_url('view_draft', instance_pk=campaign.id),
-                'label': 'View draft',
+                'url': url_helper.get_action_url('preview', instance_pk=campaign.id),
+                'label': 'Preview',
                 'classname': 'button button-small button-secondary icon icon-view',
-                'title': 'View draft',
+                'title': 'Preview',
             }, {
                 'url': url_helper.get_action_url('delete', instance_pk=campaign.id),
                 'label': 'Delete',
@@ -51,7 +51,7 @@ class EmailCampaignButtonHelper(ButtonHelper):
                 'classname': 'button button-small',
                 'title': 'Inspect',
             }, {
-                'url': url_helper.get_action_url('view_draft', instance_pk=campaign.id),
+                'url': url_helper.get_action_url('preview', instance_pk=campaign.id),
                 'label': 'View sent email',
                 'classname': 'button button-small button-secondary',
                 'title': 'View sent email',
@@ -72,6 +72,7 @@ class CampaignAdmin(ModelAdmin):
     inspect_view_enabled = True
     inspect_view_class = editor_views.InspectCampaign
     inspect_template_name = 'birdsong/editor/inspect_campaign.html'
+    edit_template_name = 'birdsong/editor/edit_campaign.html'
     backend_class = SMTPEmailBackend
     contact_class = Contact
     contact_filter_class = None
@@ -84,26 +85,29 @@ class CampaignAdmin(ModelAdmin):
 
     def get_admin_urls_for_registration(self):
         urls = super().get_admin_urls_for_registration()
+        def gen_url(pattern, view, name=None):
+            if not name:
+                name = pattern
+            return url(
+                self.url_helper.get_action_url_pattern(pattern),
+                view,
+                name=self.url_helper.get_action_url_name(name)
+            )
         urls = (
-            url(self.url_helper.get_action_url_pattern('view_draft'), self.view_draft,
-                name=self.url_helper.get_action_url_name('view_draft')),
-            url(self.url_helper.get_action_url_pattern('confirm_send'), self.confirm_send,
-                name=self.url_helper.get_action_url_name('confirm_send')),
-            url(self.url_helper.get_action_url_pattern('send_campaign'), self.send_campaign,
-                name=self.url_helper.get_action_url_name('send_campaign')),
-            url(self.url_helper.get_action_url_pattern('confirm_test'), self.confirm_test,
-                name=self.url_helper.get_action_url_name('confirm_test')),
-            url(self.url_helper.get_action_url_pattern('send_test'), self.send_test,
-                name=self.url_helper.get_action_url_name('send_test')),
-
+            gen_url('preview', self.preview),
+            gen_url('confirm_send', self.confirm_send),
+            gen_url('send_campaign', self.send_campaign),
+            gen_url('confirm_test', self.confirm_test),
+            gen_url('send_test', self.send_test),
         ) + urls
 
         return urls
 
-    def view_draft(self, request, instance_pk):
+    def preview(self, request, instance_pk):
         campaign = self.model.objects.get(pk=instance_pk)
         contact = self.contact_class.objects.first()
-        return editor_views.view_draft(request, campaign, contact)
+        return editor_views.preview(request, campaign, contact)
+
 
     def confirm_send(self, request, instance_pk):
         campaign = self.model.objects.get(pk=instance_pk)
