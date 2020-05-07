@@ -39,9 +39,13 @@ class InspectCampaign(InspectView):
         context.update(kwargs)
         return super().get_context_data(**context)
 
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
+@method_decorator(csrf_exempt, name='dispatch')
 class EditCampaignView(EditView):
     # https://github.com/wagtail/wagtail/blob/master/wagtail/admin/static_src/wagtailadmin/js/page-editor.js#L318
+
     def post(self, request, *args, **kwargs):
         print('WE POSTIG')
-        return super.post(request, *args, **kwargs)
+        return super().post(request, *args, **kwargs)

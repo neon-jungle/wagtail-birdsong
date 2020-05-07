@@ -73,9 +73,12 @@ class CampaignAdmin(ModelAdmin):
     inspect_view_class = editor_views.InspectCampaign
     inspect_template_name = 'birdsong/editor/inspect_campaign.html'
     edit_template_name = 'birdsong/editor/edit_campaign.html'
+    edit_view_class = editor_views.EditCampaignView
     backend_class = SMTPEmailBackend
     contact_class = Contact
     contact_filter_class = None
+    # FIXME needs to be overwritable
+    form_view_extra_js = ['birdsong/js/preview_campaign.js']
 
     def __init__(self, parent=None):
         if not self.model and self.campaign:
