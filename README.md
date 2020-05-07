@@ -63,6 +63,7 @@ alternatively override the `get_template` method on your campaign model.
 
 Campaign templates us django-mjml for responsive, well designed emails. To read up how to setup django-mjml you can read the docs [here](https://github.com/liminspace/django-mjml). There is a base template included in Birdsong that can be extended.
 
+`sale_email.html`
 ```
 {% extends "birdsong/mail/base_email.html" %}
 
@@ -163,6 +164,42 @@ class SaleEmailAdmin(CampaignAdmin):
 ```
 
 Users will now be able to send campaigns to a subset of contacts base on location.
+
+## Unsubscribe url
+
+Included in birdsong is a basic way to contacts to unsubscribe, just include the url configuration and add the unsubscribe url to your email template.
+
+`urls.py`
+```python
+from birdsong import urls as birdsong_urls
+from django.urls import include, path
+
+urlpatterns = [
+    ...
+    path('mail/', include(birdsong_urls)),
+    ...
+]
+```
+
+`sale_email.html`
+```
+{% extends "birdsong/mail/base_email.html" %}
+
+{% block email_body %}
+<mj-section>
+    <mj-column>
+        <mj-text>Hello {{ contact.email }}!</mj-text>
+        {% for b in self.body %}
+            {{ b }}
+        {% endfor %}
+    </mj-column>
+</mj-section>
+<mj-section>
+    Click <a href="{{ site.full_url }}{% url 'birdsong:unsubscribe' contact.id %}">here</a> to unsubscribe.
+</mj-section>
+{% endblock email_body %}
+```
+
 
 ## Future features:
 

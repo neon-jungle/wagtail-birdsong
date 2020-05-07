@@ -5,6 +5,7 @@ from wagtail.contrib.modeladmin.helpers.url import AdminURLHelper
 
 from birdsong.models import Receipt, Contact
 
+
 def redirect_helper(campaign):
     url_helper = AdminURLHelper(type(campaign))
     campaign_list_url = url_helper.get_action_url('index')
