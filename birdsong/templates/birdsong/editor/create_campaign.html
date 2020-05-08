@@ -1,5 +1,4 @@
-{% extends "modeladmin/edit.html" %}
-{% load i18n %}
+{% extends "modeladmin/create.html" %}
 
 {% block content %}
 <div class='campaign-admin'>
@@ -23,7 +22,7 @@
                 {% endblock %}
             </li>
             <li class='preview'>
-                <button class="button campaign-preview icon icon-view" data-action="{{ view.edit_url }}">
+                <button class="button campaign-preview icon icon-view" data-action="{{ view.create_url }}">
                     Reload preview
                 </button>
             </li>

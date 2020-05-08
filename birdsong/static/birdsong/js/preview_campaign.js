@@ -3,10 +3,21 @@ class CampaignPreviewHandler {
         this.form = form;
         this.button = button;
         this.previewURL = button.dataset['action'];
+        this.previewFrame = document.querySelector('.campaign-admin__preview-frame');
         this.setupListeners();
 
         if (this.previewURL.includes('edit')) {
             this.showPreview();
+        } else {
+            this.previewFrame.srcdoc = `
+            <html>
+            </html >
+                <body>
+                    <div style='text-align: center; width: 100%;'>
+                        <h3>Click 'Reload preview' to load preview</h3>
+                    </div>
+                </body>
+            `
         }
     }
 
@@ -21,7 +32,6 @@ class CampaignPreviewHandler {
     }
 
     showPreview() {
-        // alert(this.previewURL);
         const formData = new FormData(this.form);
         fetch(this.previewURL, {
             method: 'POST',
@@ -34,12 +44,10 @@ class CampaignPreviewHandler {
             .then(response => response.json())
             .then(responseJSON => {
                 if (responseJSON.success) {
-                    let previewContainer = document.querySelector('.campaign-admin__preview-frame');
-                    previewContainer.srcdoc = responseJSON.preview;
-
+                    this.previewFrame.srcdoc = responseJSON.preview;
                 } else {
-                    alert('Your form has missing/incorrect data');
-                    // Try to submit the form to show errors?
+                    // Submit form so user can see errors
+                    this.form.submit();
                 }
                 this.resetButton();
             })

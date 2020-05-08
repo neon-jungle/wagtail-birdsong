@@ -74,6 +74,8 @@ class CampaignAdmin(ModelAdmin):
     inspect_template_name = 'birdsong/editor/inspect_campaign.html'
     edit_template_name = 'birdsong/editor/edit_campaign.html'
     edit_view_class = editor_views.EditCampaignView
+    create_view_class = editor_views.CreateCampaignView
+    create_template_name = 'birdsong/editor/create_campaign.html'
     backend_class = SMTPEmailBackend
     contact_class = Contact
     contact_filter_class = None
