@@ -4,6 +4,10 @@ class CampaignPreviewHandler {
         this.button = button;
         this.previewURL = button.dataset['action'];
         this.setupListeners();
+
+        if (this.previewURL.includes('edit')) {
+            this.showPreview();
+        }
     }
 
     setupListeners() {
@@ -30,8 +34,8 @@ class CampaignPreviewHandler {
             .then(response => response.json())
             .then(responseJSON => {
                 if (responseJSON.success) {
-                    let previewContainer = document.querySelector('.campaign-admin__preview');
-                    previewContainer.innerHTML = responseJSON.preview;
+                    let previewContainer = document.querySelector('.campaign-admin__preview-frame');
+                    previewContainer.srcdoc = responseJSON.preview;
 
                 } else {
                     alert('Your form has missing/incorrect data');
