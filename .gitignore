@@ -10,4 +10,4 @@ birdsongtestbed/static
 .idea
 .DS_Store
 .vscode
-
+build/

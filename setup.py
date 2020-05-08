@@ -8,7 +8,7 @@ with open('birdsong/version.py', 'r') as f:
     version = None
     exec(f.read())
 
-with open('README.md', 'r') as f:
+with open('README.rst', 'r') as f:
     readme = f.read()
 
 setup(
