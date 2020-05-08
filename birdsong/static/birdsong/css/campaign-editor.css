@@ -1,0 +1,17 @@
+.campaign-admin {
+    display: flex;
+    flex-direction: row;   
+}
+
+.campaign-admin__form,
+.campaign-admin__preview {
+    flex-basis: 50%;
+}
+
+.campaign-admin__preview {
+  all: initial;
+}
+
+.campaign-admin__preview * {
+    all: initial;
+}

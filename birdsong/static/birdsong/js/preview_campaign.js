@@ -11,6 +11,7 @@ class CampaignPreviewHandler {
             e.preventDefault();
             this.button.classList.remove('icon-view');
             this.button.classList.add('icon-spinner');
+            this.button.disabled = true;
             this.showPreview();
         });
     }
@@ -29,12 +30,21 @@ class CampaignPreviewHandler {
             .then(response => response.json())
             .then(responseJSON => {
                 if (responseJSON.success) {
-                    alert('doin the preview');
+                    let previewContainer = document.querySelector('.campaign-admin__preview');
+                    previewContainer.innerHTML = responseJSON.preview;
+
                 } else {
                     alert('Your form has missing/incorrect data');
                     // Try to submit the form to show errors?
                 }
+                this.resetButton();
             })
+    }
+
+    resetButton() {
+        this.button.classList.remove('icon-spinner');
+        this.button.classList.add('icon-view');
+        this.button.disabled = false;
     }
 }
 

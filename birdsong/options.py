@@ -79,6 +79,7 @@ class CampaignAdmin(ModelAdmin):
     contact_filter_class = None
     # FIXME needs to be overwritable
     form_view_extra_js = ['birdsong/js/preview_campaign.js']
+    form_view_extra_css = ['birdsong/css/campaign-editor.css']
 
     def __init__(self, parent=None):
         if not self.model and self.campaign:
