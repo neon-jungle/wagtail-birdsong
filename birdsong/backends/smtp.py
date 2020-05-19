@@ -17,10 +17,16 @@ class SMTPEmailBackend(BaseEmailBackend):
                 campaign.get_template(request),
                 campaign.get_context(request, contact),
             )
-            messages.append((subject, content, self.from_email, [contact.email]))
+            messages.append({
+                'subject': subject,
+                'body': content,
+                'from_email': self.from_email,
+                'to': [contact.email],
+                'reply_to': [self.reply_to],
+            })
 
         try:
-            send_mass_html_mail(tuple(messages))
+            send_mass_html_mail(messages)
             success = True
         except SMTPException as e:
             success = False
