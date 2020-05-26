@@ -12,3 +12,5 @@ birdsongtestbed/static
 .vscode
 build/
 .eggs
+local.sqlite3
+
