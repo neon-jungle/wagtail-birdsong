@@ -1,0 +1,20 @@
+FROM python:3.6
+
+WORKDIR /srv
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONIOENCODING=UTF-8 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    LC_ALL=C.UTF-8 \
+    LANG=C.UTF-8 \
+    PYTHONPATH=/srv/ \
+    DJANGO_SETTINGS_MODULE=settings_dev \
+    DJANGO_SUPERUSER_PASSWORD=p
+
+COPY . /srv/
+
+RUN pip install -e .
+RUN django-admin migrate
+RUN django-admin createsuperuser --no-input --username admin --email admin@email.com
+
+CMD [ "django-admin" , "runserver", "0.0.0.0:8080"]

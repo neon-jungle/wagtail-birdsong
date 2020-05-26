@@ -2,13 +2,8 @@ var/
 venv/
 *.egg-info/
 dist/
-*.pyc
-*.local
-.tmp
 .idea
 .DS_Store
 .vscode
 build/
-.eggs
-local.sqlite3
-
+__pycache__/

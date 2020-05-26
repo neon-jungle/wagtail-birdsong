@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+    birdsong:
+        build: 
+            context: .
+            dockerfile: Dockerfile.dev
+        restart: always
+        command: django-admin runserver 0.0.0.0:8080
+        links:
+            - mjml
+        ports:
+            - "8080:8080"
+        container_name: 'birdsong_dev'
+        working_dir: '/srv'
+        volumes:
+            - './tests:/srv/tests'
+            - './birdsong:/srv/birdsong'
+            - './settings_dev.py:/srv/settings_dev.py'
+            # - './local.sqlite3:/srv/local.sqlite3'
+    
+    mjml:
+        image: liminspace/mjml-tcpserver:latest
+        restart: always
+        ports:
+            - "28101"
