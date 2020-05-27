@@ -1,0 +1,31 @@
+{% extends "modeladmin/create.html" %}
+
+{% block content %}
+<div class='campaign-admin'>
+    <div class='campaign-admin__form'>
+        {{ block.super }}
+    </div>
+    <div class='campaign-admin__preview'>
+        <header role="banner">
+        </header>
+        <iframe class='campaign-admin__preview-frame'>
+        </iframe>
+    </div>
+</div>
+{% endblock content %}
+{% block footer %}
+    <footer>
+        <ul>
+            <li class="actions">
+                {% block form_actions %}
+                    {{ block.super }}
+                {% endblock %}
+            </li>
+            <li class='preview'>
+                <button class="button campaign-preview icon icon-view" data-action="{{ view.create_url }}">
+                    Reload preview
+                </button>
+            </li>
+        </ul>
+    </footer>
+{% endblock footer %}
