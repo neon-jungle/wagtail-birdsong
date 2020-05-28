@@ -11,3 +11,4 @@ birdsongtestbed/static
 .DS_Store
 .vscode
 build/
+.eggs

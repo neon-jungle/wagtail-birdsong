@@ -23,6 +23,9 @@ setup(
         'wagtail>=2.7',
         'django-mjml',
     ],
+    setup_requires=[
+        'wheel'
+    ],
     zip_safe=False,
     license='BSD License',
 
