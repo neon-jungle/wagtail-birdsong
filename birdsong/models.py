@@ -37,7 +37,7 @@ class Campaign(models.Model):
         return self.name
 
     def get_template(self, request):
-        return "%s/mail/%s.html" % (self._meta.app_label, camelcase_to_underscore(self.__class__.__name__))
+        return "mail/%s.html" % (camelcase_to_underscore(self.__class__.__name__))
 
     def get_context(self, request, contact):
         site = Site.find_for_request(request)        

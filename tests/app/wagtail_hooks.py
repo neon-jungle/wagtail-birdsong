@@ -5,7 +5,7 @@ from .models import ExtendedContact, SaleCampaign
 
 
 @modeladmin_register
-class SaleEmailAdmin(CampaignAdmin):
+class SaleCampaignAdmin(CampaignAdmin):
     campaign = SaleCampaign
     menu_label = 'Sale Email'
     menu_icon = 'mail'

@@ -63,7 +63,7 @@ The ``CampaignAdmin`` is just an extension of Wagtail's ``ModelAdmin`` class so 
         menu_order = 200
 
 
-Create your campaign template in ``{app_folder}/templates/{app_name}/mail/{model_name}.html`` eg ``email/templates/email/mail/sale_email.html``,
+Create your campaign template in ``{app_folder}/templates/mail/{model_name}.html`` eg ``email/templates/mail/sale_email.html``,
 alternatively override the ``get_template`` method on your campaign model.
 
 Campaign templates us django-mjml for responsive, well designed emails. To read up how to setup django-mjml you can read the docs `here <https://github.com/liminspace/django-mjml>`_. There is a base template included in Birdsong that can be extended.
