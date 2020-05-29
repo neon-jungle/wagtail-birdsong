@@ -4,6 +4,7 @@ INSTALLED_APPS = [
     'birdsong',
     'tests.app',
 
+    'mjml',
     'taggit',
     'modelcluster',
 

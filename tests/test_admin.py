@@ -48,10 +48,30 @@ class TestCampaignAdmin(WagtailTestUtils, TestCase):
         response = self.client.get(
             f'/admin/app/salecampaign/preview/{self.campaign.id}/',
         )
+        self.assertEquals(response.status_code, 200)
+        self.assertContains(response, '<p>Just some content</p>')
+
+
+    def test_live_preview(self):
 
 
 class TestSending(WagtailTestUtils, TestCase):
-    pass
+    def setUp(self):
+        self.campaign = SaleCampaign.objects.create(
+            name='Test campaign',
+            subject='The subject',
+            body=[
+                ('rich_text', RichText('<p>The body</p>'))
+            ]
+        )
+        for email in [
+            ''
+        ]
+        self.login()
 
-class TestFiltering(WagtailTestUtils, TestCase):
-    pass
+    def test_send_test(self):
+        
+
+    def test_send(self):
+        pass
+
