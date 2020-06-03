@@ -8,6 +8,8 @@ python:
     services:
         - name: liminspace/mjml-tcpserver:latest
           alias: mjml
+    before_script:
+        - pip3 install -e .
     script:
         - python3 runtests.py
 
