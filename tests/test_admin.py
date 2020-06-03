@@ -1,11 +1,12 @@
+from django.core import mail
 from django.test import TestCase
 from wagtail.core.rich_text import RichText
 from wagtail.tests.utils import WagtailTestUtils
 from wagtail.tests.utils.form_data import (nested_form_data, rich_text,
                                            streamfield)
 
-from tests.app.models import SaleCampaign, ExtendedContact
-from django.core import mail
+from tests.app.models import ExtendedContact, SaleCampaign
+
 
 class TestCampaignAdmin(WagtailTestUtils, TestCase):
     def setUp(self):
@@ -98,7 +99,3 @@ class TestSending(WagtailTestUtils, TestCase):
         self.client.get(f'/admin/app/salecampaign/send_campaign/{self.campaign.id}/')
 
         self.assertEquals(len(mail.outbox), 2)
-
-
-        
-
