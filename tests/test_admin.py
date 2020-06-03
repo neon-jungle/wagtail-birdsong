@@ -4,8 +4,8 @@ from wagtail.tests.utils import WagtailTestUtils
 from wagtail.tests.utils.form_data import (nested_form_data, rich_text,
                                            streamfield)
 
-from tests.app.models import SaleCampaign
-
+from tests.app.models import SaleCampaign, ExtendedContact
+from django.core import mail
 
 class TestCampaignAdmin(WagtailTestUtils, TestCase):
     def setUp(self):
@@ -49,10 +49,12 @@ class TestCampaignAdmin(WagtailTestUtils, TestCase):
             f'/admin/app/salecampaign/preview/{self.campaign.id}/',
         )
         self.assertEquals(response.status_code, 200)
-        self.assertContains(response, '<p>Just some content</p>')
+        self.assertContains(response, '<p>The body</p>')
 
 
     def test_live_preview(self):
+        # TODO (post with ajax headers?)
+        pass
 
 
 class TestSending(WagtailTestUtils, TestCase):
@@ -64,14 +66,39 @@ class TestSending(WagtailTestUtils, TestCase):
                 ('rich_text', RichText('<p>The body</p>'))
             ]
         )
-        for email in [
-            ''
-        ]
+        for person in [
+            ('Terry', 'Testington', 'North', 'terry@tests.com'),
+            ('Wag', 'Tail', 'South', 'wag@tail.com'),
+        ]:
+            ExtendedContact.objects.create(
+                first_name=person[0],
+                last_name=person[1],
+                location=person[2],
+                email=person[3],
+            )
         self.login()
 
     def test_send_test(self):
+        self.client.post(
+            f'/admin/app/salecampaign/send_test/{self.campaign.id}/',
+            {
+                'email': 'have@email.com',
+                'first_name': 'Find',
+                'last_name': 'Me',
+                'location': 'Moon',
+            }
+        )
+
+
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertTrue('Hi Find Me' in mail.outbox[0].body)
         
 
     def test_send(self):
-        pass
+        self.client.get(f'/admin/app/salecampaign/send_campaign/{self.campaign.id}/')
+
+        self.assertEquals(len(mail.outbox), 2)
+
+
+        
 

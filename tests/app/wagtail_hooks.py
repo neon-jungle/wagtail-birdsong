@@ -1,7 +1,7 @@
 from wagtail.contrib.modeladmin.options import ModelAdmin, modeladmin_register
 from birdsong.options import CampaignAdmin
 
-from .models import ExtendedContact, SaleCampaign, SimpleCampaign
+from .models import ExtendedContact, SaleCampaign
 
 
 @modeladmin_register

@@ -36,7 +36,6 @@ DATABASES = {
 
 ROOT_URLCONF = 'tests.app.urls'
 
-
 WAGTAIL_SITE_NAME = 'Birdsong'
 
 DEBUG = True
@@ -69,6 +68,11 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+MJML_BACKEND_MODE = 'tcpserver'
+MJML_TCPSERVERS = [
+    ('mjml', 28101),  # host and port
 ]
 
 STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
