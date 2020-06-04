@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from django.forms import modelform_factory
+from django.http.response import HttpResponseRedirect
 from django.urls import reverse
 from wagtail.admin.edit_handlers import ObjectList, TabbedInterface
 from wagtail.contrib.modeladmin.helpers import AdminURLHelper, ButtonHelper
@@ -8,8 +9,8 @@ from wagtail.contrib.modeladmin.options import ModelAdmin
 from birdsong.backends.smtp import SMTPEmailBackend
 
 from .models import Contact
-from .views import editor as editor_views
 from .views import actions
+from .views import editor as editor_views
 
 
 class EmailCampaignButtonHelper(ButtonHelper):
@@ -17,57 +18,39 @@ class EmailCampaignButtonHelper(ButtonHelper):
         url_helper = AdminURLHelper(self.model)
         sent = bool(campaign.sent_date)
 
+        def button(action_url, label, classnames):
+            return {
+                'url': url_helper.get_action_url(action_url, instance_pk=campaign.id),
+                'label': label,
+                'title': label,
+                'classname': 'button button-small ' + classnames
+            }
+
+        delete_btn = button('delete', 'Delete', 'no button-secondary')
+        copy_btn = button('copy', 'Copy', 'button-secondary')
         if not sent:
-            buttons = [{
-                'url': url_helper.get_action_url('edit', instance_pk=campaign.id),
-                'label': 'Edit',
-                'classname': 'button button-small bicolor icon icon-edit',
-                'title': 'Edit',
-            }, {
-                'url': url_helper.get_action_url('confirm_send', instance_pk=campaign.id),
-                'label': 'Send',
-                'classname': 'button button-small bicolor icon icon-mail',
-                'title': 'Send',
-            }, {
-                'url': url_helper.get_action_url('send_test', instance_pk=campaign.id),
-                'label': 'Send test',
-                'classname': 'button button-small button-secondary icon icon-cog',
-                'title': 'Send test',
-            }, {
-                'url': url_helper.get_action_url('preview', instance_pk=campaign.id),
-                'label': 'Preview',
-                'classname': 'button button-small button-secondary icon icon-view',
-                'title': 'Preview',
-            }, {
-                'url': url_helper.get_action_url('delete', instance_pk=campaign.id),
-                'label': 'Delete',
-                'classname': 'button no button-small button-secondary',
-                'title': 'Delete',
-            }]
+            buttons = [
+                button('edit', 'Edit', 'bicolor icon icon-edit'),
+                copy_btn,
+                button('confirm_send', 'Send', 'bicolor icon icon-mail'),
+                button('send_test', 'Send test', 'button-secondary icon icon-cog'),
+                button('preview', 'Preview', 'button-secondary icon icon-view'),
+                delete_btn
+            ]
         else:
-            buttons = [{
-                'url': url_helper.get_action_url('inspect', instance_pk=campaign.id),
-                'label': 'Inspect',
-                'classname': 'button button-small',
-                'title': 'Inspect',
-            }, {
-                'url': url_helper.get_action_url('preview', instance_pk=campaign.id),
-                'label': 'View sent email',
-                'classname': 'button button-small button-secondary',
-                'title': 'View sent email',
-            }, {
-                'url': url_helper.get_action_url('delete', instance_pk=campaign.id),
-                'label': 'Delete',
-                'classname': 'button no button-small button-secondary',
-                'title': 'Delete',
-            }]
+            buttons = [
+                button('inspect', 'Inspect', ''),
+                copy_btn,
+                button('preview', 'View sent email', 'button-secondary icon icon-view'),
+                delete_btn,
+            ]
 
         return buttons
 
 
 class CampaignAdmin(ModelAdmin):
     campaign = None
-    list_display = ('subject',)
+    list_display = ('name', 'sent_date')
     button_helper_class = EmailCampaignButtonHelper
     inspect_view_enabled = True
     inspect_view_class = editor_views.InspectCampaign
@@ -105,6 +88,7 @@ class CampaignAdmin(ModelAdmin):
             gen_url('send_campaign', self.send_campaign),
             gen_url('confirm_test', self.confirm_test),
             gen_url('send_test', self.send_test),
+            gen_url('copy', self.copy)
         ) + urls
 
         return urls
@@ -170,3 +154,12 @@ class CampaignAdmin(ModelAdmin):
         # Create fake contact, send test email
         contact = form.save(commit=False)
         return actions.send_test(self.backend, request, campaign, contact)
+    
+    def copy(self, request, instance_pk):
+        instance = self.model.objects.get(pk=instance_pk)
+        instance.name = instance.name + ' (Copy)'
+        instance.pk = None
+        instance.id = None
+        instance.sent_date = None
+        instance.save()
+        return HttpResponseRedirect(self.url_helper.get_action_url('index'))
