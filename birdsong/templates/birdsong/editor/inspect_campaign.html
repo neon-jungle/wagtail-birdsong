@@ -1,51 +1,62 @@
 {% extends "modeladmin/inspect.html" %}
 
-{% block content_main %}
-<div class="nice-padding">
-    <p class="back"><a href="{{ view.index_url }}" class="icon icon-arrow-left">Back to {{ view.verbose_name }} list</a></p>
-
-    {% block fields_output %}
-        {% if fields %}
-        <section>
-            <h2>Email data</h2>
-            <table class="listing">
-                <tbody>
-                    {% for field in fields %}
-                        <tr>
-                            <td class="title">
-                                <h2>{{ field.label }}</h2>
-                            </td>
-                            <td>{{ field.value }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </section>
-        {% endif %}
-
-        {% if receipts %}
-            <section>
-                <h2>Recipients</h2>
-                <table class="listing">
-                    <tbody>
-                        <thead>
-                            <tr>
-                                <th>Contact</th>
-                                <th>Succeess</th>
-                                <th>Sent date</th>
-                            </tr>
-                        </thead>
-                        {% for receipt in receipts %}
-                            <tr>
-                                <td>{{ receipt.contact }}</td>
-                                <td>{{ receipt.success }}</td>
-                                <td>{{ receipt.sent_date }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </section>
-        {% endif %}
-    {% endblock %}
-</div>
+{% block fields_output %}
+{% block campaign_info %}
+<section>
+    <h2>Campaign info</h2>
+    <table class="listing">
+        <tbody>
+            <tr>
+                <td class="title">
+                    <h2>Subject</h2>
+                </td>
+                <td>{{ instance.subject }}</td>
+            </tr>
+            <tr>
+                <td class="title">
+                    <h2>Sent date</h2>
+                </td>
+                <td>{{ instance.sent_date }}</td>
+            </tr>
+            <tr>
+                <td class="title">
+                    <h2>No. Recipients</h2>
+                </td>
+                <td>{{ receipts|length }}</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+{% endblock %}
+{% block receipts %}
+{% if receipts %}
+<section>
+    <h2>Recipients</h2>
+    <table class="listing">
+        <thead>
+            <tr>
+                <th>Contact</th>
+                <th>Succeess</th>
+                <th>Sent date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for receipt in receipts %}
+            <tr>
+                <td>{{ receipt.contact }}</td>
+                <td>{{ receipt.success }}</td>
+                <td>{{ receipt.sent_date }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endif %}
+<section>
+    <h2>Content</h2>
+    <div class='nice-padding'>
+        {{ preview|safe }}
+    </div>
+</section>
+{% endblock %}
 {% endblock %}

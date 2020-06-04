@@ -1,5 +1,5 @@
 from django.db import models
-from wagtail.admin.edit_handlers import StreamFieldPanel
+from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 from wagtail.core.fields import StreamField
 
 from birdsong.blocks import DefaultBlocks
@@ -18,3 +18,9 @@ class ExtendedContact(Contact):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
+
+    panels = Contact.panels + [
+        FieldPanel('first_name'),
+        FieldPanel('last_name'),
+        FieldPanel('location'),
+    ]
