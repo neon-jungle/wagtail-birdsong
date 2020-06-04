@@ -1,0 +1,26 @@
+{% extends "birdsong/mail/base_email.html" %} 
+{% load wagtailcore_tags %}
+
+{% block email_head %}
+<mj-style inline="inline">
+    table {
+        background: rgb(241, 248, 255);
+        color: black;
+    }
+</mj-style>
+{% endblock %}
+
+{% block email_body %}
+{% for b in self.body %}
+<mj-section>
+    <mj-column>
+        <mj-text>Hi {{ contact.first_name }} {{ contact.last_name }}</mj-text>
+    </mj-column>
+</mj-section>
+<mj-section>
+    <mj-column>
+        {% include_block b %}
+    </mj-column>
+</mj-section>
+{% endfor %}
+{% endblock %}
