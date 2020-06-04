@@ -1,3 +1,7 @@
+.. image:: docs/birdsong.svg
+    :width: 400
+    :alt: Birdsong Logo
+
 ================
 Wagtail Birdsong
 ================
@@ -221,6 +225,7 @@ Included in birdsong is a basic way to contacts to unsubscribe, just include the
 
 ## Future features:
 
-- Tests!
+- More tests!
 - Backends other thans SMTP for sending emails so analytics can be gathered (email opened, bounced etc)
-- In place previewing of email templates like `wagtail-livepreview <https://github.com/KalobTaulien/wagtail-livepreview>`_
+- Reloading the preview on edit
+- Broader permissions for campaigns (send, preview, test send)
