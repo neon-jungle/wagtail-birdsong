@@ -39,9 +39,8 @@ class EmailCampaignButtonHelper(ButtonHelper):
             ]
         else:
             buttons = [
-                button('inspect', 'Inspect', ''),
+                button('inspect', 'View', 'button-secondary icon icon-view'),
                 copy_btn,
-                button('preview', 'View sent email', 'button-secondary icon icon-view'),
                 delete_btn,
             ]
 
