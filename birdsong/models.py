@@ -7,14 +7,29 @@ from wagtail.contrib.settings.models import BaseSetting, register_setting
 from wagtail.core.utils import camelcase_to_underscore
 from wagtail.core.models import Site
 
+from modelcluster.fields import ParentalKey
+from modelcluster.models import ClusterableModel
+from modelcluster.contrib.taggit import ClusterTaggableManager
+from taggit.models import TaggedItemBase
 from .blocks import DefaultBlocks
 from .backends import BaseEmailBackend
 
 
-class Contact(models.Model):
+class ContactTag(TaggedItemBase):
+    content_object = ParentalKey(
+        'birdsong.Contact', on_delete=models.CASCADE, related_name='tagged_items')
+
+
+class Contact(ClusterableModel):
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(unique=True)
+    tags = ClusterTaggableManager(through=ContactTag, blank=True)
+
+    panels = [
+        FieldPanel('email'),
+        FieldPanel('tags'),
+    ]
 
     def __str__(self):
         return self.email
