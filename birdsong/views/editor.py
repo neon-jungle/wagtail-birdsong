@@ -35,7 +35,7 @@ def confirm_test(request, campaign, form, send_url, index_url):
 class InspectCampaign(InspectView):
     def get_context_data(self, **kwargs):
         context = {
-            'receipts': self.instance.receipts.all()
+            'receipts': self.instance.receipt_set.all()
         }
         context.update(kwargs)
         return super().get_context_data(**context)

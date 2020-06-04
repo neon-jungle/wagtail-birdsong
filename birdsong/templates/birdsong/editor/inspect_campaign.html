@@ -30,13 +30,15 @@
                     <tbody>
                         <thead>
                             <tr>
-                                <th>Email</th>
+                                <th>Contact</th>
+                                <th>Succeess</th>
                                 <th>Sent date</th>
                             </tr>
                         </thead>
                         {% for receipt in receipts %}
                             <tr>
-                                <td>{{ receipt.contact.email }}</td>
+                                <td>{{ receipt.contact }}</td>
+                                <td>{{ receipt.success }}</td>
                                 <td>{{ receipt.sent_date }}</td>
                             </tr>
                         {% endfor %}
