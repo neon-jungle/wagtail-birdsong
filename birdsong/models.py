@@ -55,7 +55,7 @@ class Campaign(models.Model):
         return "mail/%s.html" % (camelcase_to_underscore(self.__class__.__name__))
 
     def get_context(self, request, contact):
-        site = Site.find_for_request(request)        
+        site = Site.find_for_request(request)
         return {
             'self': self,
             'contact': contact,

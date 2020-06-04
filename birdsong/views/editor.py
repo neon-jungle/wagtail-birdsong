@@ -33,9 +33,21 @@ def confirm_test(request, campaign, form, send_url, index_url):
 
 
 class InspectCampaign(InspectView):
+    def __init__(self, model_admin, instance_pk):
+        super().__init__(model_admin, instance_pk)
+        self.contact_class = model_admin.contact_class
+
     def get_context_data(self, **kwargs):
+        contact_pk = self.instance.receipts.first().pk
+        preview_contact = self.contact_class.objects.filter(pk=contact_pk).first()
+        # Should this be frozen? Changes to templates will change old campaigns
+        preview = render_to_string(
+            self.instance.get_template(self.request),
+            self.instance.get_context(self.request, preview_contact),
+        )
         context = {
-            'receipts': self.instance.receipts.all()
+            'receipts': self.instance.receipt_set.all(),
+            'preview': preview
         }
         context.update(kwargs)
         return super().get_context_data(**context)

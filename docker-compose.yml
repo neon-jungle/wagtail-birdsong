@@ -9,6 +9,7 @@ services:
         command: django-admin runserver 0.0.0.0:8080
         links:
             - mjml
+            - mail
         ports:
             - "8080:8080"
         container_name: 'birdsong_dev'
@@ -24,3 +25,11 @@ services:
         restart: always
         ports:
             - "28101"
+        container_name: 'birdsong_mjml'
+
+    mail:
+        image: djfarrelly/maildev
+        ports:
+            - "8081:80"
+        container_name: 'birdsong_mail'
+
