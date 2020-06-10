@@ -41,7 +41,7 @@ class InspectCampaign(InspectView):
         first_receipt = self.instance.receipts.first()
         if first_receipt:
             preview_contact = self.contact_class.objects.filter(
-                pk=first_receipt.contact.pk).first()
+                pk=first_receipt.pk).first()
         else:
             preview_contact = None
         # Should this be frozen? Changes to templates will change old campaigns
