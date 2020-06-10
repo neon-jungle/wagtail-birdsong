@@ -27,7 +27,7 @@ def send_campaign(backend, request, campaign, contacts):
                     campaign=campaign,
                     success=True
                 )
-            except Contact.DoesNotExist():
+            except Contact.DoesNotExist:
                 continue
         campaign.sent_date = timezone.now()
         campaign.save()
