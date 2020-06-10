@@ -18,9 +18,17 @@ def send_campaign(backend, request, campaign, contacts):
         request, campaign, campaign.subject, contacts)
 
     if success:
-        Receipt.objects.bulk_create([
-            Receipt(campaign=campaign, contact=c, success=success) for c in contacts
-        ])
+        for c in contacts:
+            try:
+                # We do this in case a Contact has been deleted after a campaign has been sent - it's happened :(
+                contact = Contact.objects.get(id=c.id)
+                Receipt.objects.create(
+                    contact=contact,
+                    campaign=campaign,
+                    success=True
+                )
+            except Contact.DoesNotExist:
+                continue
         campaign.sent_date = timezone.now()
         campaign.save()
         messages.add_message(
