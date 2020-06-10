@@ -90,7 +90,6 @@ class TestSending(WagtailTestUtils, TestCase):
             }
         )
 
-
         self.assertEqual(len(mail.outbox), 1)
         self.assertTrue('Hi Find Me' in mail.outbox[0].body)
         
@@ -99,3 +98,4 @@ class TestSending(WagtailTestUtils, TestCase):
         self.client.get(f'/admin/app/salecampaign/send_campaign/{self.campaign.id}/')
 
         self.assertEquals(len(mail.outbox), 2)
+        self.assertEqual(self.campaign.receipts.count(), 2)
