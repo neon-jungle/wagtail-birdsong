@@ -39,6 +39,7 @@ class CampaignStatus(models.IntegerChoices):
     UNSENT = 0
     SENDING = 1
     SENT = 2
+    FAILED = 3
 
 
 class Campaign(models.Model):
@@ -67,6 +68,12 @@ class Campaign(models.Model):
             'contact': contact,
             'site': site,
         }
+
+    def create_receipts(self, contacts):
+        pks = [c.pk for c in contacts]
+        # We do this in case a Contact has been deleted after a campaign has been sent - it's happened :(
+        fresh_contacts = Contact.objects.filter(pk__in=pks)
+        self.receipts.add(*fresh_contacts)
 
 
 class Receipt(models.Model):

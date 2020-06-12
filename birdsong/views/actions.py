@@ -16,29 +16,7 @@ def redirect_helper(campaign):
 def send_campaign(backend, request, campaign, contacts):
     campaign.status = CampaignStatus.SENDING
     campaign.save()
-    success = backend.send_campaign(
-        request, campaign, campaign.subject, contacts)
-
-    if success:
-        for c in contacts:
-            try:
-                # We do this in case a Contact has been deleted after a campaign has been sent - it's happened :(
-                contact = Contact.objects.get(id=c.id)
-                Receipt.objects.create(
-                    contact=contact,
-                    campaign=campaign,
-                    success=True
-                )
-            except Contact.DoesNotExist:
-                continue
-        campaign.sent_date = timezone.now()
-        campaign.status = CampaignStatus.SENT
-        campaign.save()
-        messages.add_message(
-            request, messages.SUCCESS, f"Campaign '{campaign.name}' sent to {len(contacts)} contacts")
-    else:
-        messages.add_message(request, messages.ERROR,
-                             f"Campaign '{campaign.name}' failed to send")
+    backend.send_campaign(request, campaign, contacts)
 
     return redirect_helper(campaign)
 
