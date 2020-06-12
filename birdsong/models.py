@@ -2,17 +2,17 @@ import uuid
 
 from django.conf import settings
 from django.db import models
-from wagtail.admin.edit_handlers import FieldPanel
-from wagtail.contrib.settings.models import BaseSetting, register_setting
-from wagtail.core.utils import camelcase_to_underscore
-from wagtail.core.models import Site
-
+from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
-from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase
-from .blocks import DefaultBlocks
+from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.contrib.settings.models import BaseSetting, register_setting
+from wagtail.core.models import Site
+from wagtail.core.utils import camelcase_to_underscore
+
 from .backends import BaseEmailBackend
+from .blocks import DefaultBlocks
 
 
 class ContactTag(TaggedItemBase):
@@ -35,6 +35,11 @@ class Contact(ClusterableModel):
         return self.email
 
 
+class CampaignStatus(models.IntegerChoices):
+    UNSENT = 0
+    SENDING = 1
+    SENT = 2
+
 
 class Campaign(models.Model):
     name = models.CharField(
@@ -42,6 +47,7 @@ class Campaign(models.Model):
     subject = models.TextField()
     sent_date = models.DateTimeField(blank=True, null=True)
     receipts = models.ManyToManyField(Contact, through='Receipt')
+    status = models.IntegerField(choices=CampaignStatus.choices, default=CampaignStatus.UNSENT)
 
     panels = [
         FieldPanel('name'),

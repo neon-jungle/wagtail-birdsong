@@ -8,7 +8,7 @@ from wagtail.contrib.modeladmin.options import ModelAdmin
 
 from birdsong.backends.smtp import SMTPEmailBackend
 
-from .models import Contact
+from .models import CampaignStatus, Contact
 from .views import actions
 from .views import editor as editor_views
 
@@ -16,7 +16,7 @@ from .views import editor as editor_views
 class EmailCampaignButtonHelper(ButtonHelper):
     def get_buttons_for_obj(self, campaign, **kwargs):
         url_helper = AdminURLHelper(self.model)
-        sent = bool(campaign.sent_date)
+        sent = campaign.status != CampaignStatus.UNSENT
 
         def button(action_url, label, classnames):
             return {
@@ -49,7 +49,7 @@ class EmailCampaignButtonHelper(ButtonHelper):
 
 class CampaignAdmin(ModelAdmin):
     campaign = None
-    list_display = ('name', 'sent_date')
+    list_display = ('name', 'status', 'sent_date')
     button_helper_class = EmailCampaignButtonHelper
     inspect_view_enabled = True
     inspect_view_class = editor_views.InspectCampaign
@@ -160,5 +160,6 @@ class CampaignAdmin(ModelAdmin):
         instance.pk = None
         instance.id = None
         instance.sent_date = None
+        instance.status = CampaignStatus.UNSENT
         instance.save()
         return HttpResponseRedirect(self.url_helper.get_action_url('index'))

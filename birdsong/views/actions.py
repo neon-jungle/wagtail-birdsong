@@ -1,9 +1,9 @@
-from django.shortcuts import redirect
 from django.contrib import messages
+from django.shortcuts import redirect
 from django.utils import timezone
 from wagtail.contrib.modeladmin.helpers.url import AdminURLHelper
 
-from birdsong.models import Receipt, Contact
+from birdsong.models import CampaignStatus, Contact, Receipt
 
 
 def redirect_helper(campaign):
@@ -14,6 +14,8 @@ def redirect_helper(campaign):
 
 
 def send_campaign(backend, request, campaign, contacts):
+    campaign.status = CampaignStatus.SENDING
+    campaign.save()
     success = backend.send_campaign(
         request, campaign, campaign.subject, contacts)
 
@@ -30,6 +32,7 @@ def send_campaign(backend, request, campaign, contacts):
             except Contact.DoesNotExist:
                 continue
         campaign.sent_date = timezone.now()
+        campaign.status = CampaignStatus.SENT
         campaign.save()
         messages.add_message(
             request, messages.SUCCESS, f"Campaign '{campaign.name}' sent to {len(contacts)} contacts")
