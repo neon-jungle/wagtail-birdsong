@@ -11,12 +11,12 @@
 {% endblock %}
 
 {% block email_body %}
-{% for b in self.body %}
 <mj-section>
     <mj-column>
         <mj-text>Hi {{ contact.first_name }} {{ contact.last_name }}</mj-text>
     </mj-column>
 </mj-section>
+{% for b in self.body %}
 <mj-section>
     <mj-column>
         {% include_block b %}

@@ -24,3 +24,8 @@ class ExtendedContact(Contact):
         FieldPanel('last_name'),
         FieldPanel('location'),
     ]
+
+from wagtail.core.models import Page
+
+class DudPage(Page):
+    pass
