@@ -34,6 +34,14 @@ DATABASES = {
     },
 }
 
+if 'GITLAB_CI' in os.environ:
+    DATABASES['default'].update({
+        'HOST': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': '',
+        'TEST': {'NAME': 'test_db'},
+    })
+
 ROOT_URLCONF = 'tests.app.urls'
 
 WAGTAIL_SITE_NAME = 'Birdsong'

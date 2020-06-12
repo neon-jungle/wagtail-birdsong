@@ -22,12 +22,8 @@ def send_campaign(backend, request, campaign, contacts):
 
 
 def send_test(backend, request, campaign, test_contact):
-    success = backend.send_campaign(
-        request, campaign, f"[TEST] {campaign.subject}.", [test_contact])
-
-    if success:
-        messages.add_message(request, messages.SUCCESS, f"Test email sent, please check your inbox")
-    else:
-        messages.add_message(request, messages.ERROR, f"Test email failed to send")
+    campaign.subject = f"[TEST] {campaign.subject}"
+    backend.send_campaign(request, campaign, [test_contact])
+    messages.add_message(request, messages.SUCCESS, f"Test email sent, please check your inbox")
 
     return redirect_helper(campaign)

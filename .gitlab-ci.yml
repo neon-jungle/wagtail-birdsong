@@ -8,6 +8,11 @@ python:
     services:
         - name: liminspace/mjml-tcpserver:latest
           alias: mjml
+        - postgres:9.6
+    variables:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: ""
+        POSTGRES_HOST_AUTH_METHOD: trust
     before_script:
         - pip3 install -e .
     script:

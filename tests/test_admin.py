@@ -1,3 +1,5 @@
+from time import sleep
+
 from django.core import mail
 from django.test import TestCase
 from wagtail.core.rich_text import RichText
@@ -89,7 +91,7 @@ class TestSending(WagtailTestUtils, TestCase):
                 'location': 'Moon',
             }
         )
-
+        sleep(10) # Allow time  to send
         self.assertEqual(len(mail.outbox), 1)
         self.assertTrue('Hi Find Me' in mail.outbox[0].body)
         
@@ -97,5 +99,6 @@ class TestSending(WagtailTestUtils, TestCase):
     def test_send(self):
         self.client.get(f'/admin/app/salecampaign/send_campaign/{self.campaign.id}/')
 
+        sleep(10) # Allow time  to send
         self.assertEquals(len(mail.outbox), 2)
-        self.assertEqual(self.campaign.receipts.count(), 2)
+        self.assertEqual(self.campaign.receipts.all().count(), 2)
