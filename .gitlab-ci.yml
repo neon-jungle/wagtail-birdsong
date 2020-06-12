@@ -2,9 +2,8 @@ stages:
     - test
 
 
-python:
+.python:
     stage: test
-    image: python:3.6
     services:
         - name: liminspace/mjml-tcpserver:latest
           alias: mjml
@@ -18,3 +17,14 @@ python:
     script:
         - python3 runtests.py
 
+three_six:
+    extends: .python
+    image: python:3.6
+
+three_seven:
+    extends: .python
+    image: python:3.7
+
+three_eight:
+    extends: .python
+    image: python:3.8

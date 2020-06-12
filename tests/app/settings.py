@@ -34,7 +34,7 @@ DATABASES = {
     },
 }
 
-if 'GITLAB_CI' in os.environ:
+if 'POSTGRES_USER' in os.environ:
     DATABASES['default'].update({
         'HOST': 'postgres',
         'USER': 'postgres',
