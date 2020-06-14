@@ -36,6 +36,7 @@ DATABASES = {
 
 if 'POSTGRES_USER' in os.environ:
     DATABASES['default'].update({
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'HOST': 'postgres',
         'USER': 'postgres',
         'PASSWORD': '',

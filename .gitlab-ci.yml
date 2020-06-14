@@ -13,7 +13,7 @@ stages:
         POSTGRES_PASSWORD: ""
         POSTGRES_HOST_AUTH_METHOD: trust
     before_script:
-        - pip3 install -e .
+        - pip3 install psycopg2-binary~=2.8.0 -e .
     script:
         - python3 runtests.py
 
