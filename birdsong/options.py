@@ -14,7 +14,7 @@ from .views import editor as editor_views
 class EmailCampaignButtonHelper(ButtonHelper):
     def get_buttons_for_obj(self, campaign, **kwargs):
         url_helper = AdminURLHelper(self.model)
-        
+
         def button(action_url, label, classnames):
             return {
                 'url': url_helper.get_action_url(action_url, instance_pk=campaign.id),
