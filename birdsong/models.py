@@ -1,7 +1,7 @@
 import uuid
 
 from django.conf import settings
-from django.db import models
+from django.db import models, transaction
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
@@ -72,8 +72,9 @@ class Campaign(models.Model):
     def create_receipts(self, contacts):
         pks = [c.pk for c in contacts]
         # We do this in case a Contact has been deleted after a campaign has been sent - it's happened :(
-        fresh_contacts = Contact.objects.filter(pk__in=pks)
-        self.receipts.add(*fresh_contacts)
+        with transaction.atomic():
+            fresh_contacts = Contact.objects.select_for_update().filter(pk__in=pks)
+            self.receipts.add(*fresh_contacts)
 
 
 class Receipt(models.Model):

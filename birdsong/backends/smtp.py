@@ -1,3 +1,4 @@
+import logging
 from smtplib import SMTPException
 from threading import Thread
 
@@ -5,12 +6,13 @@ from django.core.mail import send_mass_mail
 from django.template.loader import render_to_string
 from django.utils import timezone
 
-from birdsong.models import CampaignStatus
+from birdsong.models import Campaign, CampaignStatus, Contact
 from birdsong.utils import send_mass_html_mail
-import logging
+
 from . import BaseEmailBackend
 
 logger = logging.getLogger(__name__)
+
 
 class SendCampaignThread(Thread):
     def __init__(self, campaign, messages, contacts):
@@ -51,5 +53,7 @@ class SMTPEmailBackend(BaseEmailBackend):
                 'reply_to': [self.reply_to],
             })
 
-        campaign_thread = SendCampaignThread(campaign, messages, contacts)
+        safe_campaign = Campaign.objects.select_for_update().get(pk=campaign.pk)
+        # safe_contacts = Contact.objects.select_for_update().filter(id_in=)
+        campaign_thread = SendCampaignThread(safe_campaign, messages, contacts)
         campaign_thread.start()
