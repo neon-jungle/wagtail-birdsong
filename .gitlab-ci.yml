@@ -31,6 +31,6 @@ isort:
     stage: lint
     image: python:3.8
     before_script:
-        - pip install isort
+        - pip install isort -e .
     script:
         - isort --recursive --diff --check-only birdsong/ tests/
