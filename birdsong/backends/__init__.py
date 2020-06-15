@@ -1,5 +1,6 @@
 from django.conf import settings
 
+
 class BaseEmailBackend:
     def send_email(self, request, campaign, subject, contacts):
         raise NotImplementedError

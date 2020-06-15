@@ -1,4 +1,5 @@
 from wagtail.contrib.modeladmin.options import ModelAdmin, modeladmin_register
+
 from birdsong.options import CampaignAdmin
 
 from .models import ExtendedContact, SaleCampaign
@@ -11,7 +12,6 @@ class SaleCampaignAdmin(CampaignAdmin):
     menu_icon = 'mail'
     menu_order = 200
     contact_class = ExtendedContact
-
 
 
 @modeladmin_register

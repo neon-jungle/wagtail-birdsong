@@ -1,5 +1,6 @@
 stages:
     - test
+    - lint
 
 python:
     stage: test
@@ -17,3 +18,19 @@ python:
         - pip3 install psycopg2-binary~=2.8.0 -e .
     script:
         - python3 runtests.py --no-input
+    
+flake8:
+    stage: lint
+    image: python:3.8
+    before_script:
+        - pip install flake8
+    script:
+        - flake8 birdsong/ tests/
+
+isort:
+    stage: lint
+    image: python:3.8
+    before_script:
+        - pip install isort -e .
+    script:
+        - isort --recursive --diff --check-only birdsong/ tests/

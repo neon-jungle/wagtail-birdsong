@@ -1,5 +1,6 @@
 from django.apps import AppConfig
 
+
 class WagtailBirdsongApp(AppConfig):
     name = 'birdsong'
     label = 'birdsong'

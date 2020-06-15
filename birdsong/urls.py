@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import unsubscribe
 
+from .views import unsubscribe
 
 app_name = 'birdsong'
 

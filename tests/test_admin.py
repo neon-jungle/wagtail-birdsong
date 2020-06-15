@@ -1,7 +1,7 @@
 from time import sleep
 
 from django.core import mail
-from django.test import TransactionTestCase, TestCase
+from django.test import TestCase, TransactionTestCase
 from wagtail.core.rich_text import RichText
 from wagtail.tests.utils import WagtailTestUtils
 from wagtail.tests.utils.form_data import (nested_form_data, rich_text,
@@ -37,7 +37,7 @@ class TestCampaignAdmin(WagtailTestUtils, TestCase):
             '/admin/app/salecampaign/create/', self.post_data(), follow=True
         )
         self.assertEquals(response.status_code, 200)
-    
+
     def test_edit(self):
         response = self.client.post(
             f'/admin/app/salecampaign/edit/{self.campaign.id}/',
@@ -53,7 +53,6 @@ class TestCampaignAdmin(WagtailTestUtils, TestCase):
         )
         self.assertEquals(response.status_code, 200)
         self.assertContains(response, '<p>The body</p>')
-
 
     def test_live_preview(self):
         # TODO (post with ajax headers?)
@@ -91,14 +90,13 @@ class TestSending(WagtailTestUtils, TransactionTestCase):
                 'location': 'Moon',
             }
         )
-        sleep(10) # Allow time  to send
+        sleep(10)  # Allow time  to send
         self.assertEqual(len(mail.outbox), 1)
         self.assertTrue('Hi Find Me' in mail.outbox[0].body)
-        
 
     def test_send(self):
         self.client.get(f'/admin/app/salecampaign/send_campaign/{self.campaign.id}/')
 
-        sleep(10) # Allow time  to send
+        sleep(10)  # Allow time  to send
         self.assertEquals(len(mail.outbox), 2)
         self.assertEqual(self.campaign.receipts.all().count(), 2)

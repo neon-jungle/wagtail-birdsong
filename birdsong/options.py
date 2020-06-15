@@ -1,8 +1,6 @@
 from django.conf.urls import url
 from django.forms import modelform_factory
 from django.http.response import HttpResponseRedirect
-from django.urls import reverse
-from wagtail.admin.edit_handlers import ObjectList, TabbedInterface
 from wagtail.contrib.modeladmin.helpers import AdminURLHelper, ButtonHelper
 from wagtail.contrib.modeladmin.options import ModelAdmin
 
@@ -73,6 +71,7 @@ class CampaignAdmin(ModelAdmin):
 
     def get_admin_urls_for_registration(self):
         urls = super().get_admin_urls_for_registration()
+
         def gen_url(pattern, view, name=None):
             if not name:
                 name = pattern
@@ -96,7 +95,6 @@ class CampaignAdmin(ModelAdmin):
         campaign = self.model.objects.get(pk=instance_pk)
         contact = self.contact_class.objects.first()
         return editor_views.preview(request, campaign, contact)
-
 
     def confirm_send(self, request, instance_pk):
         campaign = self.model.objects.get(pk=instance_pk)
@@ -128,7 +126,7 @@ class CampaignAdmin(ModelAdmin):
         return actions.send_campaign(self.backend, request, campaign, contacts)
 
     def create_contact_form(self, data=None):
-        ContactForm = modelform_factory(self.contact_class, exclude=['id']) 
+        ContactForm = modelform_factory(self.contact_class, exclude=['id'])
         if data:
             return ContactForm(data)
         return ContactForm()
@@ -153,7 +151,7 @@ class CampaignAdmin(ModelAdmin):
         # Create fake contact, send test email
         contact = form.save(commit=False)
         return actions.send_test(self.backend, request, campaign, contact)
-    
+
     def copy(self, request, instance_pk):
         instance = self.model.objects.get(pk=instance_pk)
         instance.name = instance.name + ' (Copy)'

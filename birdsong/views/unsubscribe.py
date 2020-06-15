@@ -16,17 +16,10 @@ def unsubscribe_user(request, user_id):
         'BIRDSONG_UNSUBSCRIBE_TEMPLATE',
         'unsubscribe.html'
     )
-    
+
     return render(
         request, template, context={
             'site': site,
             'contact': contact,
         }
     )
-
-    
-
-
-
-    
-
