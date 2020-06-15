@@ -1,15 +1,19 @@
 stages:
     - test
 
-
 python:
     stage: test
-    image: python:3.6
+    image: python:3.8
     services:
         - name: liminspace/mjml-tcpserver:latest
           alias: mjml
+        - postgres:9.6
+    variables:
+        POSTGRES_USER: postgres
+        POSTGRES_DB: birdsong
+        POSTGRES_PASSWORD: ""
+        POSTGRES_HOST_AUTH_METHOD: trust
     before_script:
-        - pip3 install -e .
+        - pip3 install psycopg2-binary~=2.8.0 -e .
     script:
-        - python3 runtests.py
-
+        - python3 runtests.py --no-input

@@ -3,8 +3,11 @@ from tests.app.settings import *
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'local.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'HOST': 'postgres',
+        'NAME': 'birdsong',
+        'USER': 'birdsong_dev',
+        'PASSWORD': 'password',
     },
 }
 
@@ -17,3 +20,19 @@ EMAIL_PORT = 25
 INSTALLED_APPS += [
     'wagtail.contrib.styleguide'
 ]
+
+import os
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+}

@@ -1,5 +1,7 @@
+from time import sleep
+
 from django.core import mail
-from django.test import TestCase
+from django.test import TransactionTestCase, TestCase
 from wagtail.core.rich_text import RichText
 from wagtail.tests.utils import WagtailTestUtils
 from wagtail.tests.utils.form_data import (nested_form_data, rich_text,
@@ -58,7 +60,7 @@ class TestCampaignAdmin(WagtailTestUtils, TestCase):
         pass
 
 
-class TestSending(WagtailTestUtils, TestCase):
+class TestSending(WagtailTestUtils, TransactionTestCase):
     def setUp(self):
         self.campaign = SaleCampaign.objects.create(
             name='Test campaign',
@@ -89,7 +91,7 @@ class TestSending(WagtailTestUtils, TestCase):
                 'location': 'Moon',
             }
         )
-
+        sleep(10) # Allow time  to send
         self.assertEqual(len(mail.outbox), 1)
         self.assertTrue('Hi Find Me' in mail.outbox[0].body)
         
@@ -97,5 +99,6 @@ class TestSending(WagtailTestUtils, TestCase):
     def test_send(self):
         self.client.get(f'/admin/app/salecampaign/send_campaign/{self.campaign.id}/')
 
+        sleep(10) # Allow time  to send
         self.assertEquals(len(mail.outbox), 2)
-        self.assertEqual(self.campaign.receipts.count(), 2)
+        self.assertEqual(self.campaign.receipts.all().count(), 2)

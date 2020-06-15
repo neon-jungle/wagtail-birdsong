@@ -13,8 +13,6 @@ ENV PYTHONUNBUFFERED=1 \
 
 COPY . /srv/
 
-RUN pip install django-filter~=2.2.0 -e .
-RUN django-admin migrate
-RUN django-admin createsuperuser --no-input --username admin --email admin@email.com
+RUN pip install django-filter~=2.2.0 psycopg2-binary~=2.8.0  -e .
 
 CMD [ "django-admin" , "runserver", "0.0.0.0:8080"]
