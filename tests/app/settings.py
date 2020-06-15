@@ -41,7 +41,7 @@ if 'POSTGRES_DB' in os.environ:
         'NAME': os.environ['POSTGRES_DB'],
         'USER': os.environ['POSTGRES_USER'],
         'PASSWORD': os.environ['POSTGRES_PASSWORD'],
-        'TEST': {'NAME': 'test_db'},
+        'TEST': {'NAME': os.environ['POSTGRES_DB']},
     })
 
 ROOT_URLCONF = 'tests.app.urls'
