@@ -34,13 +34,14 @@ DATABASES = {
     },
 }
 
-if 'TEST_DB' in os.environ:
+if 'POSTGRES_DB' in os.environ:
     DATABASES['default'].update({
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'HOST': 'postgres',
+        'NAME': os.environ['POSTGRES_DB'],
         'USER': os.environ['POSTGRES_USER'],
         'PASSWORD': os.environ['POSTGRES_PASSWORD'],
-        'TEST': {'NAME': os.environ['TEST_DB']},
+        'TEST': {'NAME': 'test_db'},
     })
 
 ROOT_URLCONF = 'tests.app.urls'
