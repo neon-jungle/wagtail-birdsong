@@ -1,18 +1,13 @@
 import uuid
 
-from django.conf import settings
 from django.db import models
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 from taggit.models import TaggedItemBase
 from wagtail.admin.edit_handlers import FieldPanel
-from wagtail.contrib.settings.models import BaseSetting, register_setting
 from wagtail.core.models import Site
 from wagtail.core.utils import camelcase_to_underscore
-
-from .backends import BaseEmailBackend
-from .blocks import DefaultBlocks
 
 
 class ContactTag(TaggedItemBase):

@@ -14,7 +14,6 @@ class SaleCampaignAdmin(CampaignAdmin):
     contact_class = ExtendedContact
 
 
-
 @modeladmin_register
 class ContactAdmin(ModelAdmin):
     model = ExtendedContact

@@ -1,9 +1,8 @@
 from django.contrib import messages
 from django.shortcuts import redirect
-from django.utils import timezone
 from wagtail.contrib.modeladmin.helpers.url import AdminURLHelper
 
-from birdsong.models import CampaignStatus, Contact, Receipt
+from birdsong.models import CampaignStatus
 
 
 def redirect_helper(campaign):
@@ -24,6 +23,6 @@ def send_campaign(backend, request, campaign, contacts):
 def send_test(backend, request, campaign, test_contact):
     campaign.subject = f"[TEST] {campaign.subject}"
     backend.send_campaign(request, campaign, [test_contact])
-    messages.add_message(request, messages.SUCCESS, f"Test email sent, please check your inbox")
+    messages.success(request, "Test email sent, please check your inbox")
 
     return redirect_helper(campaign)

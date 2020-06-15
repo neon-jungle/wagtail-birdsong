@@ -10,5 +10,6 @@ class UnwrappedStreamBlock(blocks.StreamBlock):
 
 
 class DefaultBlocks(UnwrappedStreamBlock):
-    rich_text = blocks.RichTextBlock(template='birdsong/mail/blocks/richtext.html',
+    rich_text = blocks.RichTextBlock(
+        template='birdsong/mail/blocks/richtext.html',
         features=['h3', 'h4', 'bold', 'italic', 'link', 'ul', 'ol', 'document-link'])
