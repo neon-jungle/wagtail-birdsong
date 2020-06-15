@@ -10,6 +10,7 @@ python:
         - postgres:9.6
     variables:
         POSTGRES_USER: postgres
+        POSTGRES_DB: birdsong
         POSTGRES_PASSWORD: ""
         POSTGRES_HOST_AUTH_METHOD: trust
     before_script:
