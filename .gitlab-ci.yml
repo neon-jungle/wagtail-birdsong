@@ -15,7 +15,7 @@ stages:
     before_script:
         - pip3 install psycopg2-binary~=2.8.0 -e .
     script:
-        - python3 runtests.py
+        - python3 runtests.py --no-input
 
 three_six:
     extends: .python
