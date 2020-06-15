@@ -1,9 +1,9 @@
 stages:
     - test
 
-
-.python:
+python:
     stage: test
+    image: python:3.8
     services:
         - name: liminspace/mjml-tcpserver:latest
           alias: mjml
@@ -16,21 +16,3 @@ stages:
         - pip3 install psycopg2-binary~=2.8.0 -e .
     script:
         - python3 runtests.py --no-input
-
-three_six:
-    extends: .python
-    image: python:3.6
-    variables:
-        POSTGRES_DB: py_36
-
-three_seven:
-    extends: .python
-    image: python:3.7
-    variables:
-        POSTGRES_DB: py_37
-
-three_eight:
-    extends: .python
-    image: python:3.8
-    variables:
-        POSTGRES_DB: py_38
