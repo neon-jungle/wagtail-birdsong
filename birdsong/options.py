@@ -14,8 +14,7 @@ from .views import editor as editor_views
 class EmailCampaignButtonHelper(ButtonHelper):
     def get_buttons_for_obj(self, campaign, **kwargs):
         url_helper = AdminURLHelper(self.model)
-        sent = campaign.status != CampaignStatus.UNSENT
-
+        
         def button(action_url, label, classnames):
             return {
                 'url': url_helper.get_action_url(action_url, instance_pk=campaign.id),
@@ -23,6 +22,13 @@ class EmailCampaignButtonHelper(ButtonHelper):
                 'title': label,
                 'classname': 'button button-small ' + classnames
             }
+
+        if campaign.status == CampaignStatus.SENDING:
+            return [
+                button('preview', 'Preview', 'button-secondary icon icon-view'),
+            ]
+
+        sent = campaign.status != CampaignStatus.UNSENT
 
         delete_btn = button('delete', 'Delete', 'no button-secondary')
         copy_btn = button('copy', 'Copy', 'button-secondary')
