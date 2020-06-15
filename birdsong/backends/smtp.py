@@ -22,7 +22,6 @@ class SendCampaignThread(Thread):
         self.contact_pks = contact_pks
         self.messages = messages
 
-
     def run(self):
         try:
             logger.info(f"Sending {len(self.messages)} emails")

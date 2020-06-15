@@ -1,7 +1,7 @@
 from time import sleep
 
 from django.core import mail
-from django.test import TransactionTestCase, TestCase
+from django.test import TestCase, TransactionTestCase
 from wagtail.core.rich_text import RichText
 from wagtail.tests.utils import WagtailTestUtils
 from wagtail.tests.utils.form_data import (nested_form_data, rich_text,

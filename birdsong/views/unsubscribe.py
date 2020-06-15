@@ -23,10 +23,3 @@ def unsubscribe_user(request, user_id):
             'contact': contact,
         }
     )
-
-    
-
-
-
-    
-

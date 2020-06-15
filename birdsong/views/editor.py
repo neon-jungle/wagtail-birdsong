@@ -1,8 +1,9 @@
-from birdsong.models import Contact, Receipt
 from django.http.response import JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from wagtail.contrib.modeladmin.views import CreateView, EditView, InspectView
+
+from birdsong.models import Contact, Receipt
 
 
 def preview(request, campaign, test_contact):
