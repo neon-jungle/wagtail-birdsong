@@ -20,11 +20,17 @@ stages:
 three_six:
     extends: .python
     image: python:3.6
+    variables:
+        TEST_DB: py_36
 
 three_seven:
     extends: .python
     image: python:3.7
+    variables:
+        TEST_DB: py_37
 
 three_eight:
     extends: .python
     image: python:3.8
+    variables:
+        TEST_DB: py_38
