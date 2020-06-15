@@ -3,7 +3,7 @@ from smtplib import SMTPException
 from threading import Thread
 
 from django.core.mail import send_mass_mail
-from django.db import transaction
+from django.db import close_old_connections, transaction
 from django.template.loader import render_to_string
 from django.utils import timezone
 
@@ -29,16 +29,17 @@ class SendCampaignThread(Thread):
             send_mass_html_mail(self.messages)
             logger.info(f"Emails finsihed sending")
             with transaction.atomic():
-                c = Campaign.objects.filter(pk=self.campaign_pk).update(
+                Campaign.objects.filter(pk=self.campaign_pk).update(
                     status=CampaignStatus.SENT,
                     sent_date=timezone.now(),
-                ).first()
-                fresh_contacts = Contact.objects.select_for_update().filter(pk__in=self.contact_pks)
-                c.receipts.add(*fresh_contacts)
+                )
+                fresh_contacts = Contact.objects.filter(pk__in=self.contact_pks)
+                Campaign.objects.get(pk=self.campaign_pk).receipts.add(*fresh_contacts)
         except SMTPException as e:
-            logger.exception(f"Problem sending campaign: {self.campaign}")
+            logger.exception(f"Problem sending campaign: {self.campaign_pk}")
             self.campaign.status = CampaignStatus.FAILED
-        self.campaign.save()
+        finally:
+            close_old_connections()
 
 
 class SMTPEmailBackend(BaseEmailBackend):

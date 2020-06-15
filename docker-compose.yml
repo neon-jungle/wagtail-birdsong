@@ -1,6 +1,15 @@
 version: "3"
 
 services:
+    postgres:
+        environment:
+            POSTGRES_DB: birdsong
+            POSTGRES_USER: birdsong_dev
+            POSTGRES_PASSWORD: password
+        restart: always
+        image: postgres:9.6
+        expose:
+            - "5432"
     birdsong:
         build: 
             context: .
@@ -10,6 +19,7 @@ services:
         links:
             - mjml
             - mail
+            - postgres
         ports:
             - "8080:8080"
         container_name: 'birdsong_dev'
@@ -19,7 +29,6 @@ services:
             - './birdsong:/srv/birdsong'
             - './settings_dev.py:/srv/settings_dev.py'
             # - './local.sqlite3:/srv/local.sqlite3'
-    
     mjml:
         image: liminspace/mjml-tcpserver:latest
         restart: always
