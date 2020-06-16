@@ -232,6 +232,7 @@ Future features:
 ----------------
 
 - More tests!
+- Proper docs
 - Backends other thans SMTP for sending emails so analytics can be gathered (email opened, bounced etc)
 - Reloading the preview on edit
 - Broader permissions for campaigns (send, preview, test send)

@@ -67,8 +67,9 @@ def ajax_preview(request, view):
     form = FormClass(request.POST)
     if form.is_valid():
         campaign = form.save(commit=False)
+        contact_class = view.model_admin.contact_class
         # FIXME won't work with no contacts
-        test_contact = Contact.objects.first()
+        test_contact = contact_class.objects.first()
         content = render_to_string(
             campaign.get_template(request),
             campaign.get_context(request, test_contact)
