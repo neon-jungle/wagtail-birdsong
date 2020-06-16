@@ -86,6 +86,14 @@ Campaign templates use django-mjml for responsive, well designed emails. To read
     {% endblock email_body %}
 
 
+You're now ready to go!
+
+.. image:: docs/birdsong-preview.png
+    :width: 900
+    :alt: Screenshot
+
+
+
 Custom Contact models
 =====================
 
