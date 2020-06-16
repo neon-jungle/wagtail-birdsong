@@ -97,7 +97,7 @@ You're now ready to go!
 Custom Contact models
 =====================
 
-By default the included ``Contact`` model is used for every campaign, sometimes you may want to store extra data, like names and preferences. 
+By default the included ``Contact`` model is used for every campaign, but you may want to store extra data, like names and preferences. 
 You can override the default ``Contact`` model by setting an option on the admin for your campaign:
 
 ``models.py``
@@ -144,7 +144,7 @@ You can override the default ``Contact`` model by setting an option on the admin
 Filtering on contact properties
 ===============================
 
-You might want to only send a campaign to a subset of you ``Contact`` models. Creating a filter using `django-filter <https://django-filter.readthedocs.io/en/master/>`_ and adding it to the ``CampaignAdmin`` allows users to filter on any property.
+You might want to only send a campaign to a subset of your ``Contact`` models. Creating a filter using `django-filter <https://django-filter.readthedocs.io/en/master/>`_ and adding it to the ``CampaignAdmin`` allows users to filter on any property.
 
 ``filters.py``
 
