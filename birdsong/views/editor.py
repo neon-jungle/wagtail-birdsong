@@ -3,8 +3,6 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 from wagtail.contrib.modeladmin.views import CreateView, EditView, InspectView
 
-from birdsong.models import Contact
-
 
 def preview(request, campaign, test_contact):
     return render(
