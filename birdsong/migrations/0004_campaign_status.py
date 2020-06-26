@@ -22,7 +22,6 @@ class Migration(migrations.Migration):
             model_name='campaign',
             name='status',
             field=models.IntegerField(choices=[(0, 'Unsent'), (1, 'Sending'), (2, 'Sent'), (3, 'Failed')], default=0),
-            preserve_default=False,
         ),
         migrations.RunPython(set_status),
     ]
