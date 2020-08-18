@@ -8,6 +8,7 @@ from wagtail.tests.utils.form_data import (nested_form_data, rich_text,
                                            streamfield)
 
 from tests.app.models import ExtendedContact, SaleCampaign
+from birdsong.models import CampaignStatus
 
 
 class TestCampaignAdmin(WagtailTestUtils, TestCase):
@@ -93,10 +94,14 @@ class TestSending(WagtailTestUtils, TransactionTestCase):
         sleep(10)  # Allow time  to send
         self.assertEqual(len(mail.outbox), 1)
         self.assertTrue('Hi Find Me' in mail.outbox[0].body)
+        self.assertNotEqual(self.campaign.status, CampaignStatus.SENT)
 
     def test_send(self):
         self.client.get(f'/admin/app/salecampaign/send_campaign/{self.campaign.id}/')
 
         sleep(10)  # Allow time  to send
         self.assertEquals(len(mail.outbox), 2)
-        self.assertEqual(self.campaign.receipts.all().count(), 2)
+        self.assertEquals(self.campaign.receipts.all().count(), 2)
+        # Get fresh from db (altered in a thread)
+        fresh_campaign = SaleCampaign.objects.get(pk=self.campaign.pk)
+        self.assertEquals(fresh_campaign.status, CampaignStatus.SENT)
