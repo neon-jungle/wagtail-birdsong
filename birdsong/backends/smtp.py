@@ -43,7 +43,7 @@ class SendCampaignThread(Thread):
 
 
 class SMTPEmailBackend(BaseEmailBackend):
-    def send_campaign(self, request, campaign, contacts):
+    def send_campaign(self, request, campaign, contacts, test_send=False):
         messages = []
 
         for contact in contacts:
@@ -58,7 +58,10 @@ class SMTPEmailBackend(BaseEmailBackend):
                 'to': [contact.email],
                 'reply_to': [self.reply_to],
             })
-
-        campaign_thread = SendCampaignThread(
-            campaign.pk, [c.pk for c in contacts], messages)
-        campaign_thread.start()
+        if test_send:
+            # Don't mark as complete, don't worry about threading
+            send_mass_html_mail(messages)
+        else:
+            campaign_thread = SendCampaignThread(
+                campaign.pk, [c.pk for c in contacts], messages)
+            campaign_thread.start()
