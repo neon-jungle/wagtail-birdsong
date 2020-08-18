@@ -7,8 +7,8 @@ from wagtail.tests.utils import WagtailTestUtils
 from wagtail.tests.utils.form_data import (nested_form_data, rich_text,
                                            streamfield)
 
-from tests.app.models import ExtendedContact, SaleCampaign
 from birdsong.models import CampaignStatus
+from tests.app.models import ExtendedContact, SaleCampaign
 
 
 class TestCampaignAdmin(WagtailTestUtils, TestCase):
