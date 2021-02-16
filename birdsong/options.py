@@ -53,7 +53,7 @@ class EmailCampaignButtonHelper(ButtonHelper):
 
 class CampaignAdmin(ModelAdmin):
     campaign = None
-    list_display = ('name', 'status',  'sent_date' )
+    list_display = ('name', 'status',  'sent_date')
     button_helper_class = EmailCampaignButtonHelper
     inspect_view_enabled = True
     inspect_view_class = editor_views.InspectCampaign
