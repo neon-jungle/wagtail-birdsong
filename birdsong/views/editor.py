@@ -1,8 +1,51 @@
 from django.http.response import JsonResponse
-from django.shortcuts import render
-from django.template.loader import render_to_string
+from django import shortcuts
+from django.template import loader
 from wagtail.contrib.modeladmin.views import CreateView, EditView, InspectView
 
+from django.utils.html import escape
+from wagtail.core import hooks
+from wagtail.core.rich_text.pages import PageLinkHandler 
+from wagtail.documents.rich_text import DocumentLinkHandler
+from wagtail.core.models import Site
+from django.core.exceptions import ObjectDoesNotExist
+
+
+class PageAbsoluteLinkHandler(PageLinkHandler):
+    identifier = "page"
+    @classmethod
+    def expand_db_attributes(cls, attrs):
+        try:
+            page = cls.get_instance(attrs)
+            return f'<a href="{escape(page.full_url)}">'
+        except (ObjectDoesNotExist, KeyError):
+            return "<a>"
+
+class DocumentAbsoluteLinkHandler(DocumentLinkHandler):
+    identifier = "document"
+    @classmethod
+    def expand_db_attributes(cls, attrs):
+        try:
+            document = cls.get_instance(attrs)
+            root_url = Site.objects.get(is_default_site=True).root_url
+            full_url = f"{root_url}{document.url}"
+            return f'<a href="{escape(full_url)}">'
+        except (ObjectDoesNotExist, KeyError):
+            return "<a>"
+
+def register_link_handler(features):
+    features.register_link_type(DocumentAbsoluteLinkHandler)
+    features.register_link_type(PageAbsoluteLinkHandler)
+
+
+def render(request, template_name, context, content_type = None, status = None, using = None):
+    with hooks.register_temporarily('register_rich_text_features', register_link_handler):
+        return shortcuts.render(request, template_name, context, content_type = content_type, status = status, using = using)
+
+
+def render_to_string(template, context):
+    with hooks.register_temporarily('register_rich_text_features', register_link_handler):
+       return loader.render_to_string(template, context)
 
 def preview(request, campaign, test_contact):
     return render(
