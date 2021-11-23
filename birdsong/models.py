@@ -69,4 +69,5 @@ class Receipt(models.Model):
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     contact = models.ForeignKey(Contact, on_delete=models.CASCADE)
     sent_date = models.DateTimeField(auto_now=True)
-    success = models.BooleanField(default=True) #As it is only created when sucessfull sended by now it should always say success
+    # Probably not necessary, but might come in useful later
+    success = models.BooleanField(default=True)
