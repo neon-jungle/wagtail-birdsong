@@ -16,8 +16,8 @@ setup(
     version=version,
     description='Create and send email campaigns from Wagtail',
     long_description=readme,
-    author='Jonny Scholes',
-    author_email='jonny@neonjungle.studio',
+    author='Neon Jungle',
+    author_email='developers@neonjungle.studio',
 
     install_requires=[
         'wagtail>=2.7',
