@@ -13,6 +13,6 @@ ENV PYTHONUNBUFFERED=1 \
 
 COPY . /srv/
 
-RUN pip install django-filter~=2.2.0 psycopg2-binary~=2.8.0  -e .
+RUN pip install django-filter~=21.0 psycopg2-binary~=2.8.0  -e .
 
 CMD [ "django-admin" , "runserver", "0.0.0.0:8080"]
