@@ -11,13 +11,13 @@ class CampaignPreviewHandler {
         } else {
             this.previewFrame.srcdoc = `
             <html>
-            </html >
                 <body>
                     <div style='text-align: center; width: 100%;'>
                         <h3>Click 'Reload preview' to load preview</h3>
                     </div>
                 </body>
-            `
+            </html>
+            `;
         }
     }
 
