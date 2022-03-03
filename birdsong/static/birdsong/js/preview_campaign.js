@@ -62,7 +62,7 @@ class CampaignPreviewHandler {
 
 
 document.addEventListener('DOMContentLoaded', _ => {
-    form = document.querySelector('.content form'); // not the best selector
+    form = document.querySelector('.content form[method=POST]'); // not the best selector
     button = document.querySelector('.campaign-preview');
     if (form && button) {
         new CampaignPreviewHandler(form, button);
