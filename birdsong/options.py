@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import re_path
 from django.forms import modelform_factory
 from django.http.response import HttpResponseRedirect
 from wagtail.contrib.modeladmin.helpers import AdminURLHelper, ButtonHelper
@@ -81,7 +81,7 @@ class CampaignAdmin(ModelAdmin):
         def gen_url(pattern, view, name=None):
             if not name:
                 name = pattern
-            return url(
+            return re_path(
                 self.url_helper.get_action_url_pattern(pattern),
                 view,
                 name=self.url_helper.get_action_url_name(name)

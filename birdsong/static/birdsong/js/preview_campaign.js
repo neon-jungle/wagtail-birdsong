@@ -11,13 +11,13 @@ class CampaignPreviewHandler {
         } else {
             this.previewFrame.srcdoc = `
             <html>
-            </html >
                 <body>
                     <div style='text-align: center; width: 100%;'>
                         <h3>Click 'Reload preview' to load preview</h3>
                     </div>
                 </body>
-            `
+            </html>
+            `;
         }
     }
 
@@ -62,7 +62,7 @@ class CampaignPreviewHandler {
 
 
 document.addEventListener('DOMContentLoaded', _ => {
-    form = document.querySelector('.content form'); // not the best selector
+    form = document.querySelector('.content form[method=POST]'); // not the best selector
     button = document.querySelector('.campaign-preview');
     if (form && button) {
         new CampaignPreviewHandler(form, button);

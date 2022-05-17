@@ -18,8 +18,8 @@
                         {% if form %}
                             <li>Send to a subset of contacts?</li>
                             {% for field in form %}
-                            <li{% if field.required %} class='required'{% endif %}>
-                                {% include 'wagtailadmin/shared/field.html' with field=field %}
+                            <li{% if field.required %} class="required"{% endif %}>
+                                {% include "wagtailadmin/shared/field.html" with field=field %}
                             </li>
                             {% endfor %}
                         {% endif %}

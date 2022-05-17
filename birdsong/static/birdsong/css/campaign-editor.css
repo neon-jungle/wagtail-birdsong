@@ -10,13 +10,20 @@
     max-width: 50%;
 }
 
-header {
-    height: 40px;
-}
-
 .campaign-admin__preview-frame {
     width: 100%;
     height: 100%;
     border: 0;
     border-left: 1px solid #fcf2f2;
 }
+
+@media screen and (min-width:50em) {
+    .footer__container {
+        display: table;
+    }
+  
+    .campaign-admin__actions {
+        display: flex;
+    }
+}
+  
