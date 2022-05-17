@@ -1,48 +1,48 @@
 stages:
-    - test
-    - lint
-    - release
+  - test
+  - lint
+  - release
 
 python:
-    stage: test
-    image: python:3.8
-    services:
-        - name: liminspace/mjml-tcpserver:latest
-          alias: mjml
-        - postgres:9.6
-    variables:
-        POSTGRES_USER: postgres
-        POSTGRES_DB: birdsong
-        POSTGRES_PASSWORD: ""
-        POSTGRES_HOST_AUTH_METHOD: trust
-    before_script:
-        - pip3 install psycopg2-binary~=2.8.0 -e .
-    script:
-        - python3 runtests.py --no-input
-    
+  stage: test
+  image: python:3.10
+  services:
+    - name: liminspace/mjml-tcpserver:latest
+      alias: mjml
+    - postgres:14
+  variables:
+    POSTGRES_USER: postgres
+    POSTGRES_DB: birdsong
+    POSTGRES_PASSWORD: ""
+    POSTGRES_HOST_AUTH_METHOD: trust
+  before_script:
+    - pip3 install psycopg2-binary~=2.8.0 -e .
+  script:
+    - python3 runtests.py --no-input
+
 flake8:
-    stage: lint
-    image: python:3.8
-    before_script:
-        - pip install flake8
-    script:
-        - flake8 birdsong/ tests/
+  stage: lint
+  image: python:3.10
+  before_script:
+    - pip install flake8
+  script:
+    - flake8 birdsong/ tests/
 
 isort:
-    stage: lint
-    image: python:3.8
-    before_script:
-        - pip install isort -e .
-    script:
-        - isort --recursive --diff --check-only birdsong/ tests/
+  stage: lint
+  image: python:3.10
+  before_script:
+    - pip install isort -e .
+  script:
+    - isort --recursive --diff --check-only birdsong/ tests/
 
 build:
-    image: python:3.8
-    stage: release
-    before_script:
-        - pip install --upgrade setuptools wheel twine
-    script:
-        - ./setup.py sdist bdist_wheel
-        - twine upload dist/*
-    only:
-        - tags
+  image: python:3.10
+  stage: release
+  before_script:
+    - pip install --upgrade setuptools wheel twine
+  script:
+    - ./setup.py sdist bdist_wheel
+    - twine upload dist/*
+  only:
+    - tags
