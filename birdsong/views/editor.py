@@ -85,13 +85,13 @@ def ajax_preview(request, view):
 
 class EditCampaignView(EditView):
     def post(self, request, *args, **kwargs):
-        if request.is_ajax():
+        if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
             return ajax_preview(request, self)
         return super().post(request, *args, **kwargs)
 
 
 class CreateCampaignView(CreateView):
     def post(self, request, *args, **kwargs):
-        if request.is_ajax():
+        if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
             return ajax_preview(request, self)
         return super().post(request, *args, **kwargs)
