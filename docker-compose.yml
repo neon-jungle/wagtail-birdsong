@@ -6,8 +6,7 @@ services:
             POSTGRES_DB: birdsong
             POSTGRES_USER: birdsong_dev
             POSTGRES_PASSWORD: password
-        restart: always
-        image: postgres:9.6
+        image: postgres:14
         expose:
             - "5432"
     birdsong:
@@ -31,7 +30,6 @@ services:
             # - './local.sqlite3:/srv/local.sqlite3'
     mjml:
         image: liminspace/mjml-tcpserver:latest
-        restart: always
         ports:
             - "28101"
         container_name: 'birdsong_mjml'

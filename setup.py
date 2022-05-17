@@ -20,7 +20,7 @@ setup(
     author_email='developers@neonjungle.studio',
 
     install_requires=[
-        'wagtail>=2.7',
+        'wagtail>=2.15',
         'django-mjml',
     ],
     setup_requires=[
