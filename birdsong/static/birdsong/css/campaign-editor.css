@@ -16,3 +16,14 @@
     border: 0;
     border-left: 1px solid #fcf2f2;
 }
+
+@media screen and (min-width:50em) {
+    .footer__container {
+        display: table;
+    }
+  
+    .campaign-admin__actions {
+        display: flex;
+    }
+}
+  
