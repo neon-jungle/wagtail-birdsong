@@ -1,6 +1,6 @@
-from django.urls import re_path
 from django.forms import modelform_factory
 from django.http.response import HttpResponseRedirect
+from django.urls import re_path
 from wagtail.contrib.modeladmin.helpers import AdminURLHelper, ButtonHelper
 from wagtail.contrib.modeladmin.options import ModelAdmin
 
