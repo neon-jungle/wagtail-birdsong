@@ -144,7 +144,7 @@ You can override the default ``Contact`` model by setting an option on the admin
 Filtering on contact properties
 ===============================
 
-You might want to only send a campaign to a subset of your ``Contact`` models. Creating a filter using `django-filter <https://django-filter.readthedocs.io/en/master/>`_ and adding it to the ``CampaignAdmin`` allows users to filter on any property.
+You might want to only send a campaign to a subset of your ``Contact`` models. Creating a filter using `django-filter <https://django-filter.readthedocs.io/en/main/>`_ and adding it to the ``CampaignAdmin`` allows users to filter on any property.
 
 ``filters.py``
 
