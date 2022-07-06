@@ -221,7 +221,11 @@ Included in birdsong is a basic way for contacts to unsubscribe, just include th
         </mj-column>
     </mj-section>
     <mj-section>
-        Click <a href="{{ site.full_url }}{% url 'birdsong:unsubscribe' contact.id %}">here</a> to unsubscribe.
+        <mj-column>
+            <mj-text align="center">
+                Click <a href="{{ site.full_url }}{% url 'birdsong:unsubscribe' contact.id %}">here</a> to unsubscribe.
+            </mj-text>
+        </mj-column>
     </mj-section>
     {% endblock email_body %}
 
