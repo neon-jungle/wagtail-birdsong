@@ -10,7 +10,6 @@ from .models import CampaignStatus, Contact
 from .views import actions
 from .views import editor as editor_views
 
-
 BIRDSONG_DEFAULT_BACKEND = 'birdsong.backends.smtp.SMTPEmailBackend'
 
 
