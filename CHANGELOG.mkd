@@ -1,3 +1,7 @@
+# 1.1.0
+
+- New setting `BIRDSONG_BACKEND` for setting the default sending backend
+
 # 0.2.0
 
 - Base template was changed (removed `mj-container`) to be mjml4 compatible

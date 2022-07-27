@@ -6,8 +6,6 @@ from django.utils.module_loading import import_string
 from wagtail.contrib.modeladmin.helpers import AdminURLHelper, ButtonHelper
 from wagtail.contrib.modeladmin.options import ModelAdmin
 
-from birdsong.backends.smtp import SMTPEmailBackend
-
 from .models import CampaignStatus, Contact
 from .views import actions
 from .views import editor as editor_views
