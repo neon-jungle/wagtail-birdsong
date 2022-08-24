@@ -5,6 +5,8 @@
 A plugin for wagtail that allows you to create, send, preview, edit and test email campaigns from within Wagtail.
 Campaign templates are created using `mjml <https://mjml.io/>`_.
 
+Tutorial - https://engineertodeveloper.com/how-to-add-an-email-newsletter-to-wagtail/
+
 Basic usage
 ===========
 
