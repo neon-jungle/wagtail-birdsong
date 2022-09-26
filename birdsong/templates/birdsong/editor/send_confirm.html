@@ -1,7 +1,7 @@
 {% extends "wagtailadmin/base.html" %}
 {% load i18n modeladmin_tags %}
 
-{% block titletag %}Send Campaign{% endblock %}
+{% block titletag %}{% trans "Send Campaign" %}{% endblock %}
 
 {% block content %}
 
@@ -16,7 +16,7 @@
                     {% csrf_token %}
                     <ul class="fields">
                         {% if form %}
-                            <li>Send to a subset of contacts?</li>
+                            <li>{% trans "Send to a subset of contacts?" %}</li>
                             {% for field in form %}
                             <li{% if field.required %} class="required"{% endif %}>
                                 {% include "wagtailadmin/shared/field.html" with field=field %}
@@ -24,8 +24,8 @@
                             {% endfor %}
                         {% endif %}
                         <li>
-                            <input type="submit" class="button" value="Yes, send campaign" class="button"/>
-                            <a href="{{ index_url }}" class="button serious">No, don't send</a>
+                            <input type="submit" class="button" value="{% trans "Yes, send campaign" %}" class="button"/>
+                            <a href="{{ index_url }}" class="button serious">{% trans "No, don't send" %}</a>
                         </li>
                     </ul>
                 </form>
