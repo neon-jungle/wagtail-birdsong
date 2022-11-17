@@ -91,3 +91,5 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'media')
 MEDIA_URL = '/media/'
+
+WAGTAILADMIN_BASE_URL = "localhost:8080"
