@@ -7,7 +7,7 @@ from birdsong.models import CampaignStatus
 
 def redirect_helper(campaign):
     url_helper = AdminURLHelper(type(campaign))
-    campaign_list_url = url_helper.get_action_url('index')
+    campaign_list_url = url_helper.get_action_url("index")
 
     return redirect(campaign_list_url)
 
@@ -27,3 +27,7 @@ def send_test(backend, request, campaign, test_contact):
     messages.success(request, "Test email sent, please check your inbox")
 
     return redirect_helper(campaign)
+
+
+def send_confirmation(backend, request, contact, url):
+    backend.send_confirmation(request, contact, url)
