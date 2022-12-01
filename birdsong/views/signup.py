@@ -9,7 +9,7 @@ from django.conf import settings
 
 
 class SignUpView(FormView):
-    template_name = "signup.html"
+    template_name = "site/signup.html"
     form_class = ContactForm
 
     def form_valid(self, form):
