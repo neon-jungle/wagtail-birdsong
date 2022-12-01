@@ -135,7 +135,7 @@ class DoubleOptInSettings(BaseGenericSetting):
     panels = [
         FieldPanel("campaign_signup_redirect"),
         FieldPanel("campaign_confirmation_redirect"),
-        FieldPanel("campaign_unsubscribe_successy"),
+        FieldPanel("campaign_unsubscribe_success"),
         FieldPanel("confirmation_email_subject"),
         FieldPanel("confirmation_email_body"),
     ]
