@@ -18,7 +18,7 @@ class DefaultBlocks(UnwrappedStreamBlock):
 
 
 class NewsletterSubscriptionBlock(blocks.StructBlock):
-    """block for newsletter subscription on wagtail pages"""
+    """streamfield block for newsletter subscription on wagtail pages."""
 
     headline = blocks.CharBlock(verbose_name=_("Headline"), max_length=80)
     subtext = blocks.CharBlock(
