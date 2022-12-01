@@ -31,6 +31,6 @@ class NewsletterSubscriptionBlock(blocks.StructBlock):
     )
 
     class Meta:
-        template = "site/blocks/signup.html"
+        template = "birdsong/site/blocks/signup.html"
         icon = "mail"
         label = _("Newsletter subscription")
