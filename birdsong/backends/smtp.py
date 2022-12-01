@@ -72,10 +72,6 @@ class SMTPEmailBackend(BaseEmailBackend):
 
     def send_confirmation(self, request, contact, url):
         settings = DoubleOptInSettings.load(request_or_site=request)
-        # content = render_to_string(
-        #     confirmation_campaign.get_template(request),
-        #     confirmation_campaign.get_context(request, contact),
-        # )
 
         body = (
             settings.confirmation_email_body + "\nClick <a href=" + url + "> here </a>!"
