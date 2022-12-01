@@ -12,14 +12,14 @@ def unsubscribe_user(request, user_id):
     site = Site.find_for_request(request)
 
     template = getattr(
-        settings,
-        'BIRDSONG_UNSUBSCRIBE_TEMPLATE',
-        'unsubscribe.html'
+        settings, "BIRDSONG_UNSUBSCRIBE_TEMPLATE", "site/unsubscribe.html"
     )
 
     return render(
-        request, template, context={
-            'site': site,
-            'contact': contact,
-        }
+        request,
+        template,
+        context={
+            "site": site,
+            "contact": contact,
+        },
     )
