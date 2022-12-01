@@ -1,25 +1,18 @@
 from django.conf import settings
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect
 from wagtail.core.models import Site
 
-from birdsong.models import Contact
+from birdsong.models import Contact, DoubleOptInSettings
 
 
 def unsubscribe_user(request, user_id):
     contact = get_object_or_404(Contact, id=user_id)
     contact.delete()
 
-    site = Site.find_for_request(request)
+    double_opt_in_settings = DoubleOptInSettings.load(request_or_site=request)
 
-    template = getattr(
-        settings, "BIRDSONG_UNSUBSCRIBE_TEMPLATE", "site/unsubscribe.html"
-    )
+    redirect_url = "/"
+    if double_opt_in_settings.campaign_unsubscribe_success:
+        redirect_url = double_opt_in_settings.campaign_unsubscribe_success.get_url()
 
-    return render(
-        request,
-        template,
-        context={
-            "site": site,
-            "contact": contact,
-        },
-    )
+    return redirect(redirect_url)

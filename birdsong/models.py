@@ -124,10 +124,18 @@ class DoubleOptInSettings(BaseGenericSetting):
         related_name="+",
         verbose_name="Redirect page after signup for a campaign",
     )
+    campaign_unsubscribe_success = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name="Success page for unsubscription",
+    )
 
     panels = [
         FieldPanel("campaign_signup_redirect"),
         FieldPanel("campaign_confirmation_redirect"),
+        FieldPanel("campaign_unsubscribe_successy"),
         FieldPanel("confirmation_email_subject"),
         FieldPanel("confirmation_email_body"),
     ]
