@@ -129,8 +129,9 @@ class CampaignAdmin(ModelAdmin):
         if self.contact_filter_class:
             Filter = self.contact_filter_class
             contact_filter = Filter(request.POST)
-            return contact_filter.qs
-        return self.contact_class.objects.all()
+            qs = contact_filter.qs.filter(is_confirmed=True)
+            return qs
+        return self.contact_class.objects.all().filter(is_confirmed=True)
 
     def send_campaign(self, request, instance_pk):
         campaign = self.model.objects.get(pk=instance_pk)
@@ -173,10 +174,6 @@ class CampaignAdmin(ModelAdmin):
         instance.status = CampaignStatus.UNSENT
         instance.save()
         return HttpResponseRedirect(self.url_helper.get_action_url("index"))
-
-
-# TODO:
-# class ConfirmationCampaignAdmin(CampaignAdmin):
 
 
 class ContactAdmin(ModelAdmin):
