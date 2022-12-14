@@ -1,6 +1,4 @@
-from django.conf import settings
 from django.shortcuts import get_object_or_404, redirect
-from wagtail.core.models import Site
 
 from birdsong.models import Contact, DoubleOptInSettings
 

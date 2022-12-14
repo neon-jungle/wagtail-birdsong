@@ -5,8 +5,8 @@ from threading import Thread
 from django.db import close_old_connections, transaction
 from django.template.loader import render_to_string
 from django.utils import timezone
-from ..models import DoubleOptInSettings
-
+from django.utils.html import format_html
+from birdsong.models import Campaign, CampaignStatus, Contact
 
 from birdsong.utils import send_mass_html_mail
 
@@ -23,7 +23,6 @@ class SendCampaignThread(Thread):
         self.messages = messages
 
     def run(self):
-        from birdsong.models import Campaign, CampaignStatus, Contact
 
         try:
             logger.info(f"Sending {len(self.messages)} emails")
@@ -34,8 +33,10 @@ class SendCampaignThread(Thread):
                     status=CampaignStatus.SENT,
                     sent_date=timezone.now(),
                 )
-                fresh_contacts = Contact.objects.filter(pk__in=self.contact_pks)
-                Campaign.objects.get(pk=self.campaign_pk).receipts.add(*fresh_contacts)
+                fresh_contacts = Contact.objects.filter(
+                    pk__in=self.contact_pks)
+                Campaign.objects.get(
+                    pk=self.campaign_pk).receipts.add(*fresh_contacts)
         except SMTPException:
             logger.exception(f"Problem sending campaign: {self.campaign_pk}")
             self.campaign.status = CampaignStatus.FAILED
@@ -52,30 +53,29 @@ class SMTPEmailBackend(BaseEmailBackend):
                 campaign.get_template(request),
                 campaign.get_context(request, contact),
             )
-            messages.append(
-                {
+            messages.append({
                     "subject": campaign.subject,
                     "body": content,
                     "from_email": self.from_email,
                     "to": [contact.email],
                     "reply_to": [self.reply_to],
-                }
-            )
+                })
         if test_send:
             # Don't mark as complete, don't worry about threading
             send_mass_html_mail(messages)
         else:
             campaign_thread = SendCampaignThread(
-                campaign.pk, [c.pk for c in contacts], messages
-            )
+                campaign.pk, [c.pk for c in contacts], messages)
             campaign_thread.start()
 
     def send_confirmation(self, request, contact, url):
+        from birdsong.models import DoubleOptInSettings
+
         settings = DoubleOptInSettings.load(request_or_site=request)
 
-        body = (
-            settings.confirmation_email_body + "\nClick <a href=" + url + "> here </a>!"
-        )
+        body = settings.confirmation_email_body + format_html(
+            '\nClick <a href="{}">here</a>!', url
+            )
 
         message = {
             "subject": settings.confirmation_email_subject,

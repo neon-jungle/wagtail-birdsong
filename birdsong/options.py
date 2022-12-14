@@ -3,6 +3,7 @@ from django.forms import modelform_factory
 from django.http.response import HttpResponseRedirect
 from django.urls import re_path
 from django.utils.module_loading import import_string
+from django.utils.translation import gettext as _
 from wagtail.contrib.modeladmin.helpers import AdminURLHelper, ButtonHelper
 from wagtail.contrib.modeladmin.options import ModelAdmin
 
@@ -10,7 +11,7 @@ from .models import CampaignStatus, Contact
 from .views import actions
 from .views import editor as editor_views
 
-BIRDSONG_DEFAULT_BACKEND = "birdsong.backends.smtp.SMTPEmailBackend"
+BIRDSONG_DEFAULT_BACKEND = 'birdsong.backends.smtp.SMTPEmailBackend'
 
 
 class EmailCampaignButtonHelper(ButtonHelper):
@@ -19,33 +20,33 @@ class EmailCampaignButtonHelper(ButtonHelper):
 
         def button(action_url, label, classnames):
             return {
-                "url": url_helper.get_action_url(action_url, instance_pk=campaign.id),
-                "label": label,
-                "title": label,
-                "classname": "button button-small " + classnames,
+                'url': url_helper.get_action_url(action_url, instance_pk=campaign.id),
+                'label': label,
+                'title': label,
+                'classname': 'button button-small ' + classnames
             }
 
         if campaign.status == CampaignStatus.SENDING:
             return [
-                button("preview", "Preview", "button-secondary icon icon-view"),
+                button('preview', 'Preview', 'button-secondary icon icon-view'),
             ]
 
         sent = campaign.status != CampaignStatus.UNSENT
 
-        delete_btn = button("delete", "Delete", "no button-secondary")
-        copy_btn = button("copy", "Copy", "button-secondary")
+        delete_btn = button('delete', 'Delete', 'no button-secondary')
+        copy_btn = button('copy', 'Copy', 'button-secondary')
         if not sent:
             buttons = [
-                button("edit", "Edit", "bicolor icon icon-edit"),
+                button('edit', 'Edit', 'bicolor icon icon-edit'),
                 copy_btn,
-                button("confirm_send", "Send", "bicolor icon icon-mail"),
-                button("send_test", "Send test", "button-secondary icon icon-cog"),
-                button("preview", "Preview", "button-secondary icon icon-view"),
+                button('confirm_send', 'Send', 'bicolor icon icon-mail'),
+                button('send_test', 'Send test', 'button-secondary icon icon-cog'),
+                button('preview', 'Preview', 'button-secondary icon icon-view'),
                 delete_btn,
             ]
         else:
             buttons = [
-                button("inspect", "View", "button-secondary icon icon-view"),
+                button('inspect', 'View', 'button-secondary icon icon-view'),
                 copy_btn,
                 delete_btn,
             ]
@@ -55,24 +56,24 @@ class EmailCampaignButtonHelper(ButtonHelper):
 
 class CampaignAdmin(ModelAdmin):
     campaign = None
-    list_display = ("name", "status", "sent_date")
+    list_display = ('name', 'status', 'sent_date')
     button_helper_class = EmailCampaignButtonHelper
     inspect_view_enabled = True
     inspect_view_class = editor_views.InspectCampaign
-    inspect_template_name = "birdsong/editor/inspect_campaign.html"
-    edit_template_name = "birdsong/editor/edit_campaign.html"
+    inspect_template_name = 'birdsong/editor/inspect_campaign.html'
+    edit_template_name = 'birdsong/editor/edit_campaign.html'
     edit_view_class = editor_views.EditCampaignView
     create_view_class = editor_views.CreateCampaignView
-    create_template_name = "birdsong/editor/create_campaign.html"
+    create_template_name = 'birdsong/editor/create_campaign.html'
     backend_class = import_string(
-        getattr(settings, "BIRDSONG_BACKEND", BIRDSONG_DEFAULT_BACKEND)
+        getattr(settings, 'BIRDSONG_BACKEND', BIRDSONG_DEFAULT_BACKEND)
     )
 
     contact_class = Contact
     contact_filter_class = None
     # FIXME needs to be overwritable
-    form_view_extra_js = ["birdsong/js/preview_campaign.js"]
-    form_view_extra_css = ["birdsong/css/campaign-editor.css"]
+    form_view_extra_js = ['birdsong/js/preview_campaign.js']
+    form_view_extra_css = ['birdsong/css/campaign-editor.css']
 
     def __init__(self, parent=None):
         if not self.model and self.campaign:
@@ -89,16 +90,16 @@ class CampaignAdmin(ModelAdmin):
             return re_path(
                 self.url_helper.get_action_url_pattern(pattern),
                 view,
-                name=self.url_helper.get_action_url_name(name),
+                name=self.url_helper.get_action_url_name(name)
             )
 
         urls = (
-            gen_url("preview", self.preview),
-            gen_url("confirm_send", self.confirm_send),
-            gen_url("send_campaign", self.send_campaign),
-            gen_url("confirm_test", self.confirm_test),
-            gen_url("send_test", self.send_test),
-            gen_url("copy", self.copy),
+            gen_url('preview', self.preview),
+            gen_url('confirm_send', self.confirm_send),
+            gen_url('send_campaign', self.send_campaign),
+            gen_url('confirm_test', self.confirm_test),
+            gen_url('send_test', self.send_test),
+            gen_url('copy', self.copy)
         ) + urls
 
         return urls
@@ -178,6 +179,6 @@ class CampaignAdmin(ModelAdmin):
 
 class ContactAdmin(ModelAdmin):
     model = Contact
-    menu_label = "Contacts"
+    menu_label = _("Contacts")
     menu_icon = "user"
-    list_display = "email"
+    list_display = ("email", "created_at", "confirmed_at", "is_confirmed")

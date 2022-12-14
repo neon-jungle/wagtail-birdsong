@@ -1,4 +1,4 @@
-from ..forms import ContactForm
+from birdsong.forms import ContactForm
 from birdsong.models import Contact, DoubleOptInSettings
 from birdsong.views import actions
 from django.shortcuts import redirect
@@ -11,15 +11,16 @@ from django.conf import settings
 class SignUpView(FormView):
     template_name = "site/signup.html"
     form_class = ContactForm
+    contact_model = Contact
 
     def form_valid(self, form):
         from birdsong.options import BIRDSONG_DEFAULT_BACKEND
 
         double_opt_in_settings = DoubleOptInSettings.load(request_or_site=self.request)
-        contact = Contact.objects.create(email=form.cleaned_data["email"])
+        contact = self.contact_model.objects.create(email=form.cleaned_data["email"])
 
         url = self.request.get_host() + reverse(
-            "birdsong:confirm", args=[contact.token]
+            "birdsong:confirm", kwargs=[contact.token]
         )
 
         backend_class = import_string(

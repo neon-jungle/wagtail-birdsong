@@ -1,20 +1,19 @@
 from django.utils.html import mark_safe
+from django.utils.translation import gettext_lazy as _
 from wagtail.core import blocks
-from django.utils.translation import gettext as _
 
 
 class UnwrappedStreamBlock(blocks.StreamBlock):
     """Removes the surrounding divs around streamblocks."""
-
     def render_basic(self, value, context=None):
-        return mark_safe('\n'.join(child.render(context=context) for child in value))
+        return mark_safe('\n'.join(
+            child.render(context=context) for child in value))
 
 
 class DefaultBlocks(UnwrappedStreamBlock):
     rich_text = blocks.RichTextBlock(
         template='birdsong/mail/blocks/richtext.html',
-        features=['h3', 'h4', 'bold', 'italic', 'link', 'ul', 'ol', 'document-link'],
-    )
+        features=['h3', 'h4', 'bold', 'italic', 'link', 'ul', 'ol', 'document-link'])
 
 
 class NewsletterSubscriptionBlock(blocks.StructBlock):
