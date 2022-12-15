@@ -7,7 +7,6 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('wagtailcore', '0078_referenceindex'),
         ('birdsong', '0007_auto_20221129_1233'),
     ]
 
