@@ -17,7 +17,7 @@ class SignUpView(FormView):
         from birdsong.options import BIRDSONG_DEFAULT_BACKEND
 
         double_opt_in_settings = DoubleOptInSettings.load(request_or_site=self.request)
-        contact = self.contact_model.objects.create(email=form.cleaned_data["email"])
+        contact, created = self.contact_model.objects.get_or_create(email=form.cleaned_data["email"])
 
         url = self.request.get_host() + reverse(
             "birdsong:confirm", args=[contact.token]
