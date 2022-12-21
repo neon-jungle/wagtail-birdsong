@@ -20,7 +20,7 @@ class SignUpView(FormView):
         contact = self.contact_model.objects.create(email=form.cleaned_data["email"])
 
         url = self.request.get_host() + reverse(
-            "birdsong:confirm", kwargs=[contact.token]
+            "birdsong:confirm", args=[contact.token]
         )
 
         backend_class = import_string(
