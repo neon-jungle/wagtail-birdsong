@@ -6,6 +6,7 @@ from django.utils.module_loading import import_string
 from django.views.generic.edit import FormView
 from django.urls import reverse
 from django.conf import settings
+from wagtail.models import Site
 
 
 class SignUpView(FormView):
@@ -19,9 +20,9 @@ class SignUpView(FormView):
         double_opt_in_settings = DoubleOptInSettings.load(request_or_site=self.request)
         contact, created = self.contact_model.objects.get_or_create(email=form.cleaned_data["email"])
 
+        site = Site.find_for_request(self.request)
         url = (
-            "http://"
-            + self.request.get_host()
+            site.root_url
             + reverse("birdsong:confirm", args=[contact.token])
         )
 
