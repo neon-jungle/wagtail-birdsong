@@ -1,7 +1,7 @@
 {% extends "wagtailadmin/base.html" %}
 {% load i18n modeladmin_tags %}
 
-{% block titletag %}Send Campaign{% endblock %}
+{% block titletag %}{% translate "Send Campaign" %}{% endblock %}
 
 {% block content %}
 
@@ -16,7 +16,7 @@
                     {% csrf_token %}
                     <ul class="fields">
                         {% if form %}
-                            <li>Send to a subset of contacts?</li>
+                            <li>{% translate "Send to a subset of contacts?" %}</li>
                             {% for field in form %}
                             <li{% if field.required %} class="required"{% endif %}>
                                 {% include "wagtailadmin/shared/field.html" with field=field %}

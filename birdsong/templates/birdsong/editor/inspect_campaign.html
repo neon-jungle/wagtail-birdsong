@@ -1,4 +1,5 @@
 {% extends "modeladmin/inspect.html" %}
+{% load i18n %}
 
 {% block fields_output %}
 {% block campaign_info %}
@@ -8,19 +9,19 @@
         <tbody>
             <tr>
                 <td class="title">
-                    <h2>Subject</h2>
+                    <h2>{% translate "Subject" %}  </h2>
                 </td>
                 <td>{{ instance.subject }}</td>
             </tr>
             <tr>
                 <td class="title">
-                    <h2>Sent date</h2>
+                    <h2>{% translate "Sent date" %}</h2>
                 </td>
                 <td>{{ instance.sent_date }}</td>
             </tr>
             <tr>
                 <td class="title">
-                    <h2>No. Recipients</h2>
+                    <h2>{% translate "No. Recipients" %}</h2>
                 </td>
                 <td>{{ receipts|length }}</td>
             </tr>
@@ -31,13 +32,13 @@
 {% block receipts %}
 {% if receipts %}
 <section>
-    <h2>Recipients</h2>
+    <h2>{% translate "Recipients" %}</h2>
     <table class="listing">
         <thead>
             <tr>
-                <th>Contact</th>
-                <th>Success</th>
-                <th>Sent date</th>
+                <th>{% translate "Contact" %}</th>
+                <th>{% translate "Success" %}</th>
+                <th>{% translate "Sent date" %}</th>
             </tr>
         </thead>
         <tbody>
@@ -53,7 +54,7 @@
 </section>
 {% endif %}
 <section>
-    <h2>Content</h2>
+    <h2>{% translate "Content" %}</h2>
     <div class="nice-padding">
         {{ preview|safe }}
     </div>
