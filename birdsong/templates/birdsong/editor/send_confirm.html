@@ -24,8 +24,8 @@
                             {% endfor %}
                         {% endif %}
                         <li>
-                            <input type="submit" class="button" value="Yes, send campaign" class="button"/>
-                            <a href="{{ index_url }}" class="button serious">No, don't send</a>
+                            <input type="submit" class="button" value="{% trans 'Yes, send campaign' %}" class="button"/>
+                            <a href="{{ index_url }}" class="button serious">{% trans "No, don't send" %}</a>
                         </li>
                     </ul>
                 </form>

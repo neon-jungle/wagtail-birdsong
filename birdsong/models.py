@@ -28,13 +28,13 @@ class Contact(ClusterableModel):
 
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False)
-    email = models.EmailField()
-    tags = ClusterTaggableManager(through=ContactTag, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    confirmed_at = models.DateTimeField(null=True)
-    is_confirmed = models.BooleanField(default=False)
+    email = models.EmailField(verbose_name=_('e-mail'))
+    tags = ClusterTaggableManager(through=ContactTag, verbose_name=_('tags'), blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created at'))
+    confirmed_at = models.DateTimeField(null=True, verbose_name=_('confirmed at'))
+    is_confirmed = models.BooleanField(default=False, verbose_name=_('is confirmed'))
     token = models.UUIDField(default=uuid.uuid4, editable=False)
-
+'
     panels = [
         FieldPanel('email'),
         FieldPanel('tags'),
@@ -45,19 +45,19 @@ class Contact(ClusterableModel):
 
 
 class CampaignStatus(models.IntegerChoices):
-    UNSENT = 0
-    SENDING = 1
-    SENT = 2
-    FAILED = 3
+    UNSENT = 0, _('unsent')
+    SENDING = 1, _('sending')
+    SENT = 2, _('sent')
+    FAILED = 3, _('failed')
 
 
 class Campaign(models.Model):
     name = models.CharField(
-        max_length=255, help_text=_('The name of the campaign'))
-    subject = models.TextField()
-    sent_date = models.DateTimeField(blank=True, null=True)
-    receipts = models.ManyToManyField(Contact, through='Receipt')
-    status = models.IntegerField(choices=CampaignStatus.choices, default=CampaignStatus.UNSENT)
+        verbose_name=_('name'), max_length=255, help_text=_('The name of the campaign'))
+    subject = models.TextField(verbose_name=_('subject')))
+    sent_date = models.DateTimeField(verbose_name=_('sent date'), blank=True, null=True)
+    receipts = models.ManyToManyField(Contact, verbose_name=_('receipts'), through='Receipt')
+    status = models.IntegerField(verbose_name=_('status'), choices=CampaignStatus.choices, default=CampaignStatus.UNSENT)
 
     panels = [
         FieldPanel('name'),

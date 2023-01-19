@@ -168,7 +168,7 @@ class CampaignAdmin(ModelAdmin):
 
     def copy(self, request, instance_pk):
         instance = self.model.objects.get(pk=instance_pk)
-        instance.name = instance.name + " (Copy)"
+        instance.name = '{} ({})'.format(instance.name, _('Copy'))
         instance.pk = None
         instance.id = None
         instance.sent_date = None
@@ -179,6 +179,6 @@ class CampaignAdmin(ModelAdmin):
 
 class ContactAdmin(ModelAdmin):
     model = Contact
-    menu_label = _("Contacts")
+    menu_label = "Contacts"
     menu_icon = "user"
-    list_display = (_("email"), _("created_at"), _("confirmed_at"), _("is_confirmed"))
+    list_display = ("email", "created_at", "confirmed_at", "is_confirmed")
