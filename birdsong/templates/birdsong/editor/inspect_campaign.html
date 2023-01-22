@@ -1,26 +1,27 @@
 {% extends "modeladmin/inspect.html" %}
+{% load i18n %}
 
 {% block fields_output %}
 {% block campaign_info %}
 <section>
-    <h2>Campaign info</h2>
+    <h2>{% trans "Campaign info" %}</h2>
     <table class="listing">
         <tbody>
             <tr>
                 <td class="title">
-                    <h2>Subject</h2>
+                    <h2>{% trans "Subject" %}</h2>
                 </td>
                 <td>{{ instance.subject }}</td>
             </tr>
             <tr>
                 <td class="title">
-                    <h2>Sent date</h2>
+                    <h2>{% trans "Sent date" %}</h2>
                 </td>
                 <td>{{ instance.sent_date }}</td>
             </tr>
             <tr>
                 <td class="title">
-                    <h2>No. Recipients</h2>
+                    <h2>{% trans "No. Recipients" %}</h2>
                 </td>
                 <td>{{ receipts|length }}</td>
             </tr>
@@ -31,13 +32,13 @@
 {% block receipts %}
 {% if receipts %}
 <section>
-    <h2>Recipients</h2>
+    <h2>{% trans "Recipients" %}</h2>
     <table class="listing">
         <thead>
             <tr>
-                <th>Contact</th>
-                <th>Success</th>
-                <th>Sent date</th>
+                <th>{% trans "Contact" %}</th>
+                <th>{% trans "Success" %}</th>
+                <th>{% trans "Sent date" %}</th>
             </tr>
         </thead>
         <tbody>
@@ -53,7 +54,7 @@
 </section>
 {% endif %}
 <section>
-    <h2>Content</h2>
+    <h2>{% trans "Content" %}</h2>
     <div class="nice-padding">
         {{ preview|safe }}
     </div>
