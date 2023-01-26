@@ -5,8 +5,10 @@
 
 {% block content %}
 
+  
     {% block header %}
-        {% include "wagtailadmin/shared/header.html" with title="Send" subtitle=self icon=view.header_icon %}
+        {% translate "Send" as send %}
+        {% include "wagtailadmin/shared/header.html" with title=send subtitle=self icon=view.header_icon %}
     {% endblock %}
 
     {% block content_main %}
@@ -24,7 +26,8 @@
                             {% endfor %}
                         {% endif %}
                         <li>
-                            <input type="submit" class="button" value="{% trans 'Yes, send campaign' %}" class="button"/>
+                            {% trans "Yes, send campaign" as yessend %}
+                            <input type="submit" class="button" value="{{ yessend }}" class="button"/>
                             <a href="{{ index_url }}" class="button serious">{% trans "No, don't send" %}</a>
                         </li>
                     </ul>

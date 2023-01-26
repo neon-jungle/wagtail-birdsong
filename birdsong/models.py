@@ -34,7 +34,7 @@ class Contact(ClusterableModel):
     confirmed_at = models.DateTimeField(null=True, verbose_name=_('confirmed at'))
     is_confirmed = models.BooleanField(default=False, verbose_name=_('is confirmed'))
     token = models.UUIDField(default=uuid.uuid4, editable=False)
-'
+
     panels = [
         FieldPanel('email'),
         FieldPanel('tags'),
@@ -54,7 +54,7 @@ class CampaignStatus(models.IntegerChoices):
 class Campaign(models.Model):
     name = models.CharField(
         verbose_name=_('name'), max_length=255, help_text=_('The name of the campaign'))
-    subject = models.TextField(verbose_name=_('subject')))
+    subject = models.TextField(verbose_name=_('subject'))
     sent_date = models.DateTimeField(verbose_name=_('sent date'), blank=True, null=True)
     receipts = models.ManyToManyField(Contact, verbose_name=_('receipts'), through='Receipt')
     status = models.IntegerField(verbose_name=_('status'), choices=CampaignStatus.choices, default=CampaignStatus.UNSENT)
