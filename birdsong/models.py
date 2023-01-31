@@ -1,7 +1,7 @@
 import uuid
 
 from django.db import models
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
@@ -28,8 +28,12 @@ class Contact(ClusterableModel):
 
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False)
-    email = models.EmailField()
-    tags = ClusterTaggableManager(through=ContactTag, blank=True)
+    email = models.EmailField(verbose_name=_('email'))
+    tags = ClusterTaggableManager(
+        through=ContactTag,
+        verbose_name=_('tags'),
+        blank=True,
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     confirmed_at = models.DateTimeField(null=True)
     is_confirmed = models.BooleanField(default=False)
@@ -45,19 +49,34 @@ class Contact(ClusterableModel):
 
 
 class CampaignStatus(models.IntegerChoices):
-    UNSENT = 0
-    SENDING = 1
-    SENT = 2
-    FAILED = 3
+    UNSENT = 0, _('unsent')
+    SENDING = 1, _('sending')
+    SENT = 2, _('sent')
+    FAILED = 3, _('failed')
 
 
 class Campaign(models.Model):
     name = models.CharField(
-        max_length=255, help_text=_('The name of the campaign'))
-    subject = models.TextField()
-    sent_date = models.DateTimeField(blank=True, null=True)
-    receipts = models.ManyToManyField(Contact, through='Receipt')
-    status = models.IntegerField(choices=CampaignStatus.choices, default=CampaignStatus.UNSENT)
+        verbose_name=_('name'),
+        max_length=255,
+        help_text=_('The name of the campaign'),
+    )
+    subject = models.TextField(verbose_name=_('subject'))
+    sent_date = models.DateTimeField(
+        verbose_name=_('sent date'),
+        blank=True,
+        null=True,
+    )
+    receipts = models.ManyToManyField(
+        Contact,
+        verbose_name=_('receipts'),
+        through='Receipt',
+    )
+    status = models.IntegerField(
+        verbose_name=_('status'),
+        choices=CampaignStatus.choices,
+        default=CampaignStatus.UNSENT
+    )
 
     panels = [
         FieldPanel('name'),

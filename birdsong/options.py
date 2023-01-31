@@ -28,25 +28,25 @@ class EmailCampaignButtonHelper(ButtonHelper):
 
         if campaign.status == CampaignStatus.SENDING:
             return [
-                button('preview', 'Preview', 'button-secondary icon icon-view'),
+                button('preview', _('Preview'), 'button-secondary icon icon-view'),
             ]
 
         sent = campaign.status != CampaignStatus.UNSENT
 
-        delete_btn = button('delete', 'Delete', 'no button-secondary')
-        copy_btn = button('copy', 'Copy', 'button-secondary')
+        delete_btn = button('delete', _('Delete'), 'no button-secondary')
+        copy_btn = button('copy', _('Copy'), 'button-secondary')
         if not sent:
             buttons = [
-                button('edit', 'Edit', 'bicolor icon icon-edit'),
+                button('edit', _('Edit'), 'bicolor icon icon-edit'),
                 copy_btn,
-                button('confirm_send', 'Send', 'bicolor icon icon-mail'),
-                button('send_test', 'Send test', 'button-secondary icon icon-cog'),
-                button('preview', 'Preview', 'button-secondary icon icon-view'),
-                delete_btn,
+                button('confirm_send', _('Send'), 'bicolor icon icon-mail'),
+                button('send_test', _('Send test'), 'button-secondary icon icon-cog'),
+                button('preview', _('Preview'), 'button-secondary icon icon-view'),
+                delete_btn
             ]
         else:
             buttons = [
-                button('inspect', 'View', 'button-secondary icon icon-view'),
+                button('inspect', _('View'), 'button-secondary icon icon-view'),
                 copy_btn,
                 delete_btn,
             ]
@@ -168,7 +168,7 @@ class CampaignAdmin(ModelAdmin):
 
     def copy(self, request, instance_pk):
         instance = self.model.objects.get(pk=instance_pk)
-        instance.name = instance.name + " (Copy)"
+        instance.name = '{} ({})'.format(instance.name, _('Copy'))
         instance.pk = None
         instance.id = None
         instance.sent_date = None

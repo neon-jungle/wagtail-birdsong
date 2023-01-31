@@ -7,7 +7,7 @@ import wagtail.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('birdsong', '0008_doubleoptinsettings_campaign_unsubscribe_success'),
+        ('birdsong', '0010_doubleoptinsettings_campaign_unsubscribe_success'),
     ]
 
     operations = [
