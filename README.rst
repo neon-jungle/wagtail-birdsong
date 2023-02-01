@@ -143,6 +143,19 @@ You can override the default ``Contact`` model by setting an option on the admin
         list_diplay = ('email', 'first_name', 'last_name', 'location')
 
 
+``base.py``
+
+.. code-block:: python
+
+    # You may want to extend the test contact
+    BIRDSONG_TEST_CONTACT = {
+        'first_name': 'Wagtail',
+        'last_name': 'Birdsong',
+        'email': 'birdsong@example.com',
+        'location': 'us',
+    }
+
+
 Filtering on contact properties
 ===============================
 

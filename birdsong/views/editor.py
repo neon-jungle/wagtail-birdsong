@@ -1,3 +1,4 @@
+from birdsong.conf import BIRDSONG_TEST_CONTACT
 from django.http.response import JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
@@ -65,9 +66,7 @@ def ajax_preview(request, view):
     form = FormClass(request.POST)
     if form.is_valid():
         campaign = form.save(commit=False)
-        contact_class = view.model_admin.contact_class
-        # FIXME won't work with no contacts
-        test_contact = contact_class.objects.first()
+        test_contact = view.model_admin.contact_class(**BIRDSONG_TEST_CONTACT)
         content = render_to_string(
             campaign.get_template(request),
             campaign.get_context(request, test_contact)
