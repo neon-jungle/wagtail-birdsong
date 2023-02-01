@@ -11,6 +11,8 @@ from .models import CampaignStatus, Contact
 from .views import actions
 from .views import editor as editor_views
 
+from birdsong.conf import BIRDSONG_TEST_CONTACT
+
 BIRDSONG_DEFAULT_BACKEND = 'birdsong.backends.smtp.SMTPEmailBackend'
 
 
@@ -137,7 +139,7 @@ class CampaignAdmin(ModelAdmin):
         contacts = self.get_contacts_send_to(request)
         return actions.send_campaign(self.backend, request, campaign, contacts)
 
-    def create_contact_form(self, data=None):
+    def create_contact_form(self, data=BIRDSONG_TEST_CONTACT):
         ContactForm = modelform_factory(self.contact_class, exclude=['id'])
         if data:
             return ContactForm(data)
