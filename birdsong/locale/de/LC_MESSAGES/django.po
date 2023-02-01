@@ -52,8 +52,6 @@ msgid "Contacts"
 msgstr "Kontakte"
 
 #: birdsong/models.py:31
-#, fuzzy
-#| msgid "email"
 msgid "e-mail"
 msgstr "E-Mail"
 
@@ -62,20 +60,14 @@ msgid "tags"
 msgstr "Tags"
 
 #: birdsong/models.py:33
-#, fuzzy
-#| msgid "created_at"
 msgid "created at"
 msgstr "erstellt am"
 
 #: birdsong/models.py:34
-#, fuzzy
-#| msgid "confirmed_at"
 msgid "confirmed at"
 msgstr "bestätigt am"
 
 #: birdsong/models.py:35
-#, fuzzy
-#| msgid "is_confirmed"
 msgid "is confirmed"
 msgstr "ist bestätigt"
 
@@ -104,14 +96,10 @@ msgid "The name of the campaign"
 msgstr "Name der Kampagne"
 
 #: birdsong/models.py:57
-#, fuzzy
-#| msgid "Subject"
 msgid "subject"
 msgstr "Betreff"
 
 #: birdsong/models.py:58
-#, fuzzy
-#| msgid "Sent date"
 msgid "sent date"
 msgstr "Versanddatum"
 
@@ -203,8 +191,6 @@ msgid "Reload preview"
 msgstr "Vorschau neu laden"
 
 #: birdsong/templates/birdsong/editor/inspect_campaign.html:7
-#, fuzzy
-#| msgid "Send Campaign"
 msgid "Campaign info"
 msgstr "Kampagne versenden"
 
@@ -242,8 +228,6 @@ msgid "Send to a subset of contacts?"
 msgstr "An einen Teil der Kontakte senden?"
 
 #: birdsong/templates/birdsong/editor/send_confirm.html:29
-#, fuzzy
-#| msgid "Send Campaign"
 msgid "Yes, send campaign"
 msgstr "Ja, Kampagne versenden"
 
@@ -252,14 +236,10 @@ msgid "No, don't send"
 msgstr "Nein, nicht versenden"
 
 #: birdsong/templates/birdsong/editor/test_confirm.html:4
-#, fuzzy
-#| msgid "Send test"
 msgid "Send test campaign email"
 msgstr "Test-E-Mail senden"
 
 #: birdsong/templates/birdsong/editor/test_confirm.html:24
-#, fuzzy
-#| msgid "Send test"
 msgid "Send test e-mail"
 msgstr "Test-E-Mail senden"
 
