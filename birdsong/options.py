@@ -107,7 +107,7 @@ class CampaignAdmin(ModelAdmin):
 
     def preview(self, request, instance_pk):
         campaign = self.model.objects.get(pk=instance_pk)
-        contact = self.contact_class.objects.first()
+        contact = self.contact_class(**BIRDSONG_TEST_CONTACT)
         return editor_views.preview(request, campaign, contact)
 
     def confirm_send(self, request, instance_pk):
