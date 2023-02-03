@@ -42,12 +42,7 @@ class InspectCampaign(InspectView):
         self.contact_class = model_admin.contact_class
 
     def get_context_data(self, **kwargs):
-        first_receipt = self.instance.receipts.first()
-        if first_receipt:
-            preview_contact = self.contact_class.objects.filter(
-                pk=first_receipt.pk).first()
-        else:
-            preview_contact = None
+        preview_contact = self.contact_class(**BIRDSONG_TEST_CONTACT)
         # Should this be frozen? Changes to templates will change old campaigns
         preview = render_to_string(
             self.instance.get_template(self.request),
