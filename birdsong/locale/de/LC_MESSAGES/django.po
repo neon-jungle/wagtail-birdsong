@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-18 17:01+0100\n"
+"POT-Creation-Date: 2023-01-19 17:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgstr ""
 
 #: birdsong/blocks.py:26
 msgid "Button label"
-msgstr "Button Bezeichnung"
+msgstr "Button-Bezeichnung"
 
 #: birdsong/blocks.py:27
 msgid "Privacy hint"
@@ -47,17 +47,73 @@ msgstr "Newsletteranmeldung"
 msgid "Contact"
 msgstr "Kontakt"
 
-#: birdsong/models.py:27 birdsong/options.py:182
+#: birdsong/models.py:27
 msgid "Contacts"
 msgstr "Kontakte"
+
+#: birdsong/models.py:31
+msgid "e-mail"
+msgstr "E-Mail"
+
+#: birdsong/models.py:32
+msgid "tags"
+msgstr "Tags"
+
+#: birdsong/models.py:33
+msgid "created at"
+msgstr "erstellt am"
+
+#: birdsong/models.py:34
+msgid "confirmed at"
+msgstr "bestätigt am"
+
+#: birdsong/models.py:35
+msgid "is confirmed"
+msgstr "ist bestätigt"
+
+#: birdsong/models.py:48
+msgid "unsent"
+msgstr "nicht versendet"
+
+#: birdsong/models.py:49
+msgid "sending"
+msgstr "sendend"
+
+#: birdsong/models.py:50
+msgid "sent"
+msgstr "versendet"
+
+#: birdsong/models.py:51
+msgid "failed"
+msgstr "fehlgeschlagen"
+
+#: birdsong/models.py:56
+msgid "name"
+msgstr "Name"
 
 #: birdsong/models.py:56
 msgid "The name of the campaign"
 msgstr "Name der Kampagne"
 
+#: birdsong/models.py:57
+msgid "subject"
+msgstr "Betreff"
+
+#: birdsong/models.py:58
+msgid "sent date"
+msgstr "Versanddatum"
+
+#: birdsong/models.py:59
+msgid "receipts"
+msgstr "Belege"
+
+#: birdsong/models.py:60
+msgid "status"
+msgstr "Status"
+
 #: birdsong/models.py:93
 msgid "Double opt-in settings"
-msgstr "Double-opt-in-Einstellungen"
+msgstr "Double-opt-in Einstellungen"
 
 #: birdsong/models.py:97
 msgid "Subject of confirmation e-mail"
@@ -107,7 +163,7 @@ msgstr "Vorschau"
 msgid "Delete"
 msgstr "Löschen"
 
-#: birdsong/options.py:37
+#: birdsong/options.py:37 birdsong/options.py:171
 msgid "Copy"
 msgstr "Kopieren"
 
@@ -116,10 +172,12 @@ msgid "Edit"
 msgstr "Bearbeiten"
 
 #: birdsong/options.py:42
+#: birdsong/templates/birdsong/editor/send_confirm.html:10
 msgid "Send"
 msgstr "Versenden"
 
 #: birdsong/options.py:43
+#: birdsong/templates/birdsong/editor/test_confirm.html:9
 msgid "Send test"
 msgstr "Test senden"
 
@@ -127,26 +185,14 @@ msgstr "Test senden"
 msgid "View"
 msgstr "Ansehen"
 
-#: birdsong/options.py:184
-msgid "email"
-msgstr "E-Mail"
-
-#: birdsong/options.py:184
-msgid "created_at"
-msgstr "erstellt am"
-
-#: birdsong/options.py:184
-msgid "confirmed_at"
-msgstr "bestätigt am"
-
-#: birdsong/options.py:184
-msgid "is_confirmed"
-msgstr "ist bestätigt"
-
 #: birdsong/templates/birdsong/editor/create_campaign.html:23
 #: birdsong/templates/birdsong/editor/edit_campaign.html:23
 msgid "Reload preview"
 msgstr "Vorschau neu laden"
+
+#: birdsong/templates/birdsong/editor/inspect_campaign.html:7
+msgid "Campaign info"
+msgstr "Kampagne versenden"
 
 #: birdsong/templates/birdsong/editor/inspect_campaign.html:12
 msgid "Subject"
@@ -177,9 +223,29 @@ msgstr "Inhalt"
 msgid "Send Campaign"
 msgstr "Kampagne versenden"
 
-#: birdsong/templates/birdsong/editor/send_confirm.html:19
+#: birdsong/templates/birdsong/editor/send_confirm.html:21
 msgid "Send to a subset of contacts?"
 msgstr "An einen Teil der Kontakte senden?"
+
+#: birdsong/templates/birdsong/editor/send_confirm.html:29
+msgid "Yes, send campaign"
+msgstr "Ja, Kampagne versenden"
+
+#: birdsong/templates/birdsong/editor/send_confirm.html:31
+msgid "No, don't send"
+msgstr "Nein, nicht versenden"
+
+#: birdsong/templates/birdsong/editor/test_confirm.html:4
+msgid "Send test campaign email"
+msgstr "Test-E-Mail senden"
+
+#: birdsong/templates/birdsong/editor/test_confirm.html:24
+msgid "Send test e-mail"
+msgstr "Test-E-Mail senden"
+
+#: birdsong/templates/birdsong/editor/test_confirm.html:26
+msgid "Cancel"
+msgstr "Abbrechen"
 
 #: birdsong/templates/birdsong/site/blocks/signup.html:7
 #: birdsong/templates/birdsong/site/blocks/signup.html:8
@@ -192,9 +258,17 @@ msgid ""
 " The email address '%(contact.email)s' has been confirmed and added to "
 "%(site.site_name)s's mailing list.\" "
 msgstr ""
-"Die E-Mail-Adresse '%(contact.email)s' wurde bestätigt und zur Mailing-"
-"Liste von %(site.site_name)s hinzugefügt."
+"Die E-Mail-Adresse '%(contact.email)s' wurde bestätigt und zur Mailing-Liste "
+"von %(site.site_name)s hinzugefügt."
 
 #: birdsong/templates/birdsong/site/signup.html:9
 msgid "Signup"
 msgstr "Registrieren"
+
+#: birdsong/views/actions.py:20
+msgid "Campaign sent to {} contacts"
+msgstr "Kampagne wurde an {} Kontakte versendet."
+
+#: birdsong/views/actions.py:27
+msgid "Test email sent, please check your inbox"
+msgstr "Test-E-Mail versendet, bitte Posteingang überprüfen."

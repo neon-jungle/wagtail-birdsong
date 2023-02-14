@@ -1,7 +1,8 @@
 import uuid
 
 from django.db import models
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext 
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
@@ -28,13 +29,18 @@ class Contact(ClusterableModel):
 
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False)
-    email = models.EmailField(verbose_name=_('e-mail'))
-    tags = ClusterTaggableManager(through=ContactTag, verbose_name=_('tags'), blank=True)
+    email = models.EmailField(verbose_name=_('email'))
+    tags = ClusterTaggableManager(
+        through=ContactTag,
+        verbose_name=_('tags'),
+        blank=True,
+    )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created at'))
     confirmed_at = models.DateTimeField(null=True, verbose_name=_('confirmed at'))
     is_confirmed = models.BooleanField(default=False, verbose_name=_('is confirmed'))
+
     token = models.UUIDField(default=uuid.uuid4, editable=False)
-'
+
     panels = [
         FieldPanel('email'),
         FieldPanel('tags'),
@@ -53,11 +59,26 @@ class CampaignStatus(models.IntegerChoices):
 
 class Campaign(models.Model):
     name = models.CharField(
-        verbose_name=_('name'), max_length=255, help_text=_('The name of the campaign'))
-    subject = models.TextField(verbose_name=_('subject')))
-    sent_date = models.DateTimeField(verbose_name=_('sent date'), blank=True, null=True)
-    receipts = models.ManyToManyField(Contact, verbose_name=_('receipts'), through='Receipt')
-    status = models.IntegerField(verbose_name=_('status'), choices=CampaignStatus.choices, default=CampaignStatus.UNSENT)
+        verbose_name=_('name'),
+        max_length=255,
+        help_text=_('The name of the campaign'),
+    )
+    subject = models.TextField(verbose_name=_('subject'))
+    sent_date = models.DateTimeField(
+        verbose_name=_('sent date'),
+        blank=True,
+        null=True,
+    )
+    receipts = models.ManyToManyField(
+        Contact,
+        verbose_name=_('receipts'),
+        through='Receipt',
+    )
+    status = models.IntegerField(
+        verbose_name=_('status'),
+        choices=CampaignStatus.choices,
+        default=CampaignStatus.UNSENT
+    )
 
     panels = [
         FieldPanel('name'),
@@ -90,12 +111,12 @@ class Receipt(models.Model):
 @register_setting
 class DoubleOptInSettings(BaseGenericSetting):
     class Meta:
-        verbose_name = _("Double opt-in settings")
+        verbose_name = gettext("Double opt-in settings")
 
     confirmation_email_subject = models.CharField(
         max_length=150,
-        verbose_name=_("Subject of confirmation e-mail"),
-        default=_("Confirm newsletter registration"),
+        verbose_name=gettext("Subject of confirmation e-mail"),
+        default=gettext("Confirm newsletter registration"),
     )
 
     confirmation_email_body = RichTextField(
@@ -107,11 +128,11 @@ class DoubleOptInSettings(BaseGenericSetting):
             "ol",
             "ul",
         ],
-        verbose_name=_("Content of confirmation e-mail"),
-        help_text=_(
+        verbose_name=gettext("Content of confirmation e-mail"),
+        help_text=gettext(
             "This Text is part of the e-mail that is sent after registration for a campaign"
         ),
-        default=_(
+        default=gettext(
             "Click the following link if you want register for our newsletter. Otherwise no "
             "action is neccessary."
         ),
@@ -122,21 +143,21 @@ class DoubleOptInSettings(BaseGenericSetting):
         null=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=_("Redirect page after confirmation of campaign signup"),
+        verbose_name=gettext("Redirect page after confirmation of campaign signup"),
     )
     campaign_signup_redirect = models.ForeignKey(
         "wagtailcore.Page",
         null=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=_("Redirect page after signup for a campaign"),
+        verbose_name=gettext("Redirect page after signup for a campaign"),
     )
     campaign_unsubscribe_success = models.ForeignKey(
         "wagtailcore.Page",
         null=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=_("Success page for unsubscription"),
+        verbose_name=gettext("Success page for unsubscription"),
     )
 
     panels = [

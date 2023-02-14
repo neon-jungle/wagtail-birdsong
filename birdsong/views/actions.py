@@ -18,6 +18,7 @@ def send_campaign(backend, request, campaign, contacts):
     campaign.save()
     backend.send_campaign(request, campaign, contacts)
     messages.success(request, _("Campaign sent to {} contacts").format(len(contacts)))
+
     return redirect_helper(campaign)
 
 
@@ -25,7 +26,7 @@ def send_test(backend, request, campaign, test_contact):
     campaign.subject = f"[TEST] {campaign.subject}"
     backend.send_campaign(request, campaign, [test_contact], test_send=True)
     messages.success(request, _("Test email sent, please check your inbox"))
-        
+
     return redirect_helper(campaign)
 
 

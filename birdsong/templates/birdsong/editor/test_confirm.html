@@ -1,12 +1,13 @@
 {% extends "wagtailadmin/base.html" %}
 {% load i18n modeladmin_tags %}
 
-{% block titletag %}Send test campaign email{% endblock %}
+{% block titletag %}{% trans "Send test campaign email" %}{% endblock %}
 
 {% block content %}
 
     {% block header %}
-        {% include "wagtailadmin/shared/header.html" with title="Send test" subtitle=self icon=view.header_icon %}
+        {% translate "Send test" as sendtest %}
+        {% include "wagtailadmin/shared/header.html" with title=sendtest subtitle=self icon=view.header_icon %}
     {% endblock %}
 
     {% block content_main %}
@@ -21,7 +22,7 @@
                     {% endfor %}
                     <li>
                         <input type="submit" value="{% trans "Send test email" %}" class="button"/>
-                        <a href="{{ index_url }}" class="button button-secondary">{% translate Cancel %}</a>
+                        <a href="{{ index_url }}" class="button button-secondary">{% trans "Cancel" %}</a>
                     </li>
                 </ul>
             </form>
