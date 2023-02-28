@@ -1,9 +1,10 @@
+from datetime import date, timedelta
+
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from datetime import timedelta, date
 
-from birdsong.models import Campaign, Contact
 from birdsong.conf import BIRDSONG_DOUBLE_OPT_IN_ENABLED
+from birdsong.models import Campaign, Contact
 
 
 @receiver(post_save)

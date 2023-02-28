@@ -7,10 +7,10 @@ from django.utils.translation import gettext as _
 from wagtail.contrib.modeladmin.helpers import AdminURLHelper, ButtonHelper
 from wagtail.contrib.modeladmin.options import ModelAdmin
 
+from .conf import BIRDSONG_DOUBLE_OPT_IN_ENABLED
 from .models import CampaignStatus, Contact
 from .views import actions
 from .views import editor as editor_views
-from .conf import BIRDSONG_DOUBLE_OPT_IN_ENABLED
 
 BIRDSONG_DEFAULT_BACKEND = 'birdsong.backends.smtp.SMTPEmailBackend'
 

@@ -1,13 +1,14 @@
+from django.conf import settings
+from django.shortcuts import redirect
+from django.urls import reverse
+from django.utils.module_loading import import_string
+from django.views.generic.edit import FormView
+from wagtail.models import Site
+
+from birdsong.conf import BIRDSONG_DOUBLE_OPT_IN_ENABLED
 from birdsong.forms import ContactForm
 from birdsong.models import Contact, DoubleOptInSettings
 from birdsong.views import actions
-from django.shortcuts import redirect
-from django.utils.module_loading import import_string
-from django.views.generic.edit import FormView
-from django.urls import reverse
-from django.conf import settings
-from wagtail.models import Site
-from ..conf import BIRDSONG_DOUBLE_OPT_IN_ENABLED
 
 
 class SignUpView(FormView):

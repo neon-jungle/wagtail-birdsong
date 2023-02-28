@@ -1,20 +1,18 @@
 import uuid
 
 from django.db import models
+from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
-from django.utils.translation import gettext 
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 from taggit.models import TaggedItemBase
 from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.contrib.settings.models import (BaseGenericSetting,
+                                             register_setting)
+from wagtail.core.fields import RichTextField
 from wagtail.core.models import Site
 from wagtail.core.utils import camelcase_to_underscore
-from wagtail.contrib.settings.models import (
-    register_setting,
-    BaseGenericSetting,
-)
-from wagtail.core.fields import RichTextField
 
 
 class ContactTag(TaggedItemBase):
