@@ -232,7 +232,18 @@ Included in birdsong is a basic way for contacts to unsubscribe, just include th
     {% endblock email_body %}
 
 
+Double opt in
+=============
 
+The double opt in feature can be enabled.
+
+``setting.py``
+
+.. code-block:: python
+
+    BIRDSONG_DOUBLE_OPT_IN_ENABLED=True
+
+Note that previously saved contacts will not be used when sending a campaign anymore. This can be reverted.
 
 Future features:
 ----------------
