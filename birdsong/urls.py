@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import unsubscribe, confirm, signup
+from .views import confirm, signup, unsubscribe
 
 app_name = "birdsong"
 
