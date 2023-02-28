@@ -7,6 +7,7 @@ from django.views.generic.edit import FormView
 from django.urls import reverse
 from django.conf import settings
 from wagtail.models import Site
+from ..conf import BIRDSONG_DOUBLE_OPT_IN_ENABLED
 
 
 class SignUpView(FormView):
@@ -15,25 +16,26 @@ class SignUpView(FormView):
     contact_model = Contact
 
     def form_valid(self, form):
-        from birdsong.options import BIRDSONG_DEFAULT_BACKEND
+        if BIRDSONG_DOUBLE_OPT_IN_ENABLED == True: 
+            from birdsong.options import BIRDSONG_DEFAULT_BACKEND
 
-        double_opt_in_settings = DoubleOptInSettings.load(request_or_site=self.request)
-        contact, created = self.contact_model.objects.get_or_create(email=form.cleaned_data["email"])
+            double_opt_in_settings = DoubleOptInSettings.load(request_or_site=self.request)
+            contact, created = self.contact_model.objects.get_or_create(email=form.cleaned_data["email"])
 
-        site = Site.find_for_request(self.request)
-        url = (
-            site.root_url
-            + reverse("birdsong:confirm", args=[contact.token])
-        )
+            site = Site.find_for_request(self.request)
+            url = (
+                site.root_url
+                + reverse("birdsong:confirm", args=[contact.token])
+            )
 
-        backend_class = import_string(
-            getattr(settings, "BIRDSONG_BACKEND", BIRDSONG_DEFAULT_BACKEND)
-        )
+            backend_class = import_string(
+                getattr(settings, "BIRDSONG_BACKEND", BIRDSONG_DEFAULT_BACKEND)
+            )
 
-        actions.send_confirmation(backend_class(), self.request, contact, url)
+            actions.send_confirmation(backend_class(), self.request, contact, url)
 
-        redirect_url = "/"
-        if double_opt_in_settings.campaign_signup_redirect:
-            redirect_url = double_opt_in_settings.campaign_signup_redirect.get_url()
+            redirect_url = "/"
+            if double_opt_in_settings.campaign_signup_redirect:
+                redirect_url = double_opt_in_settings.campaign_signup_redirect.get_url()
 
-        return redirect(redirect_url)
+            return redirect(redirect_url)

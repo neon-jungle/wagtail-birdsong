@@ -10,6 +10,7 @@ from wagtail.contrib.modeladmin.options import ModelAdmin
 from .models import CampaignStatus, Contact
 from .views import actions
 from .views import editor as editor_views
+from .conf import BIRDSONG_DOUBLE_OPT_IN_ENABLED
 
 BIRDSONG_DEFAULT_BACKEND = 'birdsong.backends.smtp.SMTPEmailBackend'
 
@@ -130,9 +131,16 @@ class CampaignAdmin(ModelAdmin):
         if self.contact_filter_class:
             Filter = self.contact_filter_class
             contact_filter = Filter(request.POST)
-            qs = contact_filter.qs.filter(is_confirmed=True)
+            if BIRDSONG_DOUBLE_OPT_IN_ENABLED == True:
+                qs = contact_filter.qs.filter(is_confirmed=True)
+            else: 
+                qs = contact_filter.qs.filter()
             return qs
-        return self.contact_class.objects.all().filter(is_confirmed=True)
+        if BIRDSONG_DOUBLE_OPT_IN_ENABLED == True:
+            contacts = self.contact_class.objects.all().filter(is_confirmed=True)
+        else: 
+            contacts = self.contact_class.objects.all()
+        return contacts
 
     def send_campaign(self, request, instance_pk):
         campaign = self.model.objects.get(pk=instance_pk)
