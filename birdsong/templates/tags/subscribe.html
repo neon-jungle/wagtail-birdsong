@@ -1,0 +1,101 @@
+<form id="{{ BIRDSONG_SUBSCRIBE_FORM_ID }}" action="{{ form_action }}" method="post" class="needs-validation" {% if BIRDSONG_SUBSCRIBE_FORM_NOVALIDATE %}novalidate{% endif %}>
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="{{ BIRDSONG_SUBSCRIBE_FORM_BUTTON_LABEL }}">
+</form>
+
+<script>
+    const BIRDSONG_SUBSCRIBE_FORM_AJAX = String("{{BIRDSONG_SUBSCRIBE_FORM_AJAX}}").toLowerCase() == "true"
+    const BIRDSONG_SUBSCRIBE_FORM_FEEDBACK = String("{{BIRDSONG_SUBSCRIBE_FORM_FEEDBACK}}").toLowerCase() == "true"
+    const FORM_SELECTOR = "#{{BIRDSONG_SUBSCRIBE_FORM_ID}}"
+    const FORM_CONTROL = "form-control"
+    const FORM_FEEDBACK_VALID = "valid-feedback"
+    const FORM_FEEDBACK_INVALID = "invalid-feedback"
+    const FORM_FEEDBACK_IS_VALID = "is-valid"
+    const FORM_FEEDBACK_IS_INVALID = "is-invalid"
+    const FORM_EXPIRED_ERROR = "{{FORM_EXPIRED_ERROR}}"
+    const FORM_UNEXPECTED_ERROR = "{{FORM_UNEXPECTED_ERROR}}"
+
+    let form = document.querySelector(FORM_SELECTOR)
+    let input_field_email = form.querySelector('input[name="email"]')
+    input_field_email.classList.add(FORM_CONTROL)
+    resetForm()
+
+    function createFormMessage(class_name, message) {
+        element = document.createElement("div")
+        element.classList.add(class_name)
+        element.innerHTML = message
+        return element
+    }    
+
+    function createFormFeedback(is_valid, message) {
+        if (BIRDSONG_SUBSCRIBE_FORM_FEEDBACK) {
+            if (is_valid) {
+                input_field_email.classList.add(FORM_CONTROL)
+                input_field_email.classList.add(FORM_FEEDBACK_IS_VALID)
+                form.appendChild(createFormMessage(FORM_FEEDBACK_VALID, message))
+            } else {
+                input_field_email.classList.add(FORM_CONTROL)
+                input_field_email.classList.add(FORM_FEEDBACK_IS_INVALID)
+                form.appendChild(createFormMessage(FORM_FEEDBACK_INVALID, message))
+            }
+        }
+    }
+
+    function removeFormFeedback(className) {
+        form = document.querySelector(FORM_SELECTOR)
+        let elements = form.getElementsByClassName(className);
+        while(elements.length > 0){
+            elements[0].parentNode.removeChild(elements[0]);
+        }
+    }
+
+    function resetForm() {
+        removeFormFeedback(FORM_FEEDBACK_VALID)
+        removeFormFeedback(FORM_FEEDBACK_INVALID)
+
+        input_field_email.classList.remove(FORM_FEEDBACK_IS_VALID)
+        input_field_email.classList.remove(FORM_FEEDBACK_IS_INVALID)
+    }
+
+    if (BIRDSONG_SUBSCRIBE_FORM_AJAX) {
+        document.querySelector(FORM_SELECTOR).addEventListener("submit", function(e) {
+
+            if (BIRDSONG_SUBSCRIBE_FORM_FEEDBACK) {
+                resetForm()
+            }
+            let input_field_csrf = form.querySelector('input[name="csrfmiddlewaretoken"]')
+
+            var body = JSON.stringify({"email": input_field_email.value})
+
+            let csrf_token = input_field_csrf.value
+
+            fetch("{{ subscribe_api_url }}", {
+                method: form.method,
+                body: body,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrf_token,
+                }
+            }).then((response) => {
+                if (response.status == 403) { // forbidden access?
+                    createFormFeedback(false, FORM_EXPIRED_ERROR) // let's assume due to an expired CSRF token
+                    return
+                }
+                if (response.status != 200) { // response not ok?
+                    createFormFeedback(false, FORM_UNEXPECTED_ERROR)
+                    return
+                }
+                return response.json()
+            }).then((response) => {
+                if (typeof response !== "undefined") {
+                    createFormFeedback(response.success, response.message)
+                }
+            }).catch((error) => {
+                createFormFeedback(false, FORM_UNEXPECTED_ERROR)
+            })
+
+            e.preventDefault()  // prevent form HTTP submit action
+        });
+    }
+</script>

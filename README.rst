@@ -147,6 +147,9 @@ You can override the default ``Contact`` model by setting an option on the admin
 
 .. code-block:: python
 
+    # You should teach Birdsong how it should access your newly extended contact model
+    BIRDSONG_CONTACT_MODEL = 'your_app.ExtendedContact'
+
     # You may want to redefine the test contact (used in previews) with your new ExtendedContact fields
     BIRDSONG_TEST_CONTACT = {
         'first_name': 'Wagtail',
@@ -201,6 +204,72 @@ You might want to only send a campaign to a subset of your ``Contact`` models. C
 
 
 Users will now be able to send campaigns to a subset of contacts base on location.
+
+
+
+Subscribe form
+===============
+
+Included in birdsong is a basic way for contacts to subscribe. First let's load Birdsong's urls.
+
+``urls.py``
+
+.. code-block:: python
+
+    from birdsong import urls as birdsong_urls
+    from django.urls import include, path
+
+    urlpatterns = [
+        ...
+        path('mail/', include(birdsong_urls)),
+        ...
+    ]
+
+
+Now just use the ``birdsong_subscription_form`` birdsong template tag in any of your templates.
+
+``your_app/templates/your_template.html``
+
+.. code-block:: html
+
+    ...
+    {% load static birdsong_tags %}
+    ...
+    {% birdsong_subscription_form %}
+    ...
+
+
+You can control the subscribe form by changing any of these optional settings:
+
+.. code-block:: python
+
+    BIRDSONG_SUBSCRIBE_FORM_AJAX = True # turns on/off ajax support
+    BIRDSONG_SUBSCRIBE_FORM_FEEDBACK = True # turns on/off bootstrap5 compatible validation feedback
+    BIRDSONG_SUBSCRIBE_FORM_NOVALIDATE  = False # turns on/off built-in browser form field validation
+    BIRDSONG_SUBSCRIBE_FORM_ID = 'subscribe-form'
+    BIRDSONG_SUBSCRIBE_FORM_BUTTON_LABEL = 'Subscribe'
+    BIRDSONG_SUBSCRIBE_FORM_MSG_SUCCESS = 'You have been subscribed.'
+    BIRDSONG_SUBSCRIBE_FORM_MSG_FAILURE = 'Invalid email address'
+    BIRDSONG_SUBSCRIBE_FORM_TEMPLATE = 'subscribe.html'
+
+    BIRDSONG_ACTIVATION_REQUIRED = True # turns on/off email activation requirement for new subscriptions
+    BIRDSONG_ACTIVATION_REQUIRED_MSG = 'Check your e-mail to activate your subscription.'
+    BIRDSONG_ACTIVATION_EMAIL_SUBJECT = 'Activate Your ' + WAGTAIL_SITE_NAME + ' Mailing List Subscription'
+    BIRDSONG_ACTIVATION_EMAIL_TEMPLATE = 'birdsong/mail/activation_email.html'
+    BIRDSONG_ACTIVATION_TEMPLATE = 'activate.html'
+
+
+For example, if you want to change the activation email you should create your new template in your app's templates directory e.g. under ``mail/activation_email.html`` and then change the relevant setting:
+
+``base.py``
+
+.. code-block:: python
+
+    ...
+    BIRDSONG_ACTIVATION_EMAIL_TEMPLATE = 'mail/activation_email.html'
+    ...
+
+
 
 Unsubscribe url
 ===============

@@ -5,9 +5,11 @@ from threading import Thread
 from django.db import close_old_connections, transaction
 from django.template.loader import render_to_string
 from django.utils import timezone
+from django.core.mail import send_mail
 
-from birdsong.models import Campaign, CampaignStatus, Contact
 from birdsong.utils import send_mass_html_mail
+import birdsong.models # NOTE: can't use "from birdsong.models import ..." syntax without risking circular dependency imports in client overloads
+                       # NOTE: This is due to BIRDSONG_BACKEND module_loading in birdsong.conf
 
 from . import BaseEmailBackend
 
@@ -27,17 +29,17 @@ class SendCampaignThread(Thread):
             send_mass_html_mail(self.messages)
             logger.info("Emails finished sending")
             with transaction.atomic():
-                Campaign.objects.filter(pk=self.campaign_pk).update(
-                    status=CampaignStatus.SENT,
+                birdsong.models.Campaign.objects.filter(pk=self.campaign_pk).update(
+                    status=birdsong.models.CampaignStatus.SENT,
                     sent_date=timezone.now(),
                 )
-                fresh_contacts = Contact.objects.filter(
+                fresh_contacts = birdsong.models.Contact.objects.filter(
                     pk__in=self.contact_pks)
-                Campaign.objects.get(
+                birdsong.models.Campaign.objects.get(
                     pk=self.campaign_pk).receipts.add(*fresh_contacts)
         except SMTPException:
             logger.exception(f"Problem sending campaign: {self.campaign_pk}")
-            self.campaign.status = CampaignStatus.FAILED
+            self.campaign.status = birdsong.models.CampaignStatus.FAILED
         finally:
             close_old_connections()
 
@@ -65,3 +67,26 @@ class SMTPEmailBackend(BaseEmailBackend):
             campaign_thread = SendCampaignThread(
                 campaign.pk, [c.pk for c in contacts], messages)
             campaign_thread.start()
+
+    def send_mail(self, subject, template, contact, context):
+        """Sends out a single email.
+        NOTE: This method is here so that birdsong can utilize backends to send subscription activation emails.
+
+        :param subject: Subject of the email
+        :type subject: str
+        :param template: Template to use for the email (e.g. 'birdsong/mail/activation_email.html')
+        :type template: str
+        :param contact: Contact to send the email to (see `bridsong.utils.get_contact_model`)
+        :type contact: class:`bridsong.models.Contact` or class defined by `BIRDSONG_CONTACT_MODEL` setting
+        :param context: Data for the template
+        :type context: dict
+
+        :return: 0 on failure, network connection otherwise (see `EmailMessage.send`), 
+        :rtype: int|class (defnied by `settings.EMAIL_BACKEND`)
+        """
+        return send_mail(
+            subject,
+            render_to_string(template, context),
+            self.from_email,
+            [contact.email]
+        )

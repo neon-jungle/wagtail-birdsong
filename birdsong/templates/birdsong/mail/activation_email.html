@@ -1,0 +1,14 @@
+{% extends "birdsong/mail/base_email.html" %}
+
+{% block email_body %}
+<mj-section>
+    <mj-column>
+        <mj-text>
+            Please activate your {{ site_name }}'s mailing list subscription by visiting the following link:   
+        </mj-text>
+        <mj-text>
+            <a href="{{ activate_url }}">{{ activate_url }}</a>
+        </mj-text>
+    </mj-column>
+</mj-section>
+{% endblock email_body %}
