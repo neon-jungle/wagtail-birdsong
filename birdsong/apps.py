@@ -1,4 +1,6 @@
 from django.apps import AppConfig
+from django.db.models.signals import post_save
+
 
 
 class WagtailBirdsongApp(AppConfig):
@@ -8,4 +10,7 @@ class WagtailBirdsongApp(AppConfig):
     verbose_name = 'Wagtail Birdsong'
 
     def ready(self):
-        from . import signals  # noqa
+        from .signals import clean_unconfirmed_contacts
+        from .models import Campaign
+        for subclass in Campaign.__subclasses__():
+            post_save.connect(clean_unconfirmed_contacts, sender=subclass)
