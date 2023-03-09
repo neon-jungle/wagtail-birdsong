@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('wagtailcore', '0076_modellogentry_revision'),
-        ('birdsong', '0008_translation_support'),
+        ('birdsong', '0006_auto_20220428_0558'),
     ]
 
     operations = [

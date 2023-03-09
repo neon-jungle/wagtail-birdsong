@@ -1,15 +1,14 @@
-from datetime import date, timedelta
-
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from datetime import timedelta, date
 
-from birdsong.conf import BIRDSONG_DOUBLE_OPT_IN_ENABLED
-from birdsong.models import Campaign, Contact
+from birdsong.models import Campaign, Contact, DoubleOptInSettings
 
 
-@receiver(post_save)
+@receiver(post_save, sender=Campaign)
 def clean_unconfirmed_contacts(sender, instance, created, **kwargs):
-    if issubclass(sender, Campaign) & BIRDSONG_DOUBLE_OPT_IN_ENABLED == True:
+    doi_settings = DoubleOptInSettings.load()
+    if issubclass(sender, Campaign) & doi_settings.double_opt_in_enabled == True:
         Contact.objects.filter(
             created_at__lt=date.today() - timedelta(weeks=1), is_confirmed=False
         ).delete()

@@ -1,6 +1,5 @@
-from django.shortcuts import get_object_or_404, redirect
 from django.utils import timezone
-
+from django.shortcuts import get_object_or_404, redirect
 from birdsong.models import Contact, DoubleOptInSettings
 
 

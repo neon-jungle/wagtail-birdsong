@@ -1,18 +1,20 @@
 import uuid
 
 from django.db import models
-from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext 
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 from taggit.models import TaggedItemBase
 from wagtail.admin.edit_handlers import FieldPanel
-from wagtail.contrib.settings.models import (BaseGenericSetting,
-                                             register_setting)
-from wagtail.core.fields import RichTextField
 from wagtail.core.models import Site
 from wagtail.core.utils import camelcase_to_underscore
+from wagtail.contrib.settings.models import (
+    register_setting,
+    BaseGenericSetting,
+)
+from wagtail.core.fields import RichTextField
 
 
 class ContactTag(TaggedItemBase):
@@ -111,6 +113,14 @@ class DoubleOptInSettings(BaseGenericSetting):
     class Meta:
         verbose_name = gettext("Double opt-in settings")
 
+    double_opt_in_enabled = models.BooleanField(
+        default=False,
+        verbose_name=_("Enable double opt-in"),
+        help_text=_(
+            "The settings below are only applied if double opt-in is enabled."
+        ),
+    )
+
     confirmation_email_subject = models.CharField(
         max_length=150,
         verbose_name=gettext("Subject of confirmation e-mail"),
@@ -159,6 +169,7 @@ class DoubleOptInSettings(BaseGenericSetting):
     )
 
     panels = [
+        FieldPanel("double_opt_in_enabled"),
         FieldPanel("campaign_signup_redirect"),
         FieldPanel("campaign_confirmation_redirect"),
         FieldPanel("campaign_unsubscribe_success"),

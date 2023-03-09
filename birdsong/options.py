@@ -7,10 +7,9 @@ from django.utils.translation import gettext as _
 from wagtail.contrib.modeladmin.helpers import AdminURLHelper, ButtonHelper
 from wagtail.contrib.modeladmin.options import ModelAdmin
 
-from .conf import BIRDSONG_DOUBLE_OPT_IN_ENABLED
-from .models import CampaignStatus, Contact
-from .views import actions
-from .views import editor as editor_views
+from birdsong.models import CampaignStatus, Contact, DoubleOptInSettings
+from birdsong.views import actions
+from birdsong.views import editor as editor_views
 
 BIRDSONG_DEFAULT_BACKEND = 'birdsong.backends.smtp.SMTPEmailBackend'
 
@@ -76,6 +75,7 @@ class CampaignAdmin(ModelAdmin):
     form_view_extra_js = ['birdsong/js/preview_campaign.js']
     form_view_extra_css = ['birdsong/css/campaign-editor.css']
 
+
     def __init__(self, parent=None):
         if not self.model and self.campaign:
             self.model = self.campaign
@@ -128,15 +128,16 @@ class CampaignAdmin(ModelAdmin):
         return contact_filter.form
 
     def get_contacts_send_to(self, request):
+        doi_settings = DoubleOptInSettings.load()
         if self.contact_filter_class:
             Filter = self.contact_filter_class
             contact_filter = Filter(request.POST)
-            if BIRDSONG_DOUBLE_OPT_IN_ENABLED == True:
+            if doi_settings.double_opt_in_enabled == True:
                 qs = contact_filter.qs.filter(is_confirmed=True)
             else: 
                 qs = contact_filter.qs.filter()
             return qs
-        if BIRDSONG_DOUBLE_OPT_IN_ENABLED == True:
+        if doi_settings.double_opt_in_enabled == True:
             contacts = self.contact_class.objects.all().filter(is_confirmed=True)
         else: 
             contacts = self.contact_class.objects.all()

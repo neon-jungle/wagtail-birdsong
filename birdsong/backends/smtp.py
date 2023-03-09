@@ -6,8 +6,8 @@ from django.db import close_old_connections, transaction
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.html import format_html
-
 from birdsong.models import Campaign, CampaignStatus, Contact
+
 from birdsong.utils import send_mass_html_mail
 
 from . import BaseEmailBackend
