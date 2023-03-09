@@ -235,15 +235,9 @@ Included in birdsong is a basic way for contacts to unsubscribe, just include th
 Double opt in
 =============
 
-The double opt in feature can be enabled.
+The double opt-in feature can be enabled in 'Double opt-in settings' in the admin menu. 
 
-``setting.py``
-
-.. code-block:: python
-
-    BIRDSONG_DOUBLE_OPT_IN_ENABLED=True
-
-Note that previously saved contacts will not be used when sending a campaign anymore. This can be reverted.
+Attention: If you have saved contacts and enable the feature without garantueeing that the field is_confirmed is True, they will be deleted when campaign saving is triggered!
 
 Future features:
 ----------------
