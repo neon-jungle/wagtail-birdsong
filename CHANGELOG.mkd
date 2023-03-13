@@ -1,3 +1,11 @@
+# 1.2.0
+
+- New Frontend Subscribe Form feature
+- New optional setting `BIRDSONG_TEST_CONTACT`
+- Potential backward incompatible changes:
+  - `birsong_contact.email` is now a UNIQUE db field
+  - BaseEmailBackend is now an abstract class with two abstract methods `send_campaign()` and `send_mail()`
+
 # 1.1.2
 
 - French translation added
