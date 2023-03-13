@@ -232,7 +232,7 @@ First let's load Birdsong's urls.
     ]
 
 
-Now just use the ``birdsong_subscription_form`` birdsong template tag in any of your templates.
+Now just use the ``birdsong_subscription_form`` template tag in any of your templates.
 
 ``your_app/templates/your_template.html``
 
