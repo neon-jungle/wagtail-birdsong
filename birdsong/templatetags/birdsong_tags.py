@@ -6,7 +6,7 @@ from django.utils.translation import gettext as _
 
 from wagtail.models import Site
 
-from birdsong.forms import SubscriptionForm
+from birdsong.forms import SubscribeForm
 
 from birdsong.conf import (
     BIRDSONG_SUBSCRIBE_FORM_ID, BIRDSONG_SUBSCRIBE_FORM_BUTTON_LABEL, BIRDSONG_SUBSCRIBE_FORM_AJAX,
@@ -16,8 +16,8 @@ from birdsong.conf import (
 register = template.Library()
 
 @register.inclusion_tag("tags/subscribe.html", takes_context=True)
-def birdsong_subscription_form(context):
-    """Renders the Subscription form template tag.
+def birdsong_subscribe_form(context):
+    """Renders the Subscribe form template tag.
     NOTE: Aimed to be used in client apps' templates. (see `birdsong/templates/subscribe.html`)
 
     :param context: Data for the template
@@ -27,9 +27,9 @@ def birdsong_subscription_form(context):
     :rtype: dict
     """
     if context.request.method == 'POST': # POST method?
-        form = SubscriptionForm(context.request.POST) # create a subscription form and populate it with posted data
+        form = SubscribeForm(context.request.POST) # create a subscribe form and populate it with posted data
     else: # GET or any other method?
-        form = SubscriptionForm() # create a blank subscription form
+        form = SubscribeForm() # create a blank subscribe form
 
     return { 
         "messages": messages.get_messages(context.request),

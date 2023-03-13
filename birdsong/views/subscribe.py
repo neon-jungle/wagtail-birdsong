@@ -15,7 +15,7 @@ from birdsong.conf import (
     BIRDSONG_ACTIVATION_EMAIL_SUBJECT, BIRDSONG_ACTIVATION_EMAIL_TEMPLATE,
     BIRDSONG_SUBSCRIBE_FORM_MSG_SUCCESS, BIRDSONG_SUBSCRIBE_FORM_MSG_FAILURE, BIRDSONG_SUBSCRIBE_FORM_TEMPLATE,
 )
-from birdsong.forms import SubscriptionForm
+from birdsong.forms import SubscribeForm
 from birdsong.utils import get_json_http_response, create_contact
 
 DUPLICATE_EMAIL_EXCEPTION = "UNIQUE constraint failed: birdsong_contact.email"
@@ -35,7 +35,7 @@ def subscribe(request):
     if request.method == 'POST': # POST method?
         contact = None
         try:
-            form = SubscriptionForm(request.POST) # create a form instance and populate it with data from the request
+            form = SubscribeForm(request.POST) # create a form instance and populate it with data from the request
             if form.is_valid(): # is the form valid?
                 with transaction.atomic():
                     contact = create_contact(form.cleaned_data['email'])
@@ -55,9 +55,9 @@ def subscribe(request):
         except Exception as e:
             if contact:
                 contact.delete()
-            form = SubscriptionForm() # present a blank form
+            form = SubscribeForm() # present a blank form
     else: # GET or any other method?
-        form = SubscriptionForm() # present a blank form
+        form = SubscribeForm() # present a blank form
 
     return render(
         request, BIRDSONG_SUBSCRIBE_FORM_TEMPLATE, context={
@@ -82,7 +82,7 @@ def subscribe_api(request):
             if request.headers.get('Content-Type') == 'application/json': # is json request?
                 encoding = request.POST.get("_encoding", 'utf-8')
                 body_data = json.loads(request.body.decode(encoding))
-                form = SubscriptionForm(body_data)
+                form = SubscribeForm(body_data)
                 if form.is_valid():
                     with transaction.atomic():
                         contact = create_contact(form.cleaned_data['email'])
@@ -113,7 +113,7 @@ def subscribe_api(request):
                     msg += '<br />' + BIRDSONG_ACTIVATION_REQUIRED_MSG if BIRDSONG_ACTIVATION_REQUIRED else ''
                 return get_json_http_response(msg) # obfuscate "Already Subscribed" error as success
         except Exception as e: # any other exception?
-            # import traceback; traceback.print_exc()
+            import traceback; traceback.print_exc()
             if contact:
                 contact.delete()
             return get_json_http_response(_("Internal server error"), success=False, status=500)

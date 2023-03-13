@@ -216,7 +216,7 @@ Included in birdsong is a basic way for contacts to subscribe.
     :width: 575
     :alt: Birdsong Frontend Subscribe Form
 
-First let's load Birdsong's urls.
+First let's include Birdsong's urls in your project.
 
 ``urls.py``
 
@@ -232,16 +232,16 @@ First let's load Birdsong's urls.
     ]
 
 
-Now just use the ``birdsong_subscription_form`` template tag in any of your templates.
+After that just use the ``birdsong_subscribe_form`` template tag in any of your templates.
 
 ``your_app/templates/your_template.html``
 
 .. code-block:: html
 
     ...
-    {% load static birdsong_tags %}
+    {% load birdsong_tags %}
     ...
-    {% birdsong_subscription_form %}
+    {% birdsong_subscribe_form %}
     ...
 
 
@@ -265,7 +265,8 @@ You can control the subscribe form by changing any of these optional settings:
     BIRDSONG_ACTIVATION_TEMPLATE = 'activate.html'
 
 
-For example, if you want to change the activation email you should create your new template in your app's templates directory e.g. under ``mail/activation_email.html`` and then change the relevant setting:
+For example, if you want to change the activation email you can create your new template in your app's templates
+directory e.g. under ``your_app/templates/mail/activation_email.html`` and then change the relevant setting:
 
 ``base.py``
 
