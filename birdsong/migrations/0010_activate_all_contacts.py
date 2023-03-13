@@ -11,12 +11,12 @@ def activate_all_contacts(apps, schema_editor):
     Contact.objects.bulk_update(contacts, ['is_active'])
 
 class Migration(migrations.Migration):
-    """This migration is necessary because initially we want to set `contact.is_active` field to True during migrations.
+    """This migration is necessary because we want to grandfather existing contacts by setting their `contact.is_active` field to True.
     
     This should happen because there was no activation process for contacts in the past and so it makes sense to treat
     all existing contacts as already active.
     
-    Explanation of why a bare AddField/AlterFiel solution wouldn't work:
+    Explanation of why a bare AddField/AlterField solution wouldn't work:
         It might be tempting to implement this by two migrations where AddField sets the default to True in the first
         migration and then in the second migration have an AlterField operation that sets `contact.is_active` default
         back to False. Unfortunately that solution would only work until the two migrations get squashed.

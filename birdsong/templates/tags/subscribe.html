@@ -65,9 +65,7 @@
                 resetForm()
             }
             let input_field_csrf = form.querySelector('input[name="csrfmiddlewaretoken"]')
-
-            var body = JSON.stringify({"email": input_field_email.value})
-
+            let body = JSON.stringify({"email": input_field_email.value})
             let csrf_token = input_field_csrf.value
 
             fetch("{{ subscribe_api_url }}", {
