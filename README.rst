@@ -210,7 +210,13 @@ Users will now be able to send campaigns to a subset of contacts base on locatio
 Subscribe form
 ===============
 
-Included in birdsong is a basic way for contacts to subscribe. First let's load Birdsong's urls.
+Included in birdsong is a basic way for contacts to subscribe.
+
+.. image:: docs/birdsong-frontend-subscribe-form.gif
+    :width: 575
+    :alt: Birdsong Frontend Subscribe Form
+
+First let's load Birdsong's urls.
 
 ``urls.py``
 
