@@ -71,15 +71,15 @@ for content editors to create/edit/send campaigns.
     class BirdsongAdminGroup(BirdsongAdminGroup):
         items = (CampaignAdmin, ContactAdmin)
 
-*The ``CampaignAdmin`` is just an extension of Wagtail's ``ModelAdmin`` class so most of the same options are available for overriding functionality.
-``BirdsongAdminGroup`` can be disabled with ``BIRDSONG_ADMIN_GROUP`` setting if you want to ``modeladmin_register`` your ``CampaignAdmin`` directly.*
+:information_source: The ``CampaignAdmin`` is just an extension of Wagtail's ``ModelAdmin`` class so most of the same options are available for overriding functionality.
+:information_source: ``BirdsongAdminGroup`` can be disabled with ``BIRDSONG_ADMIN_GROUP`` setting if you want to ``modeladmin_register`` your ``CampaignAdmin`` directly.
 
 
 Create your campaign template in ``{app_folder}/templates/mail/{model_name}.html`` e.g. ``email/templates/mail/sale_campaign.html``,
 alternatively override the ``get_template`` method on your campaign model.
 
-*Campaign templates use django-mjml for responsive, well designed emails. To read up how to setup django-mjml you can read the docs 
-`here <https://github.com/liminspace/django-mjml>`_. There is a base template included in Birdsong that can be extended.*
+:information_source: Campaign templates use django-mjml for responsive, well designed emails. To read up how to setup django-mjml you can read the docs 
+`here <https://github.com/liminspace/django-mjml>`_. There is a base template included in Birdsong that can be extended.
 
 ``sale_campaign.html``
 
