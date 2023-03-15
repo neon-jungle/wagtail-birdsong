@@ -152,7 +152,7 @@ You can override the default ``Contact`` model by setting an option on the admin
 
 .. code-block:: python
 
-    # You may want to enrich the test contact (used in previews) with your new fields
+    # You may want to redefine the test contact (used in previews) with your new ExtendedContact fields
     BIRDSONG_TEST_CONTACT = {
         'first_name': 'Wagtail', # new ExtendedContact field
         'last_name': 'Birdsong', # new ExtendedContact field
