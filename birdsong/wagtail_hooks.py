@@ -9,12 +9,23 @@ def register_icons(icons):
     return icons + ['icons/birdsong.svg']
 
 class CampaignAdmin(CampaignAdmin):
+    """Out of the box wagtail compatible Admin configuration for Campaigns.
+    
+    Birdsong's CampaignAdmin core ModelAdmin
+    NOTE: Designed to be imported and overriden in your app's `wagtail_hooks.py`.
+
+    """
     campaign = Campaign
     menu_label = 'Campaigns'
     menu_icon = 'mail'
     menu_order = 200
 
 class ContactAdmin(ModelAdmin):
+    """Out of the box wagtail compatible Admin configuration for Campaigns.
+
+    Birdsong's ContactAdmin core ModelAdmin
+    NOTE: Designed to be imported and overriden in your app's `wagtail_hooks.py`.
+    """
     model = Contact
     menu_label = 'Contacts'
     menu_icon = 'user'
@@ -22,12 +33,13 @@ class ContactAdmin(ModelAdmin):
     list_diplay = ('email')
 
 def modeladmin_register_birdsong_admin_group(modeladmin_class):
-    """Necessary in order to control BirdsongAdminGroup modeladmin registration behaviour"""
+    """Controls BirdsongAdminGroup's modeladmin registration behaviour"""
     return modeladmin_register(modeladmin_class) if BIRDSONG_ADMIN_GROUP else modeladmin_class
 
 @modeladmin_register_birdsong_admin_group
 class BirdsongAdminGroup(ModelAdminGroup):
-    menu_item_name = 'birdsong' # needs to be defined at least at this level in order for `modeladmin_re_register` to work properly
+    """Designed to be imported, overriden and re-regsitered using `modeladmin_re_register` in your app's `wagtail_hooks.py`."""
+    menu_item_name = 'birdsong' # needs to be explicitly defined (at this level) in order for `modeladmin_re_register` to work properly
     menu_label = 'Birdsong'
     menu_icon = 'birdsong'
     menu_order = 8000 # above wagtail's Reports (9000) menu item
@@ -50,7 +62,7 @@ def modeladmin_re_register(modeladmin_class):
     """
     @hooks.register('construct_main_menu')
     def unregister_menu_item(request, menu_items):
-        if modeladmin_class.menu_item_name: # modeladmin_class defined or inherited menu_item_name?
+        if modeladmin_class.menu_item_name: # menu_item_name defined or inherited by modeladmin_class?
             earlierst_item_with_same_name = next((item for item in menu_items if item.name == modeladmin_class.menu_item_name), None) # first match or None
             menu_items[:] = [item for item in menu_items if ((item != earlierst_item_with_same_name))] # filter out earlierst_item_with_same_name
     

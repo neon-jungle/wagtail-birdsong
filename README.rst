@@ -14,23 +14,28 @@ Campaign templates are created using `mjml <https://mjml.io/>`_.
 Basic usage
 ===========
 
-Install birdsong:
+Install Birdsong:
 
 .. code-block:: shell
     
     pip install wagtail-birdsong
 
 
-Add the following to your installed apps:
+Add the following to your ``INSTALLED_APPS``:
 
 .. code-block:: python
 
-    'mjml',
-    'birdsong',
-    'wagtail.contrib.modeladmin',
-
+    INSTALLED_APPS = [
+        ...
+        'mjml',
+        'birdsong',
+        'wagtail.contrib.modeladmin',
+        ...
+    ]
 
 Make a new app e.g. ``email``, create a ``models.py`` with a model that extends the included ``Campaign`` model. Some compatible mjml streamfield blocks are included in birdsong for convenience.
+
+``models.py``
 
 .. code-block:: python
 
@@ -50,8 +55,7 @@ Make a new app e.g. ``email``, create a ``models.py`` with a model that extends 
 Then in the same app, create a ``wagtail_hooks.py`` if it doesn't exist, this is where the admin is created
 for content editors to create/edit/send campaigns.
 
-The ``CampaignAdmin`` is just an extension of Wagtail's ``ModelAdmin`` class so most of the same options are available for overriding functionality.
-``BirdsongAdminGroup`` can be disabled with ``BIRDSONG_ADMIN_GROUP`` setting if you want to ``modeladmin_register`` your ``CampaignAdmin`` directly.
+``wagtail_hooks.py``
 
 .. code-block:: python
 
@@ -67,11 +71,15 @@ The ``CampaignAdmin`` is just an extension of Wagtail's ``ModelAdmin`` class so 
     class BirdsongAdminGroup(BirdsongAdminGroup):
         items = (CampaignAdmin, ContactAdmin)
 
+*The ``CampaignAdmin`` is just an extension of Wagtail's ``ModelAdmin`` class so most of the same options are available for overriding functionality.
+``BirdsongAdminGroup`` can be disabled with ``BIRDSONG_ADMIN_GROUP`` setting if you want to ``modeladmin_register`` your ``CampaignAdmin`` directly.*
+
 
 Create your campaign template in ``{app_folder}/templates/mail/{model_name}.html`` e.g. ``email/templates/mail/sale_campaign.html``,
 alternatively override the ``get_template`` method on your campaign model.
 
-Campaign templates use django-mjml for responsive, well designed emails. To read up how to setup django-mjml you can read the docs `here <https://github.com/liminspace/django-mjml>`_. There is a base template included in Birdsong that can be extended.
+*Campaign templates use django-mjml for responsive, well designed emails. To read up how to setup django-mjml you can read the docs 
+`here <https://github.com/liminspace/django-mjml>`_. There is a base template included in Birdsong that can be extended.*
 
 ``sale_campaign.html``
 
