@@ -6,8 +6,9 @@ from django.db import close_old_connections, transaction
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.html import format_html
-from birdsong.models import Campaign, CampaignStatus, Contact
+from django.utils.translation import gettext as _
 
+from birdsong.models import Campaign, CampaignStatus, Contact
 from birdsong.utils import send_mass_html_mail
 
 from . import BaseEmailBackend
@@ -69,12 +70,12 @@ class SMTPEmailBackend(BaseEmailBackend):
             campaign_thread.start()
 
     def send_confirmation(self, request, contact, url):
-        from birdsong.models import DoubleOptInSettings
+        from birdsong.models import BirdsongSettings
 
-        settings = DoubleOptInSettings.load(request_or_site=request)
+        settings = BirdsongSettings.load(request_or_site=request)
 
         body = settings.confirmation_email_body + format_html(
-            '\nClick <a href="{}">here</a>!', url
+            _('\nClick <a href="{}">here</a>!'), url
             )
 
         message = {

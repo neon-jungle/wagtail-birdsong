@@ -1,6 +1,9 @@
+from django.conf import settings
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
-from django.shortcuts import get_object_or_404, redirect
-from birdsong.models import Contact, DoubleOptInSettings
+from wagtail.core.models import Site
+
+from birdsong.models import BirdsongSettings, Contact
 
 
 def confirm_contact(request, token):
@@ -9,9 +12,21 @@ def confirm_contact(request, token):
     contact.confirmed_at = timezone.now()
     contact.save()
 
-    double_opt_in_settings = DoubleOptInSettings.load(request_or_site=request)
-    redirect_url = "/"
-    if double_opt_in_settings.campaign_confirmation_redirect:
-        redirect_url = double_opt_in_settings.campaign_confirmation_redirect.get_url()
+    template = getattr(
+        settings,
+        'BIRDSONG_CONFIRM_TEMPLATE',
+        'confirm.html'
+    )
+    birdsong_settings = BirdsongSettings.load(request_or_site=request)
 
-    return redirect(redirect_url)
+    if birdsong_settings.campaign_confirmation_redirect:
+        redirect_url = birdsong_settings.campaign_confirmation_redirect.get_url()
+        return redirect(redirect_url)
+    else:
+        site = Site.find_for_request(request)
+        return render(
+            request, template, context={
+                'site': site,
+                'contact_email': contact.email,
+            }
+        )

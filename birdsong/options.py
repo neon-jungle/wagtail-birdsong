@@ -4,10 +4,11 @@ from django.http.response import HttpResponseRedirect
 from django.urls import re_path
 from django.utils.module_loading import import_string
 from django.utils.translation import gettext as _
+from django.utils.translation import pgettext
 from wagtail.contrib.modeladmin.helpers import AdminURLHelper, ButtonHelper
 from wagtail.contrib.modeladmin.options import ModelAdmin
 
-from birdsong.models import CampaignStatus, Contact, DoubleOptInSettings
+from birdsong.models import CampaignStatus, Contact, BirdsongSettings
 from birdsong.views import actions
 from birdsong.views import editor as editor_views
 
@@ -34,7 +35,7 @@ class EmailCampaignButtonHelper(ButtonHelper):
         sent = campaign.status != CampaignStatus.UNSENT
 
         delete_btn = button('delete', _('Delete'), 'no button-secondary')
-        copy_btn = button('copy', _('Copy'), 'button-secondary')
+        copy_btn = button('copy', pgettext('Verb', 'Copy'), 'button-secondary')
         if not sent:
             buttons = [
                 button('edit', _('Edit'), 'bicolor icon icon-edit'),
@@ -128,16 +129,16 @@ class CampaignAdmin(ModelAdmin):
         return contact_filter.form
 
     def get_contacts_send_to(self, request):
-        doi_settings = DoubleOptInSettings.load()
+        birdsong_settings = BirdsongSettings.load()
         if self.contact_filter_class:
             Filter = self.contact_filter_class
             contact_filter = Filter(request.POST)
-            if doi_settings.double_opt_in_enabled == True:
+            if birdsong_settings.double_opt_in_enabled:
                 qs = contact_filter.qs.filter(is_confirmed=True)
             else: 
                 qs = contact_filter.qs.filter()
             return qs
-        if doi_settings.double_opt_in_enabled == True:
+        if birdsong_settings.double_opt_in_enabled:
             contacts = self.contact_class.objects.all().filter(is_confirmed=True)
         else: 
             contacts = self.contact_class.objects.all()
@@ -177,7 +178,7 @@ class CampaignAdmin(ModelAdmin):
 
     def copy(self, request, instance_pk):
         instance = self.model.objects.get(pk=instance_pk)
-        instance.name = '{} ({})'.format(instance.name, _('Copy'))
+        instance.name = '{} ({})'.format(instance.name, pgettext('noun', 'Copy'))
         instance.pk = None
         instance.id = None
         instance.sent_date = None
