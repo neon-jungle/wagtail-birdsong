@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-16 16:33+0100\n"
+"POT-Creation-Date: 2023-03-20 12:14+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -129,10 +129,10 @@ msgstr "Double-opt-in aktivieren"
 
 #: birdsong/models.py:118
 msgid ""
-"Attention: By enabling this, contacts older than a week might be deleted."
+"Attention: By enabling this, unconfirmed contacts older than a week get "
+"deleted when creating, editing or copying a campagin. Contacts are "
+"unconfirmed by default."
 msgstr ""
-"Achtung: Durch Aktivierung können Kontakte, die älter als 1 Woche sind, "
-"gelöscht werden."
 
 #: birdsong/models.py:125
 msgid "Subject of confirmation e-mail"
@@ -312,7 +312,7 @@ msgid "Submit"
 msgstr ""
 
 #: birdsong/templates/signup_success.html:5
-#,  python-format
+#, python-format
 msgid "The e-mail address'%(contact_email)s' has been signed up."
 msgstr "Die E-Mail-Adresse '%(contact_email)s' wurde angemeldet."
 
@@ -341,3 +341,9 @@ msgstr "Kampagne wurde an {} Kontakte versendet."
 #: birdsong/views/actions.py:28
 msgid "Test email sent, please check your inbox"
 msgstr "Test-E-Mail versendet, bitte Posteingang überprüfen."
+
+#~ msgid ""
+#~ "Attention: By enabling this, contacts older than a week might be deleted."
+#~ msgstr ""
+#~ "Achtung: Durch Aktivierung können Kontakte, die älter als 1 Woche sind, "
+#~ "gelöscht werden."
