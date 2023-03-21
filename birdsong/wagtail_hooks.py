@@ -9,7 +9,7 @@ def register_icons(icons):
     return icons + ['icons/birdsong.svg']
 
 class CampaignAdmin(CampaignAdmin):
-    """Out of the box wagtail compatible Admin configuration for Campaigns.
+    """Out of the box wagtail-compatible Admin configuration for Campaigns.
     
     Birdsong's CampaignAdmin core ModelAdmin
     NOTE: Designed to be imported and overriden in your app's `wagtail_hooks.py`.
@@ -21,7 +21,7 @@ class CampaignAdmin(CampaignAdmin):
     menu_order = 200
 
 class ContactAdmin(ModelAdmin):
-    """Out of the box wagtail compatible Admin configuration for Campaigns.
+    """Out of the box wagtail-compatible Admin configuration for Contacts.
 
     Birdsong's ContactAdmin core ModelAdmin
     NOTE: Designed to be imported and overriden in your app's `wagtail_hooks.py`.
