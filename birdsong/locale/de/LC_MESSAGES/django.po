@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-20 12:14+0100\n"
+"POT-Creation-Date: 2023-03-27 12:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,15 +38,13 @@ msgstr ""
 msgid "Button label"
 msgstr "Button-Bezeichnung"
 
-#: birdsong/blocks.py:27
-msgid "Privacy hint"
-msgstr "Datenschutzhinweis"
-
-#: birdsong/blocks.py:29
-msgid "Privacy page"
+#: birdsong/blocks.py:28
+#, fuzzy
+#| msgid "Privacy page"
+msgid "Privacy Disclaimer"
 msgstr "Datenschutzseite"
 
-#: birdsong/blocks.py:35
+#: birdsong/blocks.py:40
 msgid "Newsletter subscription"
 msgstr "Newsletteranmeldung"
 
@@ -130,9 +128,11 @@ msgstr "Double-opt-in aktivieren"
 #: birdsong/models.py:118
 msgid ""
 "Attention: By enabling this, unconfirmed contacts older than a week get "
-"deleted when creating, editing or copying a campagin. Contacts are "
+"deleted when creating, editing or copying a campaign. Contacts are "
 "unconfirmed by default."
-msgstr ""
+msgstr "Achtung: Durch Aktivieren werden unbestätigte Kontakt, die älter "
+"als eine Woche sind, beim Erstellen, Bearbeiten und Kopieren einer Kampagne "
+"gelöscht. Kontakte sind standardmäßig unbestätigt."
 
 #: birdsong/models.py:125
 msgid "Subject of confirmation e-mail"
@@ -285,19 +285,6 @@ msgstr "Abbrechen"
 msgid "Email address"
 msgstr "E-Mail-Adresse"
 
-#: birdsong/templates/birdsong/site/confirm.html:5
-#, python-format
-msgid ""
-" The email address '%(contact.email)s' has been confirmed and added to "
-"%(site.site_name)s's mailing list.\" "
-msgstr ""
-"Die E-Mail-Adresse '%(contact.email)s' wurde bestätigt und zur Mailing-Liste "
-"von %(site.site_name)s hinzugefügt."
-
-#: birdsong/templates/birdsong/site/signup.html:9
-msgid "Signup"
-msgstr "Registrieren"
-
 #: birdsong/templates/confirm.html:5
 #, python-format
 msgid "The e-mail address'%(contact_email)s' has been confirmed."
@@ -341,9 +328,3 @@ msgstr "Kampagne wurde an {} Kontakte versendet."
 #: birdsong/views/actions.py:28
 msgid "Test email sent, please check your inbox"
 msgstr "Test-E-Mail versendet, bitte Posteingang überprüfen."
-
-#~ msgid ""
-#~ "Attention: By enabling this, contacts older than a week might be deleted."
-#~ msgstr ""
-#~ "Achtung: Durch Aktivierung können Kontakte, die älter als 1 Woche sind, "
-#~ "gelöscht werden."

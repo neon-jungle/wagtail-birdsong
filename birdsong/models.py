@@ -115,7 +115,7 @@ class BirdsongSettings(BaseGenericSetting):
         default=False,
         verbose_name=_("Enable double opt-in"),
         help_text=_(
-            "Attention: By enabling this, unconfirmed contacts older than a week get deleted when creating, editing or copying a campagin. Contacts are unconfirmed by default."
+            "Attention: By enabling this, unconfirmed contacts older than a week get deleted when creating, editing or copying a campaign. Contacts are unconfirmed by default."
         ),
     )
 
