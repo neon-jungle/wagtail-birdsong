@@ -4,35 +4,8 @@
 <p>{{ block.value.subtext }}</p>
 <form action="{% url 'birdsong:signup' %}" method="POST" id="signup-form">
   {% csrf_token %}
-  <label for="email" class="sr-only">{% translate "Email address" %}</label>
+  <label for="email">{% translate "Email address" %}</label>
   <input id="email" name="email" type="email" required placeholder="{% trans "Email address" %}">
-  <button id="subscribe" type="submit" disabled="">{{ block.value.button_label }}</button>
+  <button id="subscribe" type="submit">{{ block.value.button_label }}</button>
 </form>
-<div>
-  <input type="checkbox" id="agree" class="" onchange="buttonToggle()">
-  {{ block.value.privacy_text }}
-  <a href="{{ block.value.privacy_page.url }}">{{ block.value.privacy_page }}</a>
-</div>
-
-
-{% block extra_js %}
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const subscribe_button = document.getElementById("subscribe");
-    const agree_checkbox = document.getElementById("agree");
-    subscribe_button.disabled = true;
-    agree_checkbox.checked = false;
-  }, false);
-
-  function buttonToggle() {
-    const agree_checkbox = document.getElementById("agree");
-    const subscribe_button = document.getElementById("subscribe");
-    if (agree_checkbox.checked) {
-      subscribe_button.disabled = false;
-    }
-    else {
-      subscribe_button.disabled = true;
-    }
-}
-</script>
-{% endblock %}
+<p>{{ block.value.privacy_text }}</p>

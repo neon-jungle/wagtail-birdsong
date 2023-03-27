@@ -24,10 +24,15 @@ class NewsletterSubscriptionBlock(blocks.StructBlock):
         verbose_name=_('Subtext'), max_length=150, required=False
     )
     button_label = blocks.CharBlock(label=_('Button label'), max_length=50)
-    privacy_text = blocks.CharBlock(verbose_name=_('Privacy hint'), max_length=60)
-    privacy_page = blocks.PageChooserBlock(
-        verbose_name=_('Privacy page'), max_length=100
+    privacy_text = blocks.RichTextBlock(
+        label=_('Privacy Disclaimer'), max_length=500,
+        features=[
+            'bold',
+            'italic',
+            'link',
+        ]
     )
+
 
     class Meta:
         template = 'birdsong/site/blocks/signup.html'
