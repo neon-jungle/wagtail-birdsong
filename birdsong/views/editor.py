@@ -1,3 +1,4 @@
+from birdsong.conf import BIRDSONG_TEST_CONTACT
 from django.http.response import JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
@@ -41,12 +42,7 @@ class InspectCampaign(InspectView):
         self.contact_class = model_admin.contact_class
 
     def get_context_data(self, **kwargs):
-        first_receipt = self.instance.receipts.first()
-        if first_receipt:
-            preview_contact = self.contact_class.objects.filter(
-                pk=first_receipt.pk).first()
-        else:
-            preview_contact = None
+        preview_contact = self.contact_class(**BIRDSONG_TEST_CONTACT)
         # Should this be frozen? Changes to templates will change old campaigns
         preview = render_to_string(
             self.instance.get_template(self.request),
@@ -65,9 +61,7 @@ def ajax_preview(request, view):
     form = FormClass(request.POST)
     if form.is_valid():
         campaign = form.save(commit=False)
-        contact_class = view.model_admin.contact_class
-        # FIXME won't work with no contacts
-        test_contact = contact_class.objects.first()
+        test_contact = view.model_admin.contact_class(**BIRDSONG_TEST_CONTACT)
         content = render_to_string(
             campaign.get_template(request),
             campaign.get_context(request, test_contact)
