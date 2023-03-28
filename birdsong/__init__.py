@@ -1,1 +1,1 @@
-default_app_config = 'birdsong.apps.WagtailBirdsongApp'
+default_app_config = "birdsong.apps.WagtailBirdsongApp"

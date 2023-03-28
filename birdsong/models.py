@@ -1,12 +1,16 @@
 import uuid
 
 from django.db import models
+from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 from taggit.models import TaggedItemBase
-from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel
+from wagtail.contrib.settings.models import (BaseGenericSetting,
+                                             register_setting)
+from wagtail.core.fields import RichTextField
 from wagtail.core.models import Site
 from wagtail.core.utils import camelcase_to_underscore
 
@@ -17,6 +21,10 @@ class ContactTag(TaggedItemBase):
 
 
 class Contact(ClusterableModel):
+    class Meta:
+        verbose_name = _("Contact")
+        verbose_name_plural = _("Contacts")
+
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(verbose_name=_('email'))
@@ -25,6 +33,11 @@ class Contact(ClusterableModel):
         verbose_name=_('tags'),
         blank=True,
     )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created at'))
+    confirmed_at = models.DateTimeField(null=True, verbose_name=_('confirmed at'))
+    is_confirmed = models.BooleanField(default=False, verbose_name=_('is confirmed'))
+
+    token = models.UUIDField(default=uuid.uuid4, editable=False)
 
     panels = [
         FieldPanel('email'),
@@ -91,3 +104,88 @@ class Receipt(models.Model):
     sent_date = models.DateTimeField(auto_now=True)
     # Probably not necessary, but might come in useful later
     success = models.BooleanField(default=True)
+
+
+@register_setting
+class BirdsongSettings(BaseGenericSetting):
+    class Meta:
+        verbose_name = gettext("Birdsong settings")
+
+    double_opt_in_enabled = models.BooleanField(
+        default=False,
+        verbose_name=_("Enable double opt-in"),
+        help_text=_(
+            "Attention: By enabling this, unconfirmed contacts older than a week get deleted when creating, editing or copying a campaign. Contacts are unconfirmed by default."
+        ),
+    )
+
+    confirmation_email_subject = models.CharField(
+        null=True,
+        max_length=150,
+        verbose_name=gettext("Subject of confirmation e-mail"),
+        default=gettext("Confirm newsletter registration"),
+    )
+
+    confirmation_email_body = RichTextField(
+        null=True,
+        features=[
+            "h2",
+            "bold",
+            "italic",
+            "link",
+            "ol",
+            "ul",
+        ],
+        verbose_name=gettext("Content of confirmation e-mail"),
+        help_text=gettext(
+            "This Text is part of the e-mail that is sent after registration for a campaign"
+        ),
+        default=gettext(
+            "Click the following link if you want register for our newsletter. Otherwise no "
+            "action is neccessary."
+        ),
+    )
+
+    campaign_confirmation_redirect = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=gettext("Redirect page after confirmation of campaign signup"),
+        blank=True,
+    )
+    campaign_signup_redirect = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=gettext("Redirect page after signup for a campaign"),
+        blank=True,
+    )
+    campaign_unsubscribe_success = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=gettext("Success page for unsubscription"),
+        blank=True,
+    )
+
+    panels = [
+        MultiFieldPanel(
+            [
+                FieldPanel("campaign_signup_redirect"),
+                FieldPanel("campaign_confirmation_redirect"),
+                FieldPanel("campaign_unsubscribe_success")
+            ],
+            heading=(gettext("Redirects")),
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("double_opt_in_enabled"),
+                FieldPanel("confirmation_email_subject"),
+                FieldPanel("confirmation_email_body")
+            ],
+            heading=(gettext("Double opt-in settings")))
+
+    ]

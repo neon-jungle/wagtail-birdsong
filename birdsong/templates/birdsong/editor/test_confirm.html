@@ -6,7 +6,8 @@
 {% block content %}
 
     {% block header %}
-        {% include "wagtailadmin/shared/header.html" with title="Send test" subtitle=self icon=view.header_icon %}
+        {% translate "Send test" as sendtest %}
+        {% include "wagtailadmin/shared/header.html" with title=sendtest subtitle=self icon=view.header_icon %}
     {% endblock %}
 
     {% block content_main %}

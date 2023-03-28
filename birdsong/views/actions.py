@@ -28,3 +28,7 @@ def send_test(backend, request, campaign, test_contact):
     messages.success(request, _("Test email sent, please check your inbox"))
 
     return redirect_helper(campaign)
+
+
+def send_confirmation(backend, request, contact, url):
+    backend.send_confirmation(request, contact, url)

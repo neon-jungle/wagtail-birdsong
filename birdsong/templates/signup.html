@@ -1,0 +1,7 @@
+{% load i18n %}
+<form action="{% url 'signup' %}" method="POST" id="campaign-signup-form" >
+    {% csrf_token %}
+    <label for="email" class="sr-only">{% trans "E-mail address" %}</label>
+    <input id="email" name="email" type="email" required placeholder="{% trans "E-mail address" %}">
+    <button id="subscribe" type="submit">{% trans "Submit"%}</button>
+</form>

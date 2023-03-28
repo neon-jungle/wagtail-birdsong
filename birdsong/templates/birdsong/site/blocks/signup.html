@@ -1,0 +1,11 @@
+{% load i18n %}
+
+<h2>{{ block.value.headline }}</h2>
+<p>{{ block.value.subtext }}</p>
+<form action="{% url 'birdsong:signup' %}" method="POST" id="signup-form">
+  {% csrf_token %}
+  <label for="email">{% translate "Email address" %}</label>
+  <input id="email" name="email" type="email" required placeholder="{% trans "Email address" %}">
+  <button id="subscribe" type="submit">{{ block.value.button_label }}</button>
+</form>
+<p>{{ block.value.privacy_text }}</p>

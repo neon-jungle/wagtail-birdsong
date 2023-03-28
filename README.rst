@@ -244,8 +244,34 @@ Included in birdsong is a basic way for contacts to unsubscribe, just include th
     </mj-section>
     {% endblock email_body %}
 
+Birdsong settings 
+=================
 
 
+The website's admin can set settings with regard to
+
+- redirects
+- double opt-in 
+
+If a redirect is set, the original template will not be used anymore.
+
+
+.. image:: docs/birdsong-settings.png
+    :width: 900
+    :alt: Screenshot
+
+Double opt in
+=============
+
+For security reasons it is better if a double opt-in is used for subscription. 
+It assures sending the campaign only to people who agreed to it and follows the regulations of EU's GDPR. 
+The double opt-in feature can be enabled in 'Birdsong settings' in the admin menu. 
+The subscribing person will receive an e-mail with a link for confirmation. 
+Unconfirmed contacts older than a week are deleted, when a campaign is saved, so when creating, editing or copying.
+
+
+**!! Warning !!** 
+By enabling this feature without garantueeing that field ``is_confirmed`` is ``True`` of the old contacts, the ones who are older than a week will be deleted when campaign saving is triggered!
 
 Future features:
 ----------------
@@ -255,3 +281,4 @@ Future features:
 - Backends other thans SMTP for sending emails so analytics can be gathered (email opened, bounced etc)
 - Reloading the preview on edit
 - Broader permissions for campaigns (send, preview, test send)
+spot

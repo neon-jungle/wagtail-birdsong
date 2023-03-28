@@ -4,12 +4,13 @@ from django.http.response import HttpResponseRedirect
 from django.urls import re_path
 from django.utils.module_loading import import_string
 from django.utils.translation import gettext as _
+from django.utils.translation import pgettext
 from wagtail.contrib.modeladmin.helpers import AdminURLHelper, ButtonHelper
 from wagtail.contrib.modeladmin.options import ModelAdmin
 
-from .models import CampaignStatus, Contact
-from .views import actions
-from .views import editor as editor_views
+from birdsong.models import CampaignStatus, Contact, BirdsongSettings
+from birdsong.views import actions
+from birdsong.views import editor as editor_views
 
 from birdsong.conf import BIRDSONG_TEST_CONTACT
 
@@ -36,7 +37,7 @@ class EmailCampaignButtonHelper(ButtonHelper):
         sent = campaign.status != CampaignStatus.UNSENT
 
         delete_btn = button('delete', _('Delete'), 'no button-secondary')
-        copy_btn = button('copy', _('Copy'), 'button-secondary')
+        copy_btn = button('copy', pgettext('Verb', 'Copy'), 'button-secondary')
         if not sent:
             buttons = [
                 button('edit', _('Edit'), 'bicolor icon icon-edit'),
@@ -44,7 +45,7 @@ class EmailCampaignButtonHelper(ButtonHelper):
                 button('confirm_send', _('Send'), 'bicolor icon icon-mail'),
                 button('send_test', _('Send test'), 'button-secondary icon icon-cog'),
                 button('preview', _('Preview'), 'button-secondary icon icon-view'),
-                delete_btn
+                delete_btn,
             ]
         else:
             buttons = [
@@ -77,6 +78,7 @@ class CampaignAdmin(ModelAdmin):
     form_view_extra_js = ['birdsong/js/preview_campaign.js']
     form_view_extra_css = ['birdsong/css/campaign-editor.css']
 
+
     def __init__(self, parent=None):
         if not self.model and self.campaign:
             self.model = self.campaign
@@ -94,6 +96,7 @@ class CampaignAdmin(ModelAdmin):
                 view,
                 name=self.url_helper.get_action_url_name(name)
             )
+
         urls = (
             gen_url('preview', self.preview),
             gen_url('confirm_send', self.confirm_send),
@@ -117,8 +120,8 @@ class CampaignAdmin(ModelAdmin):
             request,
             campaign,
             form,
-            self.url_helper.get_action_url('send_campaign', instance_pk=instance_pk),
-            self.url_helper.get_action_url('index')
+            self.url_helper.get_action_url("send_campaign", instance_pk=instance_pk),
+            self.url_helper.get_action_url("index"),
         )
 
     def build_sending_form(self):
@@ -128,16 +131,26 @@ class CampaignAdmin(ModelAdmin):
         return contact_filter.form
 
     def get_contacts_send_to(self, request):
+        birdsong_settings = BirdsongSettings.load()
         if self.contact_filter_class:
             Filter = self.contact_filter_class
             contact_filter = Filter(request.POST)
-            return contact_filter.qs
-        return self.contact_class.objects.all()
+            if birdsong_settings.double_opt_in_enabled:
+                qs = contact_filter.qs.filter(is_confirmed=True)
+            else: 
+                qs = contact_filter.qs.filter()
+            return qs
+        if birdsong_settings.double_opt_in_enabled:
+            contacts = self.contact_class.objects.all().filter(is_confirmed=True)
+        else: 
+            contacts = self.contact_class.objects.all()
+        return contacts
 
     def send_campaign(self, request, instance_pk):
         campaign = self.model.objects.get(pk=instance_pk)
         contacts = self.get_contacts_send_to(request)
         return actions.send_campaign(self.backend, request, campaign, contacts)
+
 
     def create_contact_form(self, data=BIRDSONG_TEST_CONTACT):
         ContactForm = modelform_factory(self.contact_class, exclude=['id'])
@@ -150,13 +163,13 @@ class CampaignAdmin(ModelAdmin):
             request,
             campaign,
             form,
-            self.url_helper.get_action_url('send_test', campaign.id),
-            self.url_helper.get_action_url('index')
+            self.url_helper.get_action_url("send_test", campaign.id),
+            self.url_helper.get_action_url("index"),
         )
 
     def send_test(self, request, instance_pk):
         campaign = self.model.objects.get(pk=instance_pk)
-        if request.method == 'GET':
+        if request.method == "GET":
             form = self.create_contact_form()
             return self.confirm_test(request, campaign, form)
         form = self.create_contact_form(request.POST)
@@ -168,10 +181,17 @@ class CampaignAdmin(ModelAdmin):
 
     def copy(self, request, instance_pk):
         instance = self.model.objects.get(pk=instance_pk)
-        instance.name = '{} ({})'.format(instance.name, _('Copy'))
+        instance.name = '{} ({})'.format(instance.name, pgettext('noun', 'Copy'))
         instance.pk = None
         instance.id = None
         instance.sent_date = None
         instance.status = CampaignStatus.UNSENT
         instance.save()
-        return HttpResponseRedirect(self.url_helper.get_action_url('index'))
+        return HttpResponseRedirect(self.url_helper.get_action_url("index"))
+
+
+class ContactAdmin(ModelAdmin):
+    model = Contact
+    menu_label = "Contacts"
+    menu_icon = "user"
+    list_display = ("email", "created_at", "confirmed_at", "is_confirmed")
