@@ -268,7 +268,7 @@ You can control the subscribe form by changing any of these optional settings:
     BIRDSONG_SUBSCRIBE_FORM_MSG_FAILURE = 'Invalid email address'
     BIRDSONG_SUBSCRIBE_FORM_TEMPLATE = 'subscribe.html'
 
-    BIRDSONG_ACTIVATION_REQUIRED = True # turns on/off email activation requirement for new subscriptions
+    BIRDSONG_ACTIVATION_REQUIRED = False # turns on/off email activation requirement for new subscriptions
     BIRDSONG_ACTIVATION_REQUIRED_MSG = 'Check your e-mail to activate your subscription.'
     BIRDSONG_ACTIVATION_EMAIL_SUBJECT = 'Activate Your ' + WAGTAIL_SITE_NAME + ' Mailing List Subscription'
     BIRDSONG_ACTIVATION_EMAIL_TEMPLATE = 'birdsong/mail/activation_email.html'

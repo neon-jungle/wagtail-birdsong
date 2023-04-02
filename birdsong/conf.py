@@ -26,7 +26,7 @@ BIRDSONG_SUBSCRIBE_FORM_MSG_FAILURE = _(getattr(settings, 'BIRDSONG_SUBSCRIBE_FO
 BIRDSONG_SUBSCRIBE_FORM_TEMPLATE = getattr(settings, 'BIRDSONG_SUBSCRIBE_FORM_TEMPLATE', 'subscribe.html')
 
 ### BIRDSONG_ACTIVATION ###
-BIRDSONG_ACTIVATION_REQUIRED = getattr(settings, 'BIRDSONG_ACTIVATION_REQUIRED', True)
+BIRDSONG_ACTIVATION_REQUIRED = getattr(settings, 'BIRDSONG_ACTIVATION_REQUIRED', False)
 BIRDSONG_ACTIVATION_REQUIRED_MSG = _(getattr(settings, 'BIRDSONG_ACTIVATION_REQUIRED_MSG', 'Check your e-mail to activate your subscription.'))
 BIRDSONG_ACTIVATION_EMAIL_SUBJECT = _(getattr(settings, 'BIRDSONG_ACTIVATION_EMAIL_SUBJECT', 'Activate Your ' +
     getattr(settings, 'WAGTAIL_SITE_NAME', '') + ' Mailing List Subscription'))

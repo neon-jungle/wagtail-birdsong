@@ -1,7 +1,5 @@
 from django.conf import settings
 from django.utils.translation import gettext as _
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
 from django.db import IntegrityError, transaction
 from django.shortcuts import render
 from django.contrib import messages
@@ -43,7 +41,7 @@ def subscribe(request):
                         'site_name': settings.WAGTAIL_SITE_NAME,
                         'contact': contact,
                         'activate_url': request.build_absolute_uri(
-                            reverse('birdsong:activate', kwargs={'cidb64': urlsafe_base64_encode(force_bytes(contact.pk)), 'token': contact.make_token()})
+                            reverse('birdsong:activate', kwargs={'cid': contact.pk, 'token': contact.make_token()})
                         ),
                     }
                     msg = BIRDSONG_SUBSCRIBE_FORM_MSG_SUCCESS
@@ -90,10 +88,7 @@ def subscribe_api(request):
                             'site_name': settings.WAGTAIL_SITE_NAME,
                             'contact': contact,
                             'activate_url': request.build_absolute_uri(
-                                reverse('birdsong:activate', kwargs={
-                                    'cidb64': urlsafe_base64_encode(force_bytes(contact.pk)),
-                                    'token': contact.make_token()
-                                })
+                                reverse('birdsong:activate', kwargs={'cid': contact.pk, 'token': contact.make_token()})
                             ),
                         }
                         msg = BIRDSONG_SUBSCRIBE_FORM_MSG_SUCCESS
