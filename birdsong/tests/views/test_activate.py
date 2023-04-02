@@ -1,7 +1,7 @@
 import json
 
 from django.test import TestCase
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 from django.urls.exceptions import NoReverseMatch
 
 from birdsong.test.utils import BirdsongTestUtils
