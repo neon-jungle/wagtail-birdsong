@@ -1,0 +1,175 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-03-22 12:11+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: birdsong/models.py:22
+msgid "email"
+msgstr "E-Mail"
+
+#: birdsong/models.py:25
+msgid "tags"
+msgstr "Tags"
+
+#: birdsong/models.py:39
+msgid "unsent"
+msgstr "nicht versendet"
+
+#: birdsong/models.py:40
+msgid "sending"
+msgstr "sendend"
+
+#: birdsong/models.py:41
+msgid "sent"
+msgstr "versendet"
+
+#: birdsong/models.py:42
+msgid "failed"
+msgstr "fehlgeschlagen"
+
+#: birdsong/models.py:47
+msgid "name"
+msgstr "Name"
+
+#: birdsong/models.py:49
+msgid "The name of the campaign"
+msgstr "Name der Kampagne"
+
+#: birdsong/models.py:51
+msgid "subject"
+msgstr "Betreff"
+
+#: birdsong/models.py:53
+msgid "sent date"
+msgstr "Versanddatum"
+
+#: birdsong/models.py:59
+msgid "receipts"
+msgstr "Belege"
+
+#: birdsong/models.py:63
+msgid "status"
+msgstr "Status"
+
+#: birdsong/options.py:34 birdsong/options.py:47
+msgid "Preview"
+msgstr "Vorschau"
+
+#: birdsong/options.py:39
+msgid "Delete"
+msgstr "Löschen"
+
+#: birdsong/options.py:40
+msgctxt "Verb"
+msgid "Copy"
+msgstr "Kopieren"
+
+#: birdsong/options.py:43
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: birdsong/options.py:45
+msgid "Send"
+msgstr "Versenden"
+
+#: birdsong/options.py:46
+msgid "Send test"
+msgstr "Test senden"
+
+#: birdsong/options.py:52
+msgid "View"
+msgstr "Ansehen"
+
+#: birdsong/options.py:172
+msgctxt "noun"
+msgid "Copy"
+msgstr "Kopie"
+
+#: birdsong/templates/birdsong/editor/create_campaign.html:23
+#: birdsong/templates/birdsong/editor/edit_campaign.html:23
+msgid "Reload preview"
+msgstr "Vorschau neu laden"
+
+#: birdsong/templates/birdsong/editor/inspect_campaign.html:7
+msgid "Campaign info"
+msgstr "Kampagne versenden"
+
+#: birdsong/templates/birdsong/editor/inspect_campaign.html:12
+msgid "Subject"
+msgstr "Betreff"
+
+#: birdsong/templates/birdsong/editor/inspect_campaign.html:18
+#: birdsong/templates/birdsong/editor/inspect_campaign.html:41
+msgid "Sent date"
+msgstr "Versanddatum"
+
+#: birdsong/templates/birdsong/editor/inspect_campaign.html:24
+msgid "No. Recipients"
+msgstr "Anzahl Empfänger"
+
+#: birdsong/templates/birdsong/editor/inspect_campaign.html:35
+msgid "Recipients"
+msgstr "Empfänger"
+
+#: birdsong/templates/birdsong/editor/inspect_campaign.html:39
+msgid "Contact"
+msgstr "Kontakt"
+
+#: birdsong/templates/birdsong/editor/inspect_campaign.html:40
+msgid "Success"
+msgstr "Erfolg"
+
+#: birdsong/templates/birdsong/editor/inspect_campaign.html:57
+msgid "Content"
+msgstr "Inhalt"
+
+#: birdsong/templates/birdsong/editor/send_confirm.html:4
+msgid "Send Campaign"
+msgstr "Kampagne versenden"
+
+#: birdsong/templates/birdsong/editor/send_confirm.html:19
+msgid "Send to a subset of contacts?"
+msgstr "An einen Teil der Kontakte senden?"
+
+#: birdsong/templates/birdsong/editor/send_confirm.html:27
+msgid "Yes, send campaign"
+msgstr "Ja, Kampagne versenden"
+
+#: birdsong/templates/birdsong/editor/send_confirm.html:28
+msgid "No, don't send"
+msgstr "Nein, nicht versenden"
+
+#: birdsong/templates/birdsong/editor/test_confirm.html:4
+msgid "Send test campaign email"
+msgstr "Test-E-Mail senden"
+
+#: birdsong/templates/birdsong/editor/test_confirm.html:23
+msgid "Send test email"
+msgstr "Test-E-Mail senden"
+
+#: birdsong/templates/birdsong/editor/test_confirm.html:24
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: birdsong/views/actions.py:20
+msgid "Campaign sent to {} contacts"
+msgstr "Kampagne wurde an {} Kontakte versendet."
+
+#: birdsong/views/actions.py:28
+msgid "Test email sent, please check your inbox"
+msgstr "Test-E-Mail versendet, bitte Posteingang überprüfen."

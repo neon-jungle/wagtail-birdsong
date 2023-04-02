@@ -8,6 +8,9 @@ BIRDSONG_CONTACT_MODEL = getattr(settings, 'BIRDSONG_CONTACT_MODEL', 'birdsong.C
 ### BIRDSONG_TEST_CONTACT ###
 BIRDSONG_TEST_CONTACT = getattr(settings, 'BIRDSONG_TEST_CONTACT', { 'email': 'wagtail.birdsong@example.com' })
 
+### BIRDSONG_ADMIN ###
+BIRDSONG_ADMIN_GROUP = getattr(settings, 'BIRDSONG_ADMIN_GROUP', True)
+
 ### BIRDSONG_BACKEND ###
 BIRDSONG_BACKEND = getattr(settings, 'BIRDSONG_BACKEND', 'birdsong.backends.smtp.SMTPEmailBackend')
 BIRDSONG_BACKEND_CLASS = module_loading.import_string(BIRDSONG_BACKEND)
@@ -29,4 +32,3 @@ BIRDSONG_ACTIVATION_EMAIL_SUBJECT = _(getattr(settings, 'BIRDSONG_ACTIVATION_EMA
     getattr(settings, 'WAGTAIL_SITE_NAME', '') + ' Mailing List Subscription'))
 BIRDSONG_ACTIVATION_EMAIL_TEMPLATE = getattr(settings, 'BIRDSONG_ACTIVATION_EMAIL_TEMPLATE', 'birdsong/mail/activation_email.html')
 BIRDSONG_ACTIVATION_TEMPLATE = getattr(settings, 'BIRDSONG_ACTIVATION_TEMPLATE', 'activate.html')
-

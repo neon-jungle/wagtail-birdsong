@@ -1,22 +1,14 @@
-from wagtail.contrib.modeladmin.options import ModelAdmin, modeladmin_register
+from birdsong.wagtail_hooks import CampaignAdmin, ContactAdmin, BirdsongAdminGroup, modeladmin_re_register
+from .models import SaleCampaign, ExtendedContact
 
-from birdsong.options import CampaignAdmin
-
-from .models import ExtendedContact, SaleCampaign
-
-
-@modeladmin_register
-class SaleCampaignAdmin(CampaignAdmin):
+class CampaignAdmin(CampaignAdmin):
     campaign = SaleCampaign
-    menu_label = 'Sale Email'
-    menu_icon = 'mail'
-    menu_order = 200
     contact_class = ExtendedContact
 
-
-@modeladmin_register
-class ContactAdmin(ModelAdmin):
+class ContactAdmin(ContactAdmin):
     model = ExtendedContact
-    menu_label = 'Contacts'
-    menu_icon = 'user'
     list_diplay = ('email', 'first_name', 'last_name', 'location')
+
+@modeladmin_re_register
+class BirdsongAdminGroup(BirdsongAdminGroup):
+    items = (CampaignAdmin, ContactAdmin)
