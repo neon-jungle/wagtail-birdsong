@@ -5,7 +5,11 @@
 A plugin for wagtail that allows you to create, send, preview, edit and test email campaigns from within Wagtail.
 Campaign templates are created using `mjml <https://mjml.io/>`_.
 
-Tutorial - https://engineertodeveloper.com/how-to-add-an-email-newsletter-to-wagtail/
+.. image:: docs/birdsong-admin-menu.png
+    :width: 379
+    :alt: Birdsong Admin Menu
+
+
 
 Basic usage
 ===========
@@ -17,16 +21,21 @@ Install birdsong:
     pip install wagtail-birdsong
 
 
-Add the following to your installed apps:
+Add the following to your ``INSTALLED_APPS``:
 
 .. code-block:: python
 
-    'mjml',
-    'birdsong',
-    'wagtail.contrib.modeladmin',
-
+    INSTALLED_APPS = [
+        ...
+        'mjml',
+        'birdsong',
+        'wagtail.contrib.modeladmin',
+        ...
+    ]
 
 Make a new app e.g. ``email``, create a ``models.py`` with a model that extends the included ``Campaign`` model. Some compatible mjml streamfield blocks are included in birdsong for convenience.
+
+``models.py``
 
 .. code-block:: python
 
@@ -36,8 +45,7 @@ Make a new app e.g. ``email``, create a ``models.py`` with a model that extends 
     from wagtail.admin.edit_handlers import StreamFieldPanel
     from wagtail.core.fields import StreamField
 
-
-    class SaleEmail(Campaign):
+    class SaleCampaign(Campaign):
         body = StreamField(DefaultBlocks())
 
         panels = Campaign.panels + [
@@ -47,30 +55,33 @@ Make a new app e.g. ``email``, create a ``models.py`` with a model that extends 
 Then in the same app, create a ``wagtail_hooks.py`` if it doesn't exist, this is where the admin is created
 for content editors to create/edit/send campaigns.
 
-The ``CampaignAdmin`` is just an extension of Wagtail's ``ModelAdmin`` class so most of the same options are available for overriding functionality.
+    **NOTE:** The ``CampaignAdmin`` is just an extension of Wagtail's ``ModelAdmin`` class so most of the same options are available for overriding functionality. 
+    
+    **NOTE:** ``BirdsongAdminGroup`` can be disabled with ``BIRDSONG_ADMIN_GROUP`` setting if you want to ``modeladmin_register`` your ``CampaignAdmin`` directly.
+
+``wagtail_hooks.py``
 
 .. code-block:: python
 
-    from wagtail.contrib.modeladmin.options import modeladmin_register
-    from birdsong.options import CampaignAdmin
+    from birdsong.wagtail_hooks import (
+        CampaignAdmin, ContactAdmin, BirdsongAdminGroup, modeladmin_re_register
+    )
+    from .models import SaleCampaign
 
-    from .models import SaleEmail
+    class CampaignAdmin(CampaignAdmin):
+        campaign = SaleCampaign
+
+    @modeladmin_re_register
+    class BirdsongAdminGroup(BirdsongAdminGroup):
+        items = (CampaignAdmin, ContactAdmin)
 
 
-    @modeladmin_register
-    class SaleEmailAdmin(CampaignAdmin):
-        campaign = SaleEmail
-        menu_label = 'Sale Email'
-        menu_icon = 'mail'
-        menu_order = 200
-
-
-Create your campaign template in ``{app_folder}/templates/mail/{model_name}.html`` e.g. ``email/templates/mail/sale_email.html``,
+Create your campaign template in ``{app_folder}/templates/mail/{model_name}.html`` e.g. ``email/templates/mail/sale_campaign.html``,
 alternatively override the ``get_template`` method on your campaign model.
 
-Campaign templates use django-mjml for responsive, well designed emails. To read up how to setup django-mjml you can read the docs `here <https://github.com/liminspace/django-mjml>`_. There is a base template included in Birdsong that can be extended.
+    **NOTE:** Campaign templates use django-mjml for responsive, well designed emails. To read up how to setup django-mjml you can read the docs `here <https://github.com/liminspace/django-mjml>`_. There is a base template included in Birdsong that can be extended.
 
-``sale_email.html``
+``sale_campaign.html``
 
 .. code-block:: html
 
@@ -92,11 +103,11 @@ You're now ready to go!
 
 .. image:: docs/birdsong-preview.png
     :width: 900
-    :alt: Screenshot
+    :alt: Birdsong Preview
 
 
 
-Custom Contact models
+Custom Contact model
 =====================
 
 By default the included ``Contact`` model is used for every campaign, but you may want to store extra data, like names and preferences. 
@@ -119,28 +130,22 @@ You can override the default ``Contact`` model by setting an option on the admin
 
 .. code-block:: python
 
-    from wagtail.contrib.modeladmin.options import ModelAdmin, modeladmin_register
-    from birdsong.options import CampaignAdmin
+    from birdsong.wagtail_hooks import (
+        CampaignAdmin, ContactAdmin, BirdsongAdminGroup, modeladmin_re_register
+    )
+    from .models import SaleCampaign, ExtendedContact # NOTE: Import your custom Contact model
 
-    from .models import ExtendedContact, SaleEmail
+    class CampaignAdmin(CampaignAdmin):
+        campaign = SaleCampaign
+        contact_class = ExtendedContact # NOTE: Teach CampaignAdmin to use your custom Contact model
 
-
-    @modeladmin_register
-    class SaleEmailAdmin(CampaignAdmin):
-        campaign = SaleEmail
-        menu_label = 'Sale Email'
-        menu_icon = 'mail'
-        menu_order = 200
-        contact_class = ExtendedContact
-
-
-    # You may want to add your own modeladmin here to list/edit/add contacts
-    @modeladmin_register
-    class ContactAdmin(ModelAdmin):
+    class ContactAdmin(ContactAdmin): # NOTE: Overload ContactAdmin to list/edit/add your Contacts
         model = ExtendedContact
-        menu_label = 'Contacts'
-        menu_icon = 'user'
         list_diplay = ('email', 'first_name', 'last_name', 'location')
+
+    @modeladmin_re_register
+    class BirdsongAdminGroup(BirdsongAdminGroup):
+        items = (CampaignAdmin, ContactAdmin)
 
 
 ``base.py``
@@ -149,11 +154,12 @@ You can override the default ``Contact`` model by setting an option on the admin
 
     # You may want to redefine the test contact (used in previews) with your new ExtendedContact fields
     BIRDSONG_TEST_CONTACT = {
-        'first_name': 'Wagtail',
-        'last_name': 'Birdsong',
-        'email': 'wagtail.birdsong@example.com',
-        'location': 'us',
+        'first_name': 'Wagtail', # new ExtendedContact field
+        'last_name': 'Birdsong', # new ExtendedContact field
+        'email': 'birdsong@example.com',
+        'location': 'us', # new ExtendedContact field
     }
+
 
 
 Filtering on contact properties
@@ -170,7 +176,6 @@ You might want to only send a campaign to a subset of your ``Contact`` models. C
 
     from .models import ExtendedContact
 
-
     class ContactFilter(FilterSet):
         location = AllValuesFilter()
 
@@ -183,24 +188,29 @@ You might want to only send a campaign to a subset of your ``Contact`` models. C
 
 .. code-block:: python
 
-    from wagtail.contrib.modeladmin.options import modeladmin_register
-    from birdsong.options import CampaignAdmin
+    from birdsong.wagtail_hooks import (
+        CampaignAdmin, ContactAdmin, BirdsongAdminGroup, modeladmin_re_register
+    )
+    from .models import SaleCampaign, ExtendedContact
+    from .filters import ContactFilter # NOTE: Import your custom Contact filter
 
-    from .filters import ContactFilter
-    from .models import ExtendedContact, SaleEmail
-
-
-    @modeladmin_register
-    class SaleEmailAdmin(CampaignAdmin):
-        campaign = SaleEmail
-        menu_label = 'Sale Email'
-        menu_icon = 'mail'
-        menu_order = 200
+    class CampaignAdmin(CampaignAdmin):
+        campaign = SaleCampaign
         contact_class = ExtendedContact
-        contact_filter_class = ContactFilter
+        contact_filter_class = ContactFilter # NOTE: Use your custom Contact filter
+
+    class ContactAdmin(ContactAdmin):
+        model = ExtendedContact
+        list_diplay = ('email', 'first_name', 'last_name', 'location')
+
+    @modeladmin_re_register
+    class BirdsongAdminGroup(BirdsongAdminGroup):
+        items = (CampaignAdmin, ContactAdmin)
 
 
-Users will now be able to send campaigns to a subset of contacts base on location.
+Users will now be able to send campaigns to a subset of contacts based on location.
+
+
 
 Unsubscribe url
 ===============
@@ -220,7 +230,7 @@ Included in birdsong is a basic way for contacts to unsubscribe, just include th
         ...
     ]
 
-``sale_email.html``
+``sale_campaign.html``
 
 .. code-block:: html
 
@@ -246,9 +256,8 @@ Included in birdsong is a basic way for contacts to unsubscribe, just include th
 
 
 
-
-Future features:
-----------------
+Future features
+===============
 
 - More tests!
 - Proper docs
