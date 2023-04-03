@@ -266,13 +266,13 @@ You can control the subscribe form by changing any of these optional settings:
     BIRDSONG_SUBSCRIBE_FORM_BUTTON_LABEL = 'Subscribe'
     BIRDSONG_SUBSCRIBE_FORM_MSG_SUCCESS = 'You have been subscribed.'
     BIRDSONG_SUBSCRIBE_FORM_MSG_FAILURE = 'Invalid email address'
-    BIRDSONG_SUBSCRIBE_FORM_TEMPLATE = 'subscribe.html'
+    BIRDSONG_SUBSCRIBE_FORM_TEMPLATE = 'birdsong/subscribe.html'
 
     BIRDSONG_ACTIVATION_REQUIRED = False # turns on/off email activation requirement for new subscriptions
     BIRDSONG_ACTIVATION_REQUIRED_MSG = 'Check your e-mail to activate your subscription.'
     BIRDSONG_ACTIVATION_EMAIL_SUBJECT = 'Activate Your ' + WAGTAIL_SITE_NAME + ' Mailing List Subscription'
     BIRDSONG_ACTIVATION_EMAIL_TEMPLATE = 'birdsong/mail/activation_email.html'
-    BIRDSONG_ACTIVATION_TEMPLATE = 'activate.html'
+    BIRDSONG_ACTIVATION_TEMPLATE = 'birdsong/activate.html'
 
 
 For example, if you want to change the activation email you can create your new template in your app's templates

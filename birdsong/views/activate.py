@@ -21,7 +21,7 @@ def activate(request, cid, token):
     :param token: Subscription Activation Token (e.g. "bkwxpq-cc9a685f0e58c20baacf0ce2c93823f3")
     :type token: str
 
-    :return: Rendered `activate.html` template as an HTTP Response (see `BIRDSONG_ACTIVATION_TEMPLATE`)
+    :return: Rendered `BIRDSONG_ACTIVATION_TEMPLATE` template as an HTTP Response
     :rtype: class:`django.http.HttpResponse`
     """
     try:

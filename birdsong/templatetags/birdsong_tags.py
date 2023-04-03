@@ -15,10 +15,10 @@ from birdsong.conf import (
 
 register = template.Library()
 
-@register.inclusion_tag("tags/subscribe.html", takes_context=True)
+@register.inclusion_tag("birdsong/tags/subscribe.html", takes_context=True)
 def birdsong_subscribe_form(context):
     """Renders the Subscribe form template tag.
-    NOTE: Aimed to be used in client apps' templates. (see `birdsong/templates/subscribe.html`)
+    NOTE: Aimed to be used in client apps' templates. (see `birdsong/templates/birdsong/subscribe.html`)
 
     :param context: Data for the template
     :type context: dict
