@@ -8,10 +8,7 @@ from wagtail.models import Site
 
 from birdsong.forms import SubscribeForm
 
-from birdsong.conf import (
-    BIRDSONG_SUBSCRIBE_FORM_ID, BIRDSONG_SUBSCRIBE_FORM_BUTTON_LABEL, BIRDSONG_SUBSCRIBE_FORM_AJAX,
-    BIRDSONG_SUBSCRIBE_FORM_NOVALIDATE, BIRDSONG_SUBSCRIBE_FORM_FEEDBACK
-)
+from birdsong.conf import BIRDSONG_SUBSCRIBE_FORM_AJAX
 
 register = template.Library()
 
@@ -39,11 +36,8 @@ def birdsong_subscribe_form(context):
         "subscribe_api_url": reverse('birdsong:subscribe_api'),
         "form": form,
         "errors": form.errors.as_json(),
-        "BIRDSONG_SUBSCRIBE_FORM_ID": BIRDSONG_SUBSCRIBE_FORM_ID,
-        "BIRDSONG_SUBSCRIBE_FORM_BUTTON_LABEL": BIRDSONG_SUBSCRIBE_FORM_BUTTON_LABEL,
+        "BIRDSONG_SUBSCRIBE_FORM_BUTTON_LABEL": _('Subscribe'),
         "BIRDSONG_SUBSCRIBE_FORM_AJAX": BIRDSONG_SUBSCRIBE_FORM_AJAX,
-        "BIRDSONG_SUBSCRIBE_FORM_NOVALIDATE": BIRDSONG_SUBSCRIBE_FORM_NOVALIDATE,
-        "BIRDSONG_SUBSCRIBE_FORM_FEEDBACK": BIRDSONG_SUBSCRIBE_FORM_FEEDBACK,
         "FORM_EXPIRED_ERROR": _("Form expired (try to refresh the page)"),
         "FORM_UNEXPECTED_ERROR": _("Internal Server Error (try again later)"),
     }

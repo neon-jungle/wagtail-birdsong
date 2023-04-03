@@ -7,7 +7,6 @@ from django.http import Http404
 
 from wagtail.models import Site
 
-from birdsong.conf import BIRDSONG_ACTIVATION_TEMPLATE
 from birdsong.models import Contact
 
 
@@ -21,7 +20,7 @@ def activate(request, cid, token):
     :param token: Subscription Activation Token (e.g. "bkwxpq-cc9a685f0e58c20baacf0ce2c93823f3")
     :type token: str
 
-    :return: Rendered `BIRDSONG_ACTIVATION_TEMPLATE` template as an HTTP Response
+    :return: Rendered activation confirmation template as an HTTP Response
     :rtype: class:`django.http.HttpResponse`
     """
     try:
@@ -37,7 +36,7 @@ def activate(request, cid, token):
         contact.save()
 
     return render(
-        request, BIRDSONG_ACTIVATION_TEMPLATE, context={
+        request, 'birdsong/activate.html', context={
             'site': Site.find_for_request(request),
             'site_name': settings.WAGTAIL_SITE_NAME,
             'contact': contact,

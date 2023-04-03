@@ -10,8 +10,8 @@ from wagtail.models import Site
 from birdsong.conf import (
     BIRDSONG_BACKEND_CLASS,
     BIRDSONG_ACTIVATION_REQUIRED, BIRDSONG_ACTIVATION_REQUIRED_MSG,
-    BIRDSONG_ACTIVATION_EMAIL_SUBJECT, BIRDSONG_ACTIVATION_EMAIL_TEMPLATE,
-    BIRDSONG_SUBSCRIBE_FORM_MSG_SUCCESS, BIRDSONG_SUBSCRIBE_FORM_MSG_FAILURE, BIRDSONG_SUBSCRIBE_FORM_TEMPLATE,
+    BIRDSONG_ACTIVATION_EMAIL_SUBJECT,
+    BIRDSONG_SUBSCRIBE_FORM_MSG_SUCCESS, BIRDSONG_SUBSCRIBE_FORM_MSG_FAILURE,
 )
 from birdsong.forms import SubscribeForm
 from birdsong.utils import get_json_http_response, create_contact
@@ -27,7 +27,7 @@ def subscribe(request):
     :param request: Request sent to this endpoint
     :type request: class:`requests.models.Request`
 
-    :return: Rendered BIRDSONG_SUBSCRIBE_FORM_TEMPLATE template as an HTTP Response
+    :return: Rendered standalone subscribe form template as an HTTP Response
     :rtype: class:`django.http.HttpResponse`
     """
     if request.method == 'POST': # POST method?
@@ -46,7 +46,7 @@ def subscribe(request):
                     }
                     msg = BIRDSONG_SUBSCRIBE_FORM_MSG_SUCCESS
                     if BIRDSONG_ACTIVATION_REQUIRED:
-                        BIRDSONG_BACKEND_CLASS().send_mail(BIRDSONG_ACTIVATION_EMAIL_SUBJECT, BIRDSONG_ACTIVATION_EMAIL_TEMPLATE, contact, context)
+                        BIRDSONG_BACKEND_CLASS().send_mail(BIRDSONG_ACTIVATION_EMAIL_SUBJECT, 'birdsong/mail/activation_email.html', contact, context)
                         msg += '<br />' + BIRDSONG_ACTIVATION_REQUIRED_MSG if BIRDSONG_ACTIVATION_REQUIRED else ''
                     messages.success(request, msg) # provide at least some feedback when JS is disabled
                     # return HttpResponseRedirect(reverse('birdsong:activation_success')) # NOTE: or alternatively redirect somewhere else?
@@ -58,7 +58,7 @@ def subscribe(request):
         form = SubscribeForm() # present a blank form
 
     return render(
-        request, BIRDSONG_SUBSCRIBE_FORM_TEMPLATE, context={
+        request, 'birdsong/subscribe.html', context={
             'site': Site.find_for_request(request),
             'form': form,
             'errors': form.errors.as_json(),
@@ -93,7 +93,7 @@ def subscribe_api(request):
                         }
                         msg = BIRDSONG_SUBSCRIBE_FORM_MSG_SUCCESS
                         if BIRDSONG_ACTIVATION_REQUIRED:
-                            BIRDSONG_BACKEND_CLASS().send_mail(BIRDSONG_ACTIVATION_EMAIL_SUBJECT, BIRDSONG_ACTIVATION_EMAIL_TEMPLATE, contact, context)
+                            BIRDSONG_BACKEND_CLASS().send_mail(BIRDSONG_ACTIVATION_EMAIL_SUBJECT, 'birdsong/mail/activation_email.html', contact, context)
                             msg += '<br />' + BIRDSONG_ACTIVATION_REQUIRED_MSG if BIRDSONG_ACTIVATION_REQUIRED else ''
                         return get_json_http_response(msg)
                 else:

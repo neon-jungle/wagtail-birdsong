@@ -1,4 +1,4 @@
-<form id="{{ BIRDSONG_SUBSCRIBE_FORM_ID }}" action="{{ form_action }}" method="post" class="needs-validation" {% if BIRDSONG_SUBSCRIBE_FORM_NOVALIDATE %}novalidate{% endif %}>
+<form id="subscribe-form" action="{{ form_action }}" method="post">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="{{ BIRDSONG_SUBSCRIBE_FORM_BUTTON_LABEL }}">
@@ -6,8 +6,7 @@
 
 <script>
     const BIRDSONG_SUBSCRIBE_FORM_AJAX = String("{{BIRDSONG_SUBSCRIBE_FORM_AJAX}}").toLowerCase() == "true"
-    const BIRDSONG_SUBSCRIBE_FORM_FEEDBACK = String("{{BIRDSONG_SUBSCRIBE_FORM_FEEDBACK}}").toLowerCase() == "true"
-    const FORM_SELECTOR = "#{{BIRDSONG_SUBSCRIBE_FORM_ID}}"
+    const FORM_SELECTOR = "#subscribe-form"
     const FORM_CONTROL = "form-control"
     const FORM_FEEDBACK_VALID = "valid-feedback"
     const FORM_FEEDBACK_INVALID = "invalid-feedback"
@@ -29,16 +28,14 @@
     }    
 
     function createFormFeedback(is_valid, message) {
-        if (BIRDSONG_SUBSCRIBE_FORM_FEEDBACK) {
-            if (is_valid) {
-                input_field_email.classList.add(FORM_CONTROL)
-                input_field_email.classList.add(FORM_FEEDBACK_IS_VALID)
-                form.appendChild(createFormMessage(FORM_FEEDBACK_VALID, message))
-            } else {
-                input_field_email.classList.add(FORM_CONTROL)
-                input_field_email.classList.add(FORM_FEEDBACK_IS_INVALID)
-                form.appendChild(createFormMessage(FORM_FEEDBACK_INVALID, message))
-            }
+        if (is_valid) {
+            input_field_email.classList.add(FORM_CONTROL)
+            input_field_email.classList.add(FORM_FEEDBACK_IS_VALID)
+            form.appendChild(createFormMessage(FORM_FEEDBACK_VALID, message))
+        } else {
+            input_field_email.classList.add(FORM_CONTROL)
+            input_field_email.classList.add(FORM_FEEDBACK_IS_INVALID)
+            form.appendChild(createFormMessage(FORM_FEEDBACK_INVALID, message))
         }
     }
 
@@ -61,9 +58,8 @@
     if (BIRDSONG_SUBSCRIBE_FORM_AJAX) {
         document.querySelector(FORM_SELECTOR).addEventListener("submit", function(e) {
 
-            if (BIRDSONG_SUBSCRIBE_FORM_FEEDBACK) {
-                resetForm()
-            }
+            resetForm()
+
             let input_field_csrf = form.querySelector('input[name="csrfmiddlewaretoken"]')
             let csrf_token = input_field_csrf.value
             let body = JSON.stringify({"email": input_field_email.value})
