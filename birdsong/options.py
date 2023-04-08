@@ -12,7 +12,7 @@ from .models import CampaignStatus, Contact
 from .views import actions
 from .views import editor as editor_views
 
-from birdsong.conf import BIRDSONG_TEST_CONTACT
+from birdsong.conf import BIRDSONG_TEST_CONTACT, BIRDSONG_ACTIVATION_REQUIRED
 
 BIRDSONG_DEFAULT_BACKEND = 'birdsong.backends.smtp.SMTPEmailBackend'
 
@@ -129,11 +129,14 @@ class CampaignAdmin(ModelAdmin):
         return contact_filter.form
 
     def get_contacts_send_to(self, request):
+        contacts = None
         if self.contact_filter_class:
             Filter = self.contact_filter_class
             contact_filter = Filter(request.POST)
-            return contact_filter.qs
-        return self.contact_class.objects.all()
+            contacts = contact_filter.qs
+        else:
+            contacts = self.contact_class.objects.all()
+        return contacts.filter(is_active=True) if BIRDSONG_ACTIVATION_REQUIRED else contacts
 
     def send_campaign(self, request, instance_pk):
         campaign = self.model.objects.get(pk=instance_pk)

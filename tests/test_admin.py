@@ -70,14 +70,16 @@ class TestSending(WagtailTestUtils, TransactionTestCase):
             ]
         )
         for person in [
-            ('Terry', 'Testington', 'North', 'terry@tests.com'),
-            ('Wag', 'Tail', 'South', 'wag@tail.com'),
+            ('Terry', 'Testington', 'North', 'terry@tests.com', True),
+            ('Wag', 'Tail', 'South', 'wag@tail.com', False),
+            ('Bird', 'Song', 'North', 'birdsong@example.com', True),
         ]:
             ExtendedContact.objects.create(
                 first_name=person[0],
                 last_name=person[1],
                 location=person[2],
                 email=person[3],
+                is_active=person[4],
             )
         self.login()
 
