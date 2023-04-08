@@ -1,8 +1,10 @@
+import re
 import json
 
 from django.apps import apps as django_apps
 from django.http import HttpResponse
 from django.core.mail import EmailMultiAlternatives, get_connection
+from django.utils.html import strip_tags
 
 from birdsong.conf import BIRDSONG_CONTACT_MODEL
 
@@ -69,6 +71,19 @@ def create_contact(email):
     contact.save() # NOTE: Relies on UNIQUE email constraint to prevent duplicates
     return contact
 
+def html_to_plaintext(html):
+    """
+    Converts `html` to plaintext.
+
+    :param html: HTML formatted string
+    :type html: str
+
+    :return: Plaintext representation of the HTML input
+    :rtype: str
+    """
+    plaintext = re.sub('[ \t]+', ' ', strip_tags(html)) # Remove html tags and continuous whitespaces 
+    plaintext = plaintext.replace('\n ', '\n').strip() # Strip single spaces in the beginning of each line
+    return plaintext
 
 def send_mass_html_mail(email_data, fail_silently=False, auth_user=None,
                         auth_password=None, connection=None):

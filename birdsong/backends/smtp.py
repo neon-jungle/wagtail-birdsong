@@ -7,7 +7,7 @@ from django.template.loader import render_to_string
 from django.utils import timezone
 from django.core.mail import send_mail
 
-from birdsong.utils import send_mass_html_mail
+from birdsong.utils import send_mass_html_mail, html_to_plaintext
 import birdsong.models # NOTE: can't use "from birdsong.models import ..." syntax without risking circular dependency imports in client overloads
                        # NOTE: This is due to BIRDSONG_BACKEND module_loading in birdsong.conf
 
@@ -84,9 +84,11 @@ class SMTPEmailBackend(BaseEmailBackend):
         :return: 0 on failure, network connection otherwise (see `EmailMessage.send`), 
         :rtype: int|class (defnied by `settings.EMAIL_BACKEND`)
         """
+        html_message = render_to_string(template, context)
         return send_mail(
             subject,
-            render_to_string(template, context),
+            html_to_plaintext(html_message),
             self.from_email,
-            [contact.email]
+            [contact.email],
+            html_message=html_message,
         )
