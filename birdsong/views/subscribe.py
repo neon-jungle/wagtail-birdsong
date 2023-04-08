@@ -50,10 +50,16 @@ def subscribe(request):
                         msg += '<br />' + BIRDSONG_ACTIVATION_REQUIRED_MSG if BIRDSONG_ACTIVATION_REQUIRED else ''
                     messages.success(request, msg) # provide at least some feedback when JS is disabled
                     # return HttpResponseRedirect(reverse('birdsong:activation_success')) # NOTE: or alternatively redirect somewhere else?
-        except Exception as e:
+        except IntegrityError as e: # "Already Subscribed" exception?
+            # i.e. django.db.utils.IntegrityError: UNIQUE constraint failed: birdsong_contact.email
             if contact:
                 contact.delete()
-            form = SubscribeForm() # present a blank form
+            if (DUPLICATE_EMAIL_EXCEPTION in str(e) or DUPLICATE_KEY_VALUE in str(e)): # email already subscribed?
+                msg = BIRDSONG_SUBSCRIBE_FORM_MSG_SUCCESS
+                if BIRDSONG_ACTIVATION_REQUIRED:
+                    msg += '<br />' + BIRDSONG_ACTIVATION_REQUIRED_MSG if BIRDSONG_ACTIVATION_REQUIRED else ''
+                messages.success(request, msg) # obfuscate "Already Subscribed" error as success
+                form = SubscribeForm()
     else: # GET or any other method?
         form = SubscribeForm() # present a blank form
 
@@ -107,10 +113,5 @@ def subscribe_api(request):
                 if BIRDSONG_ACTIVATION_REQUIRED:
                     msg += '<br />' + BIRDSONG_ACTIVATION_REQUIRED_MSG if BIRDSONG_ACTIVATION_REQUIRED else ''
                 return get_json_http_response(msg) # obfuscate "Already Subscribed" error as success
-        except Exception as e: # any other exception?
-            import traceback; traceback.print_exc()
-            if contact:
-                contact.delete()
-            return get_json_http_response(_("Internal server error"), success=False, status=500)
 
     return get_json_http_response(_("Bad request"), success=False, status=400) # assume bad request at this point
