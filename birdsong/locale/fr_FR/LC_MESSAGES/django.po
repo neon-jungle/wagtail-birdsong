@@ -1,0 +1,163 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: wagtail-birdsong\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-06 17:31+0100\n"
+"PO-Revision-Date: 2022-12-06 17:33+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.2\n"
+
+#: birdsong/models.py:22
+msgid "email"
+msgstr "mail"
+
+#: birdsong/models.py:25
+msgid "tags"
+msgstr "tags"
+
+#: birdsong/models.py:39
+msgid "unsent"
+msgstr "non envoyé"
+
+#: birdsong/models.py:40
+msgid "sending"
+msgstr "envoi en cours"
+
+#: birdsong/models.py:41
+msgid "sent"
+msgstr "envoyé"
+
+#: birdsong/models.py:42
+msgid "failed"
+msgstr "échec"
+
+#: birdsong/models.py:47
+msgid "name"
+msgstr "nom"
+
+#: birdsong/models.py:49
+msgid "The name of the campaign"
+msgstr "Le nom de la campagne"
+
+#: birdsong/models.py:51
+msgid "subject"
+msgstr "sujet"
+
+#: birdsong/models.py:53
+msgid "sent date"
+msgstr "date d'envoi"
+
+#: birdsong/models.py:59
+msgid "receipts"
+msgstr "reçus"
+
+#: birdsong/models.py:63
+msgid "status"
+msgstr "statut"
+
+#: birdsong/options.py:31 birdsong/options.py:44
+msgid "Preview"
+msgstr "Aperçu"
+
+#: birdsong/options.py:36
+msgid "Delete"
+msgstr "Supprimer"
+
+#: birdsong/options.py:37 birdsong/options.py:169
+msgid "Copy"
+msgstr "Copie"
+
+#: birdsong/options.py:40
+msgid "Edit"
+msgstr "Éditer"
+
+#: birdsong/options.py:42
+msgid "Send"
+msgstr "Envoyer"
+
+#: birdsong/options.py:43
+msgid "Send test"
+msgstr "Envoyer pour test"
+
+#: birdsong/options.py:49
+msgid "View"
+msgstr "Voir"
+
+#: birdsong/templates/birdsong/editor/create_campaign.html:23
+#: birdsong/templates/birdsong/editor/edit_campaign.html:23
+msgid "Reload preview"
+msgstr "Rafraîchir l'aperçu"
+
+#: birdsong/templates/birdsong/editor/inspect_campaign.html:7
+msgid "Campaign info"
+msgstr "Informations sur la campagne"
+
+#: birdsong/templates/birdsong/editor/inspect_campaign.html:12
+msgid "Subject"
+msgstr "Sujet"
+
+#: birdsong/templates/birdsong/editor/inspect_campaign.html:18
+#: birdsong/templates/birdsong/editor/inspect_campaign.html:41
+msgid "Sent date"
+msgstr "Date d'envoi"
+
+#: birdsong/templates/birdsong/editor/inspect_campaign.html:24
+msgid "No. Recipients"
+msgstr "Nombre de destinataires"
+
+#: birdsong/templates/birdsong/editor/inspect_campaign.html:35
+msgid "Recipients"
+msgstr "Destinataires"
+
+#: birdsong/templates/birdsong/editor/inspect_campaign.html:39
+msgid "Contact"
+msgstr "Contact"
+
+#: birdsong/templates/birdsong/editor/inspect_campaign.html:40
+msgid "Success"
+msgstr "Succès"
+
+#: birdsong/templates/birdsong/editor/inspect_campaign.html:57
+msgid "Content"
+msgstr "Contenu"
+
+#: birdsong/templates/birdsong/editor/send_confirm.html:4
+msgid "Send Campaign"
+msgstr "Envoyer la campagne"
+
+#: birdsong/templates/birdsong/editor/send_confirm.html:19
+msgid "Send to a subset of contacts?"
+msgstr "Envoyer à un sous-groupe de contacts ?"
+
+#: birdsong/templates/birdsong/editor/send_confirm.html:27
+msgid "Yes, send campaign"
+msgstr "Oui, envoyer la campagne"
+
+#: birdsong/templates/birdsong/editor/send_confirm.html:28
+msgid "No, don't send"
+msgstr "Non, ne pas l'envoyer"
+
+#: birdsong/templates/birdsong/editor/test_confirm.html:4
+msgid "Send test campaign email"
+msgstr "Envoyer un email de test pour cette campagne"
+
+#: birdsong/templates/birdsong/editor/test_confirm.html:23
+msgid "Send test email"
+msgstr "Envoyer un mail de test"
+
+#: birdsong/templates/birdsong/editor/test_confirm.html:24
+msgid "Cancel"
+msgstr "Annuler"
+
+#: birdsong/views/actions.py:20
+msgid "Campaign sent to {} contacts"
+msgstr "Infolettre envoyée à {} contacts"
+
+#: birdsong/views/actions.py:28
+msgid "Test email sent, please check your inbox"
+msgstr "Mail de test envoyé, vérifiez votre boîte"
