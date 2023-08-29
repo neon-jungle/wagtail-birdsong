@@ -1,6 +1,10 @@
 from django.conf import settings
 from django.shortcuts import get_object_or_404, render
-from wagtail.core.models import Site
+
+try:
+    from wagtail.core.models import Site
+except ModuleNotFoundError:
+    from wagtail.models import Site
 
 from birdsong.models import Contact
 
@@ -13,13 +17,12 @@ def unsubscribe_user(request, user_id):
 
     template = getattr(
         settings,
-        'BIRDSONG_UNSUBSCRIBE_TEMPLATE',
-        'unsubscribe.html'
+        "BIRDSONG_UNSUBSCRIBE_TEMPLATE",
+        "unsubscribe.html",
     )
 
     return render(
-        request, template, context={
-            'site': site,
-            'contact': contact,
-        }
+        request,
+        template,
+        context={"site": site, "contact": contact},
     )

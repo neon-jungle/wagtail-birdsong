@@ -6,29 +6,41 @@ from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 from taggit.models import TaggedItemBase
-from wagtail.admin.edit_handlers import FieldPanel
-from wagtail.core.models import Site
-from wagtail.core.utils import camelcase_to_underscore
+
+try:
+    from wagtail.admin.edit_handlers import FieldPanel
+except ModuleNotFoundError:
+    from wagtail.admin.panels import FieldPanel
+
+try:
+    from wagtail.core.models import Site
+except ModuleNotFoundError:
+    from wagtail.models import Site
+
+try:
+    from wagtail.core.utils import camelcase_to_underscore
+except ModuleNotFoundError:
+    from .utils import camelcase_to_underscore
 
 
 class ContactTag(TaggedItemBase):
     content_object = ParentalKey(
-        'birdsong.Contact', on_delete=models.CASCADE, related_name='tagged_items')
+        "birdsong.Contact", on_delete=models.CASCADE, related_name="tagged_items"
+    )
 
 
 class Contact(ClusterableModel):
-    id = models.UUIDField(
-        primary_key=True, default=uuid.uuid4, editable=False)
-    email = models.EmailField(verbose_name=_('email'))
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    email = models.EmailField(verbose_name=_("email"))
     tags = ClusterTaggableManager(
         through=ContactTag,
-        verbose_name=_('tags'),
+        verbose_name=_("tags"),
         blank=True,
     )
 
     panels = [
-        FieldPanel('email'),
-        FieldPanel('tags'),
+        FieldPanel("email"),
+        FieldPanel("tags"),
     ]
 
     def __str__(self):
@@ -36,38 +48,38 @@ class Contact(ClusterableModel):
 
 
 class CampaignStatus(models.IntegerChoices):
-    UNSENT = 0, _('unsent')
-    SENDING = 1, _('sending')
-    SENT = 2, _('sent')
-    FAILED = 3, _('failed')
+    UNSENT = 0, _("unsent")
+    SENDING = 1, _("sending")
+    SENT = 2, _("sent")
+    FAILED = 3, _("failed")
 
 
 class Campaign(models.Model):
     name = models.CharField(
-        verbose_name=_('name'),
+        verbose_name=_("name"),
         max_length=255,
-        help_text=_('The name of the campaign'),
+        help_text=_("The name of the campaign"),
     )
-    subject = models.TextField(verbose_name=_('subject'))
+    subject = models.TextField(verbose_name=_("subject"))
     sent_date = models.DateTimeField(
-        verbose_name=_('sent date'),
+        verbose_name=_("sent date"),
         blank=True,
         null=True,
     )
     receipts = models.ManyToManyField(
         Contact,
-        verbose_name=_('receipts'),
-        through='Receipt',
+        verbose_name=_("receipts"),
+        through="Receipt",
     )
     status = models.IntegerField(
-        verbose_name=_('status'),
+        verbose_name=_("status"),
         choices=CampaignStatus.choices,
-        default=CampaignStatus.UNSENT
+        default=CampaignStatus.UNSENT,
     )
 
     panels = [
-        FieldPanel('name'),
-        FieldPanel('subject'),
+        FieldPanel("name"),
+        FieldPanel("subject"),
     ]
 
     def __str__(self):
@@ -79,9 +91,9 @@ class Campaign(models.Model):
     def get_context(self, request, contact):
         site = Site.find_for_request(request)
         return {
-            'self': self,
-            'contact': contact,
-            'site': site,
+            "self": self,
+            "contact": contact,
+            "site": site,
         }
 
 
