@@ -6,7 +6,10 @@ from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 from taggit.models import TaggedItemBase
-from wagtail.admin.edit_handlers import FieldPanel
+try:
+    from wagtail.admin.edit_handlers import FieldPanel
+except ImportError:
+    from wagtail.admin.panels import FieldPanel
 from wagtail.core.models import Site
 from wagtail.core.utils import camelcase_to_underscore
 
