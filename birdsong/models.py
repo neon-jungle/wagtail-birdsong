@@ -10,9 +10,14 @@ try:
     from wagtail.admin.edit_handlers import FieldPanel
 except ImportError:
     from wagtail.admin.panels import FieldPanel
-from wagtail.core.models import Site
-from wagtail.core.utils import camelcase_to_underscore
-
+try:
+    from wagtail.core.models import Site
+except ImportError:
+    from wagtail.models import Site
+try:
+    from wagtail.core.utils import camelcase_to_underscore
+except ImportError:
+    from wagtail.utils import camelcase_to_underscore
 
 class ContactTag(TaggedItemBase):
     content_object = ParentalKey(
