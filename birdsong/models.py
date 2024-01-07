@@ -1,14 +1,19 @@
 import uuid
-
+import re
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 from taggit.models import TaggedItemBase
-from wagtail.admin.edit_handlers import FieldPanel
-from wagtail.core.models import Site
-from wagtail.core.utils import camelcase_to_underscore
+try:
+    from wagtail.admin.edit_handlers import FieldPanel
+except ImportError:
+    from wagtail.admin.panels import FieldPanel
+try:
+    from wagtail.core.models import Site
+except ImportError:
+    from wagtail.models import Site
 
 
 class ContactTag(TaggedItemBase):
@@ -74,7 +79,7 @@ class Campaign(models.Model):
         return self.name
 
     def get_template(self, request):
-        return "mail/%s.html" % (camelcase_to_underscore(self.__class__.__name__))
+        return "mail/%s.html" % (re.sub(r'(?<!^)(?=[A-Z])', '_', (self.__class__.__name__).lower()))
 
     def get_context(self, request, contact):
         site = Site.find_for_request(request)

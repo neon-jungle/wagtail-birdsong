@@ -1,5 +1,8 @@
 from django.utils.html import mark_safe
-from wagtail.core import blocks
+try:
+    from wagtail.core import blocks
+except ImportError:
+    from wagtail import blocks
 
 
 class UnwrappedStreamBlock(blocks.StreamBlock):
