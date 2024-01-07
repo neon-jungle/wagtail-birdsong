@@ -1,5 +1,5 @@
 from django.db import models
-from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
+from wagtail.admin.edit_handlers import FieldPanel
 from wagtail.core.fields import StreamField
 
 from birdsong.blocks import DefaultBlocks
@@ -7,10 +7,10 @@ from birdsong.models import Campaign, Contact
 
 
 class SaleCampaign(Campaign):
-    body = StreamField(DefaultBlocks())
+    body = StreamField(DefaultBlocks(), use_json_field=True)
 
     panels = Campaign.panels + [
-        StreamFieldPanel('body'),
+        FieldPanel('body'),
     ]
 
 

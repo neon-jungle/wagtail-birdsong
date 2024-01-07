@@ -22,22 +22,22 @@ class SendCampaignThread(Thread):
         self.messages = messages
 
     def run(self):
+        campaign_queryset = Campaign.objects.filter(pk=self.campaign_pk)
+        campaign = campaign_queryset.first()
         try:
             logger.info(f"Sending {len(self.messages)} emails")
             send_mass_html_mail(self.messages)
             logger.info("Emails finished sending")
             with transaction.atomic():
-                Campaign.objects.filter(pk=self.campaign_pk).update(
+                campaign_queryset.update(
                     status=CampaignStatus.SENT,
                     sent_date=timezone.now(),
                 )
-                fresh_contacts = Contact.objects.filter(
-                    pk__in=self.contact_pks)
-                Campaign.objects.get(
-                    pk=self.campaign_pk).receipts.add(*fresh_contacts)
+                fresh_contacts = Contact.objects.filter(pk__in=self.contact_pks)
+                campaign.receipts.add(*fresh_contacts)
         except SMTPException:
             logger.exception(f"Problem sending campaign: {self.campaign_pk}")
-            self.campaign.status = CampaignStatus.FAILED
+            campaign_queryset.update(status=CampaignStatus.FAILED)
         finally:
             close_old_connections()
 
