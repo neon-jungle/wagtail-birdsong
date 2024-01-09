@@ -4,8 +4,8 @@ from django.conf import settings
 from django.conf.urls import include
 from django.urls import path, re_path
 from django.views.static import serve
-from wagtail.admin import urls as wagtailadmin_urls
 from wagtail import urls as wagtail_urls
+from wagtail.admin import urls as wagtailadmin_urls
 
 urlpatterns = [
     path('admin/', include(wagtailadmin_urls)),

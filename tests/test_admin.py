@@ -4,7 +4,8 @@ from django.core import mail
 from django.test import TestCase, TransactionTestCase
 from wagtail.rich_text import RichText
 from wagtail.test.utils import WagtailTestUtils
-from wagtail.test.utils.form_data import nested_form_data, rich_text, streamfield
+from wagtail.test.utils.form_data import (nested_form_data, rich_text,
+                                          streamfield)
 
 from birdsong.models import CampaignStatus
 from tests.app.models import ExtendedContact, SaleCampaign

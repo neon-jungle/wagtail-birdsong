@@ -1,10 +1,7 @@
-from birdsong.wagtail_hooks import (
-    CampaignAdmin,
-    ContactAdmin,
-    BirdsongAdminGroup,
-    modeladmin_re_register,
-)
-from .models import SaleCampaign, ExtendedContact
+from birdsong.wagtail_hooks import (BirdsongAdminGroup, CampaignAdmin,
+                                    ContactAdmin, modeladmin_re_register)
+
+from .models import ExtendedContact, SaleCampaign
 
 
 class CampaignAdmin(CampaignAdmin):
