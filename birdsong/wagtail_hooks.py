@@ -4,7 +4,6 @@ from wagtail.contrib.modeladmin.options import (
     ModelAdmin,
     ModelAdminGroup,
 )
-from django.core import checks
 from birdsong.conf import BIRDSONG_ADMIN_GROUP
 from birdsong.options import CampaignAdmin
 from birdsong.models import Contact, Campaign
@@ -23,7 +22,7 @@ class CampaignAdmin(CampaignAdmin):
 
     """
 
-    campaign = Campaign
+    model = Campaign
     menu_label = "Campaigns"
     menu_icon = "mail"
     menu_order = 200
@@ -40,7 +39,7 @@ class ContactAdmin(ModelAdmin):
     menu_label = "Contacts"
     menu_icon = "user"
     menu_order = 300
-    list_diplay = "email"
+    list_display = ("email",)
 
 
 def modeladmin_register_birdsong_admin_group(modeladmin_class):
@@ -81,7 +80,6 @@ def modeladmin_re_register(modeladmin_class):
 
     @hooks.register("construct_main_menu")
     def unregister_menu_item(request, menu_items):
-        print("unregister")
         if (
             modeladmin_class.menu_item_name
         ):  # menu_item_name defined or inherited by modeladmin_class?

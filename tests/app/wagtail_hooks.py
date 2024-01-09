@@ -8,7 +8,7 @@ from .models import SaleCampaign, ExtendedContact
 
 
 class CampaignAdmin(CampaignAdmin):
-    campaign = SaleCampaign
+    model = SaleCampaign
     contact_class = ExtendedContact
 
 
