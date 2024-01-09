@@ -1,6 +1,5 @@
 from django.conf import settings
 
-
 BIRDSONG_ADMIN_GROUP = getattr(settings, "BIRDSONG_ADMIN_GROUP", True)
 
 BIRDSONG_TEST_CONTACT = getattr(
