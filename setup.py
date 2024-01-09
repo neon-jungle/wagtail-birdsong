@@ -4,47 +4,41 @@ Install wagtail-birdsong using setuptools
 """
 from setuptools import find_packages, setup
 
-with open('birdsong/version.py', 'r') as f:
+with open("birdsong/version.py", "r") as f:
     version = None
     exec(f.read())
 
-with open('README.rst', 'r') as f:
+with open("README.rst", "r") as f:
     readme = f.read()
 
 setup(
-    name='wagtail-birdsong',
+    name="wagtail-birdsong",
     version=version,
-    description='Create and send email campaigns from Wagtail',
+    description="Create and send email campaigns from Wagtail",
     long_description=readme,
-    author='Neon Jungle',
-    author_email='developers@neonjungle.studio',
-
+    author="Neon Jungle",
+    author_email="developers@neonjungle.studio",
     install_requires=[
-        'wagtail>=2.15',
-        'django-mjml',
+        "wagtail>=4.1",
+        "django-mjml",
     ],
-    setup_requires=[
-        'wheel'
-    ],
+    setup_requires=["wheel"],
     zip_safe=False,
-    license='BSD License',
-
-    packages=find_packages(exclude=['tests*']),
-
+    license="BSD License",
+    packages=find_packages(exclude=["tests*"]),
     include_package_data=True,
     package_data={},
-
     classifiers=[
-        'Environment :: Web Environment',
-        'Intended Audience :: Developers',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Framework :: Django',
-        'License :: OSI Approved :: BSD License',
+        "Environment :: Web Environment",
+        "Intended Audience :: Developers",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Framework :: Django",
+        "License :: OSI Approved :: BSD License",
     ],
 )

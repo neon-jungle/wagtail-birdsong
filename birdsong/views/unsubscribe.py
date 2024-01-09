@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.shortcuts import get_object_or_404, render
-from wagtail.core.models import Site
+from wagtail.models import Site
 
 from birdsong.models import Contact
 

@@ -1,3 +1,8 @@
+# 1.2.0
+
+- Upped minimum WT version to 4.1
+- Any `CampaignAdmin` subclasses should now use the `model` attribute to point to their campaign instead of `campaign` to keep wagtail checks happy
+
 # 1.1.2
 
 - French translation added
