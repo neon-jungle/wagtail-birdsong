@@ -8,11 +8,11 @@ from django.utils.translation import pgettext
 from wagtail.contrib.modeladmin.helpers import AdminURLHelper, ButtonHelper
 from wagtail.contrib.modeladmin.options import ModelAdmin
 
+from birdsong.conf import BIRDSONG_TEST_CONTACT
+
 from .models import CampaignStatus, Contact
 from .views import actions
 from .views import editor as editor_views
-
-from birdsong.conf import BIRDSONG_TEST_CONTACT
 
 BIRDSONG_DEFAULT_BACKEND = "birdsong.backends.smtp.SMTPEmailBackend"
 

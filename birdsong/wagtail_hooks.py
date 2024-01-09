@@ -1,12 +1,13 @@
 from wagtail.contrib.modeladmin.options import (
-    hooks,
-    modeladmin_register,
     ModelAdmin,
     ModelAdminGroup,
+    hooks,
+    modeladmin_register,
 )
+
 from birdsong.conf import BIRDSONG_ADMIN_GROUP
+from birdsong.models import Campaign, Contact
 from birdsong.options import CampaignAdmin
-from birdsong.models import Contact, Campaign
 
 
 @hooks.register("register_icons")
@@ -53,9 +54,12 @@ def modeladmin_register_birdsong_admin_group(modeladmin_class):
 
 @modeladmin_register_birdsong_admin_group
 class BirdsongAdminGroup(ModelAdminGroup):
-    """Designed to be imported, overriden and re-regsitered using `modeladmin_re_register` in your app's `wagtail_hooks.py`."""
+    """
+    Designed to be imported, overridden and re-registered using `modeladmin_re_register` in your
+    app's `wagtail_hooks.py`.
+    """
 
-    menu_item_name = "birdsong"  # needs to be explicitly defined (at this level) in order for `modeladmin_re_register` to work properly
+    menu_item_name = "birdsong"  # noqa:E501 needs to be explicitly defined (at this level) in order for `modeladmin_re_register` to work properly
     menu_label = "Birdsong"
     menu_icon = "birdsong"
     menu_order = 8000  # above wagtail's Reports (9000) menu item
@@ -65,7 +69,8 @@ class BirdsongAdminGroup(ModelAdminGroup):
 def modeladmin_re_register(modeladmin_class):
     """Method for re-registering ModelAdmin or ModelAdminGroup classes with Wagtail.
 
-    NOTE: Use it as a decorator in your app's `wagtail_hooks.py` to replace `BirdsongAdminGroup`, for example:
+    NOTE: Use it as a decorator in your app's `wagtail_hooks.py` to replace `BirdsongAdminGroup`,
+    for example:
         from birdsong.wagtail_hooks import BirdsongAdminGroup, modeladmin_re_register
         @modeladmin_re_register
         class BirdsongAdminGroup(BirdsongAdminGroup):

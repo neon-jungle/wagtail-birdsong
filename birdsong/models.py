@@ -1,5 +1,5 @@
 import uuid
-import re
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from modelcluster.contrib.taggit import ClusterTaggableManager
@@ -7,8 +7,8 @@ from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 from taggit.models import TaggedItemBase
 from wagtail.admin.panels import FieldPanel
-from wagtail.models import Site
 from wagtail.coreutils import camelcase_to_underscore
+from wagtail.models import Site
 
 
 class ContactTag(TaggedItemBase):
