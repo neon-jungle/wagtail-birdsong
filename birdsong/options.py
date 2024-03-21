@@ -5,8 +5,8 @@ from django.urls import re_path
 from django.utils.module_loading import import_string
 from django.utils.translation import gettext as _
 from django.utils.translation import pgettext
-from wagtail.contrib.modeladmin.helpers import AdminURLHelper, ButtonHelper
-from wagtail.contrib.modeladmin.options import ModelAdmin
+from wagtail_modeladmin.helpers import AdminURLHelper, ButtonHelper
+from wagtail_modeladmin.options import ModelAdmin
 
 from birdsong.conf import BIRDSONG_TEST_CONTACT
 

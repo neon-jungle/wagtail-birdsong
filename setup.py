@@ -20,6 +20,7 @@ setup(
     author_email="developers@neonjungle.studio",
     install_requires=[
         "wagtail>=4.1",
+        "wagtail-modeladmin",
         "django-mjml",
     ],
     setup_requires=["wheel"],
