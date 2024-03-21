@@ -1,4 +1,4 @@
-from wagtail.contrib.modeladmin.options import (ModelAdmin, ModelAdminGroup,
+from wagtail_modeladmin.options import (ModelAdmin, ModelAdminGroup,
                                                 hooks, modeladmin_register)
 
 from birdsong.conf import BIRDSONG_ADMIN_GROUP
@@ -73,10 +73,10 @@ def modeladmin_re_register(modeladmin_class):
             menu_icon = "mail"
 
     :param modeladmin_class: ModelAdmin class to re-register
-    :type modeladmin_class: class:`wagtail.contrib.modeladmin.options.ModelAdminGroup`
+    :type modeladmin_class: class:`wagtail_modeladmin.options.ModelAdminGroup`
 
     :return: Re-registered ModelAdmin class
-    :rtype: class:class:`wagtail.contrib.modeladmin.options.ModelAdminGroup`
+    :rtype: class:class:`wagtail_modeladmin.options.ModelAdminGroup`
     """
 
     @hooks.register("construct_main_menu")

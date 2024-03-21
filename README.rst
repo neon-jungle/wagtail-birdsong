@@ -29,7 +29,7 @@ Add the following to your ``INSTALLED_APPS``:
         ...
         'mjml',
         'birdsong',
-        'wagtail.contrib.modeladmin',
+        'wagtail_modeladmin',
         ...
     ]
 
