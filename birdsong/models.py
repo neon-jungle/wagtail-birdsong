@@ -80,6 +80,7 @@ class Campaign(models.Model):
         site = Site.find_for_request(request)
         return {
             "self": self,
+            "request": request,
             "contact": contact,
             "site": site,
         }
