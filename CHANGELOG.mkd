@@ -1,3 +1,8 @@
+# 2.0.0
+
+- Added external modeladmin package as a requirement to replace contribu module
+- Upped minimum WT to 5.2 because of modeladmin requirement
+
 # 1.2.0
 
 - Upped minimum WT version to 4.1

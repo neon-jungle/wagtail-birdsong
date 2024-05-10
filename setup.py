@@ -19,7 +19,7 @@ setup(
     author="Neon Jungle",
     author_email="developers@neonjungle.studio",
     install_requires=[
-        "wagtail>=4.1",
+        "wagtail>=5.2",
         "wagtail-modeladmin",
         "django-mjml",
     ],
