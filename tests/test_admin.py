@@ -85,17 +85,18 @@ class TestSending(WagtailTestUtils, TransactionTestCase):
                 "location": "Moon",
             },
         )
-        sleep(10)  # Allow time  to send
+        sleep(3)  # Allow time  to send
         self.assertEqual(len(mail.outbox), 1)
-        self.assertTrue("Hi Find Me" in mail.outbox[0].body)
+        self.assertTrue("Hi Find Me" in str(mail.outbox[0].message()))
+        self.campaign.refresh_from_db()
         self.assertNotEqual(self.campaign.status, CampaignStatus.SENT)
 
     def test_send(self):
         self.client.get(f"/admin/app/salecampaign/send_campaign/{self.campaign.id}/")
 
-        sleep(10)  # Allow time  to send
+        sleep(3)  # Allow time  to send
         self.assertEqual(len(mail.outbox), 2)
         self.assertEqual(self.campaign.receipts.all().count(), 2)
         # Get fresh from db (altered in a thread)
-        fresh_campaign = SaleCampaign.objects.get(pk=self.campaign.pk)
-        self.assertEqual(fresh_campaign.status, CampaignStatus.SENT)
+        self.campaign.refresh_from_db()
+        self.assertEqual(self.campaign.status, CampaignStatus.SENT)

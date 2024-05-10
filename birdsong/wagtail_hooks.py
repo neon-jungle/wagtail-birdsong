@@ -1,5 +1,5 @@
-from wagtail_modeladmin.options import (ModelAdmin, ModelAdminGroup,
-                                                hooks, modeladmin_register)
+from wagtail_modeladmin.options import (ModelAdmin, ModelAdminGroup, hooks,
+                                        modeladmin_register)
 
 from birdsong.conf import BIRDSONG_ADMIN_GROUP
 from birdsong.models import Campaign, Contact

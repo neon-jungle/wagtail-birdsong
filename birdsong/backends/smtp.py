@@ -3,9 +3,9 @@ from smtplib import SMTPException
 from threading import Thread
 
 from django.db import close_old_connections, transaction
+from django.template.exceptions import TemplateDoesNotExist
 from django.template.loader import render_to_string
 from django.utils import timezone
-from django.template.exceptions import TemplateDoesNotExist
 
 from birdsong.models import Campaign, CampaignStatus, Contact
 from birdsong.utils import send_mass_html_mail
