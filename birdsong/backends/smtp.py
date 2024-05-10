@@ -5,6 +5,7 @@ from threading import Thread
 from django.db import close_old_connections, transaction
 from django.template.loader import render_to_string
 from django.utils import timezone
+from django.template.exceptions import TemplateDoesNotExist
 
 from birdsong.models import Campaign, CampaignStatus, Contact
 from birdsong.utils import send_mass_html_mail
@@ -22,22 +23,21 @@ class SendCampaignThread(Thread):
         self.messages = messages
 
     def run(self):
-        campaign_queryset = Campaign.objects.filter(pk=self.campaign_pk)
-        campaign = campaign_queryset.first()
+        campaign = Campaign.objects.get(pk=self.campaign_pk)
         try:
             logger.info(f"Sending {len(self.messages)} emails")
             send_mass_html_mail(self.messages)
             logger.info("Emails finished sending")
             with transaction.atomic():
-                campaign_queryset.update(
-                    status=CampaignStatus.SENT,
-                    sent_date=timezone.now(),
-                )
+                campaign.status = CampaignStatus.SENT
+                campaign.sent_date = timezone.now()
+                campaign.save()
                 fresh_contacts = Contact.objects.filter(pk__in=self.contact_pks)
                 campaign.receipts.add(*fresh_contacts)
         except SMTPException:
             logger.exception(f"Problem sending campaign: {self.campaign_pk}")
-            campaign_queryset.update(status=CampaignStatus.FAILED)
+            campaign.status = CampaignStatus.FAILED
+            campaign.save()
         finally:
             close_old_connections()
 
@@ -47,17 +47,27 @@ class SMTPEmailBackend(BaseEmailBackend):
         messages = []
 
         for contact in contacts:
-            content = render_to_string(
-                campaign.get_template(request),
-                campaign.get_context(request, contact),
-            )
-            messages.append({
+            message_data = {
                 'subject': campaign.subject,
-                'body': content,
                 'from_email': self.from_email,
                 'to': [contact.email],
                 'reply_to': [self.reply_to],
-            })
+
+            }
+            html_content = render_to_string(
+                campaign.get_template(request),
+                campaign.get_context(request, contact),
+            )
+            try:
+                text_content = render_to_string(
+                    campaign.get_text_template(request),
+                    campaign.get_context(request, contact),
+                )
+                message_data['body'] = text_content
+                message_data['html_body'] = html_content
+            except TemplateDoesNotExist:
+                message_data['body'] = html_content
+            messages.append(message_data)
         if test_send:
             # Don't mark as complete, don't worry about threading
             send_mass_html_mail(messages)

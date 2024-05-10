@@ -13,8 +13,12 @@ def send_mass_html_mail(email_data, fail_silently=False, auth_user=None,
     )
 
     def _email_from_dict(data):
+        if 'html_body' not in data:
+            html_body = data.pop('body')
+        else:
+            html_body = data.pop('html_body')
         msg = EmailMultiAlternatives(connection=connection, **data)
-        msg.attach_alternative(data['body'], "text/html")
+        msg.attach_alternative(html_body, "text/html")
         return msg
 
     messages = [_email_from_dict(d) for d in email_data]
