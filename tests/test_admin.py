@@ -33,7 +33,7 @@ class TestCampaignAdmin(WagtailTestUtils, TestCase):
         response = self.client.post(
             "/admin/app/salecampaign/create/", self.post_data(), follow=True
         )
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_edit(self):
         response = self.client.post(
@@ -41,14 +41,14 @@ class TestCampaignAdmin(WagtailTestUtils, TestCase):
             self.post_data(overrides={"name": "A Different Name"}),
             follow=True,
         )
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertContains(response, "A Different Name")
 
     def test_preview(self):
         response = self.client.get(
             f"/admin/app/salecampaign/preview/{self.campaign.id}/",
         )
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertContains(response, "<p>The body</p>")
 
     def test_live_preview(self):
@@ -94,8 +94,8 @@ class TestSending(WagtailTestUtils, TransactionTestCase):
         self.client.get(f"/admin/app/salecampaign/send_campaign/{self.campaign.id}/")
 
         sleep(10)  # Allow time  to send
-        self.assertEquals(len(mail.outbox), 2)
-        self.assertEquals(self.campaign.receipts.all().count(), 2)
+        self.assertEqual(len(mail.outbox), 2)
+        self.assertEqual(self.campaign.receipts.all().count(), 2)
         # Get fresh from db (altered in a thread)
         fresh_campaign = SaleCampaign.objects.get(pk=self.campaign.pk)
-        self.assertEquals(fresh_campaign.status, CampaignStatus.SENT)
+        self.assertEqual(fresh_campaign.status, CampaignStatus.SENT)

@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.utils.translation import gettext as _
-from wagtail.contrib.modeladmin.helpers.url import AdminURLHelper
+from wagtail_modeladmin.helpers.url import AdminURLHelper
 
 from birdsong.models import CampaignStatus
 
